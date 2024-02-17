@@ -1,0 +1,25 @@
+{
+    "name": "nextlanguage",
+    "version": "1.0.0",
+    "description": "Next Programing Language (.nxl)",
+    "main": "backend/index.js",
+    "scripts": {
+        "backend": "node backend/index.js",
+        "frontend": "node frontend/index.js",
+        "start": "node sys.js",
+        "dev": "node index.js",
+        "build": "node index.js"
+    },
+    "keywords": [],
+    "author": "Nxium Developments",
+    "license": "ISC",
+    "dependencies": {
+        "a": "^3.0.1",
+        "express": "^4.18.2",
+        "file-extension": "^4.0.5",
+        "find-file-extension": "^1.1.1",
+        "fs": "^0.0.1-security",
+        "fs-extra": "^11.2.0",
+        "path": "^0.12.7"
+    }
+}
