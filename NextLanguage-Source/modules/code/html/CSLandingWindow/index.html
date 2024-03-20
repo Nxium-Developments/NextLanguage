@@ -1,0 +1,136 @@
+<html lang="en" class="no-js" >
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Khronos 2.0 - Demo</title>
+
+    <script>
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+    </script>
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/demo.css">
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+
+</head>
+
+<body id="top">
+
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+
+
+    <!-- header 
+    ================================================== -->
+    <header>
+        <div class="row">
+            <div class="column lg-12 text-center">
+
+                <h1>Khronos 2.0</h1>
+
+                <p class="lead">
+                Khronos is a creative pack of coming soon template pages. Its elegant and clean design makes it
+                perfect for creative people, corporate, agency or anyone who is currently building their
+                site and want to show a coming soon page in a creative way. Khronos is available in three style 
+                variations: static, slideshow, and particle background. It is fully responsive and retina ready, 
+                looks great on any screen and devices.
+                </p>
+
+            </div>
+        </div>
+    </header> <!-- end header -->
+
+
+    <!-- main content
+    ================================================== -->
+    <main>
+        <div class="row block-lg-one-third block-md-one-half block-tab-whole">
+           
+            <div class="column entry">
+                <div class="entry__thumb">
+                    <a href="index-static.html" title="static background">
+                        <img src="images/demo/khronos-static.jpg" srcset="images/demo/khronos-static.jpg 1x, images/demo/khronos-static@2x.jpg 2x" alt="">
+                    </a>
+                </div>
+                <div class="entry__title">
+                    <h3>Static Background</h3>
+                </div>
+            </div>
+
+            <div class="column entry">
+                <div class="entry__thumb">
+                    <a href="index-slides.html" title="slideshow background">
+                        <img src="images/demo/khronos-slides.jpg" srcset="images/demo/khronos-slides.jpg 1x, images/demo/khronos-slides@2x.jpg 2x" alt="">
+                    </a>
+                </div>
+                <div class="entry__title">
+                    <h3>Slideshow Background</h3>
+                </div>
+            </div>
+
+            <div class="column entry">
+                <div class="entry__thumb">
+                    <a href="index-particles.html" title="particles background">
+                        <img src="images/demo/khronos-particles.jpg" srcset="images/demo/khronos-particles.jpg 1x, images/demo/khronos-particles@2x.jpg 2x" alt="">
+                    </a>
+                </div>
+                <div class="entry__title">
+                    <h3>Particles Background</h3>
+                </div>
+            </div>
+            
+        </div>
+    </main> <!--  end main -->
+
+    <!-- Java Script
+    ================================================== -->
+    <script>
+        
+        (function(html) {
+
+            'use strict';
+
+            html.className = html.className.replace(/\bno-js\b/g, '') + 'js';
+
+            const body = document.querySelector('body');
+            const preloader = document.querySelector('#preloader');
+
+            if (!preloader) return;
+
+            window.addEventListener('load', function() {
+
+                body.classList.remove('ss-preload');
+                body.classList.add('ss-loaded');
+
+                preloader.addEventListener('transitionend', function afterTransition(e) {
+                    if (e.target.matches('#preloader'))  {
+                        body.classList.add('ss-show');
+                        e.target.style.display = 'none';
+                        preloader.removeEventListener(e.type, afterTransition);
+                    }
+                });
+
+            });
+
+        })(document.documentElement);
+    
+    </script>
+
+</body>
+
+</html>

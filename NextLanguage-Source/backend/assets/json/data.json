@@ -1,6 +1,0 @@
-{
-   "main": {
-       "file": "./index.nxl",
-       "config": "./build.json"
-    }
-}
