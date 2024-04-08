@@ -1,6 +1,0 @@
-core.nextlanguage.fetch;
-
-Development Product Type = {
-    current = "computer_language";
-    version = "relbu"
-}

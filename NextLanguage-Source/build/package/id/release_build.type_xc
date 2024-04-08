@@ -1,5 +1,0 @@
-core.nextlanguage.fetch;
-
-Development Build Type = {
-    current = "release";
-}
