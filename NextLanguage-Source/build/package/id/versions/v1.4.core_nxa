@@ -1,6 +1,6 @@
 core.nextlanguage.fetch;
 
 Development Build Version = {
-    current = "v1.3";
+    current = "v1.4";
     updated = "0-false"
 }
