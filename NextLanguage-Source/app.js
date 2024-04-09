@@ -1,7 +1,5 @@
 const fs = require('fs');
 
-require('./modules/githubLatestBuild')
-
 function executeNxlFile(filePath) {
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
@@ -31,7 +29,7 @@ if (!fs.existsSync('../config.nxconf')) {
 
     fs.copyFileSync('./.README/enable.bat', '../enable.bat')
 
-    fs.mkdirSync('../logs/')
+    fs.mkdirSync('../logs/ready.temp')
     fs.writeFileSync('../logs/initialize.log', `
     Visit https://github.com/Nxium-Developments/NextLanguage for
     more information on the configuration of this log file.
