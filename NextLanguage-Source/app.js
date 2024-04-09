@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-// Function to read and execute .nxl file
+require('./modules/githubLatestBuild')
+
 function executeNxlFile(filePath) {
-    // Read the contents of the .nxl file
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading file:', err);
@@ -10,7 +10,6 @@ function executeNxlFile(filePath) {
         }
 
         try {
-            // Execute the NXL code using eval()
             eval(data);
         } catch (e) {
             console.error('Error executing NXL code:', e);
@@ -18,10 +17,26 @@ function executeNxlFile(filePath) {
     });
 }
 
-if (!fs.existsSync('../app.nxl') && !fs.existsSync('../config.nxconf')) {
+if (!fs.existsSync('../config.nxconf')) {
     const filePath = process.argv[2];
 
-    fs.writeFileSync('../app.nxl', 'console.log(`Hello World`)', 'utf8', (err) => {
+    fs.writeFileSync(filePath, 'console.log(`Hello World`)', 'utf8', (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+    })
+
+    fs.copyFileSync('init.js', '../init.js')
+
+    fs.copyFileSync('./.README/enable.bat', '../enable.bat')
+
+    fs.mkdirSync('../logs/')
+    fs.writeFileSync('../logs/initialize.log', `
+    Visit https://github.com/Nxium-Developments/NextLanguage for
+    more information on the configuration of this log file.
+
+    Initialized Successfully`, 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
@@ -31,7 +46,6 @@ if (!fs.existsSync('../app.nxl') && !fs.existsSync('../config.nxconf')) {
     if (fs.existsSync('../config.nxconf')) {
         const filePath = fs.readFileSync('../config.nxconf', 'utf8');
     
-        // Execute the .nxl file
         executeNxlFile(filePath);
     } else if (!fs.existsSync('../config.nxconf')) {
         const filePath = process.argv[2];
@@ -50,14 +64,12 @@ if (!fs.existsSync('../app.nxl') && !fs.existsSync('../config.nxconf')) {
             }
         }
     
-        // Execute the .nxl file
         executeNxlFile(filePath);
     }
 } else {
     if (fs.existsSync('../config.nxconf')) {
         const filePath = fs.readFileSync('../config.nxconf', 'utf8');
     
-        // Execute the .nxl file
         executeNxlFile(filePath);
     } else if (!fs.existsSync('../config.nxconf')) {
         const filePath = process.argv[2];
@@ -76,7 +88,6 @@ if (!fs.existsSync('../app.nxl') && !fs.existsSync('../config.nxconf')) {
             }
         }
     
-        // Execute the .nxl file
         executeNxlFile(filePath);
     }
 }
