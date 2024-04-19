@@ -37,6 +37,8 @@
     "url": "^0.11.3"
   },
   "devDependencies": {
+    "capture-console": "^1.0.2",
+    "date-and-time": "^3.1.1",
     "electron": "^29.1.4"
   }
 }
