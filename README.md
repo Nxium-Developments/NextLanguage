@@ -10,9 +10,9 @@ For Example: Run Demo
 ```
 // index.js
 
-const { executeNxlFile } = require('@nyxast/nextlanguage')
+const { runJavascript } = require('@nyxast/nextlanguage')
 
-executeNxlFile('npm-test.a')
+runJavacript('npm-test.a')
 ```
 
 
