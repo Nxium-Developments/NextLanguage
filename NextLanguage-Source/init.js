@@ -129,7 +129,7 @@ fs.writeFileSync('./build/lib/log/' + currenttime + '-NXL_Debug.log', `
     Additional Information:
 
         Git: https://github.com/AshelyAst/NextLanguage-Unofficial
-        Application: init.js]   
+        Application: init.js
 
     Ending Additonal Info Section
     
