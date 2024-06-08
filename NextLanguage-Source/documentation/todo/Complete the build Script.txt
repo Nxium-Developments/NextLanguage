@@ -1,0 +1,19 @@
+## Builder Installation
+
+For the new builder, we will be renaming all 
+configuration id patches for NextLanguage v1.7.0 
+to .config and their respective function for better 
+fs writing formats for future updated releases. 
+
+NextLanguage Unofficial will be posting it's first 
+release soon this month on June. Which will be 
+v1.7.0 And will be releasing more updates to support it. 
+
+For the /lib/ folder, we will now be using it for 
+exporting and logging new custom upcoming Revamped NextLanguage Engine. 
+Which will be compiling new code from it's own 
+parsers and lexers to Javascript. 
+
+Source: /documentation/Codebase Docs.md
+
+St

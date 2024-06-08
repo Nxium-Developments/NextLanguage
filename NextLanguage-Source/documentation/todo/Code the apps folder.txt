@@ -1,0 +1,12 @@
+## Custom NextLanguage Engine
+
+NextLanguage's /app/ folder will now be worked on
+for future applications generations. An Upcoming
+revamp of the Parser and Lexer, including the new
+NextLanguage Unofficial's Interpreter will now be
+worked on for custom coding, instead of using the
+built in Javascript code as the template.
+
+Source: /documentation/Codebase Docs.md
+
+Statues: INPROGRESS

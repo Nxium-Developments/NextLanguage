@@ -11,7 +11,7 @@ Now with this unofficial branch of NextLanguage, we're bringing this
 to another level, with custom Security Encryption Functions, Github Latest Release
 Patch Downloaders, and many more being developed.
 
-Our current [NextLanguage](https://nxoscloud.github.io/landing) Codebase Docs are very detailed and with
+Our current [NextLanguage Codebase Docs](https://nxoscloud.github.io/landing) are very detailed and with
 many leaks on new upcoming features and engine.
 
 We will contiune to develop and maintain this branch of NextLanguage.

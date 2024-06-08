@@ -1,0 +1,11 @@
+## Security Syntaxes
+https://github.com/Nxium-Developments/NextLanguage/issues/2
+
+The long awaited Security Codebase is being
+worked on, and will be published into the
+source code of this unofficial version of
+NextLanguage. Later this month on June.
+
+Source: /documentation/Codebase Docs.md
+
+Statuses: COMPLETED
