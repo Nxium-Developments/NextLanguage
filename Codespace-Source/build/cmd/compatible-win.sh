@@ -1,3 +1,90 @@
+#!/bin/bash
+
+# Define color variables
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Colored echo function
+cecho() {
+    local color=$1
+    shift
+    local message=$1
+    shift
+    echo -en "${color}${message}${NC}"
+}
+# Disable output buffering
+export TERM=""
+
+# Function to draw the loading bar
+function draw_bar() {
+    local width=$1
+    local progress=$2
+    local bar=""
+    local num_chars=$((progress * width / 100))
+    
+    # Fill the bar
+    for ((i = 0; i < num_chars; i++)); do
+        bar+="|"
+    done
+    
+    # Print the bar
+    printf "[%-*s] %d%%\r" $width "$bar" $progress
+}
+
+sleep 1
+
+cecho $BLUE "[Installation] " 
+cecho $NC "Checking dependencies..."
+echo # Moves to the next Line
+
+sleep 1
+
+cecho $BLUE "[Installation] "
+cecho $NC "Checking if "
+cecho $YELLOW "curl.exe"
+cecho $NC " is installed..."
+echo # Moves to the next Line
+
+sleep 1
+
+# Check if curl is installed
+if ! command -v curl &> /dev/null; then
+    cecho $RED "[Debug] "
+    cecho $NC "curl.exe is not installed"
+    echo # Moves to the next Line
+
+    sleep 1
+
+    cecho $RED "[Debug] "
+    cecho $NC "Please install curl.exe"
+    echo # Moves to the next Line
+
+    sleep 1
+
+    cecho $RED "[Debug] "
+    cecho $NC "Exiting..."
+    echo # Moves to the next Line
+
+    sleep 1
+
+    cecho $RED "[Debug] "
+    cecho $NC "Press enter to continue..."
+    echo # Moves to the next Line
+
+    read -r
+    exit 1
+else
+    cecho $GREEN "[Debug] "
+    cecho $NC "curl.exe is installed"
+    echo # Moves to the next Line
+
+    sleep 1
+
+fi
+
 cecho $BLUE "[Installation] "
 cecho $NC "Checking if "
 cecho $YELLOW "node.js"
@@ -437,3 +524,10 @@ else
 
     sleep 1
 fi
+
+cecho $YELLOW "[INFO] "
+cecho $NC "Press enter to continue..."
+echo # Moves to the next Line
+
+read -r
+exit 1
