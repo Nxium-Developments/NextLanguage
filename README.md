@@ -22,7 +22,7 @@ To get started on using this Unofficial Branch of NextLanguage, please
 download this repo, into a zip file. And unzip it, and copy the /NextLanguage-Source/
 folder into your desired Project Folder You're going to be using NextLanguage at.
 
-<h4 style="color: red">CURRENTLY THE REPO IS NOT COMPLETE YET</h4>
+<h4 style="color : red">CURRENTLY THE REPO IS NOT COMPLETE YET</h4>
 Please do not download this repo, until the /Codespace-Source/ folder has
 been added into the Source Github of this Repository. As it contains the full
 files to run NextLanguage, as of /NextLanguage-Source/ only contains the files
