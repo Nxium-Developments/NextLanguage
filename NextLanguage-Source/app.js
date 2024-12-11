@@ -1,13 +1,11 @@
-const fs = require("fs");
-const date = require("date-and-time");
-const fetch = require("node-fetch");
+const fs = require('fs');
+const date = require('date-and-time');
+
 
 const now = new Date();
-const pattern = date.compile("YYYY-MM-DD-ss");
+const pattern = date.compile('YYYY-MM-DD');
 const currenttime = date.format(now, pattern);
-const nxlf = fs.existsSync("config.nxconf") ? fs.readFileSync("config.nxconf", "utf8") : "";
 
-// Function to read and execute .nxl file
 async function executeNxlFile(filePath) {
   try {
     const response = await fetch(filePath);
@@ -133,36 +131,61 @@ async function executeNxlFile(filePath) {
   }
 }
 
-if (!fs.existsSync("config.nxconf")) {
-  console.log("Creating default config file...");
-  fs.writeFileSync("config.nxconf", "console.log('Hello World');", "utf8");
+function patches_main() {
+    require('./patches/v1.6-patch_vdetection-err.js');
 }
 
-const filePath = process.argv[2] || "default.nxl";
+if (!fs.existsSync('../config.nxconf')) {
+    const filePath = process.argv[2];
 
-if (!fs.existsSync(filePath)) {
-  console.error("Provided file does not exist. Creating a default .nxl file.");
-  fs.writeFileSync(filePath, "console.log('Default .nxl File');", "utf8");
+    fs.writeFile('../config.nxconf', filePath, 'utf8', (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+    })
+
+        
+    if (!filePath) {
+        console.error('Please provide the path to the .nxl file as an argument.');
+        process.exit(1);
+    }
+
+    fs.writeFileSync('../' + filePath, 'console.log(`Hello World`)', 'utf8', (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+    })
+
+    const currenttime = date.format(now, pattern); 
+
+    fs.copyFileSync('init.js', '../init.js')
+
+    fs.copyFileSync('./.README/enable.bat', '../enable.bat')
+    
+    fs.writeFileSync('./build/lib/log/' + 'NXL_Startup-Initization.log', `
+    Visit https://github.com/Nxium-Developments/NextLanguage for
+    more information on the configuration of this log file.
+
+    Initialized Successfully` + `
+    
+    < ---------------------------------------------------------------- >
+
+    Log File: ./build/lib/log/${currenttime}-NXL_Startup.log
+
+    `, 'utf8', (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+    })
+
+    if (fs.existsSync('../config.nxconf')) {
+        const filePath = fs.readFileSync('../config.nxconf', 'utf8');
+    
+        executeNxlFile(filePath);
+    }
 }
 
-// Execute the .nxl file
-executeNxlFile(filePath);
-
-if (!fs.existsSync("./build.config.nxlf")) {
-  fs.mkdirSync("./build/lib/log", { recursive: true });
-  fs.mkdirSync("./build/lib/export", { recursive: true });
-  fs.mkdirSync("./build/patches", { recursive: true });
-
-  fs.writeFileSync("./build.config.nxlf", "true", "utf-8");
-  fs.writeFileSync("./build/patches/temp.txt", "temp", "utf-8");
-  fs.writeFileSync("./build/lib/export/temp.txt", "temp", "utf-8");
-}
-
-fs.writeFileSync(
-  `./build/lib/log/${currenttime}-NXL_Debug.log`,
-  `
-  Log File Details:
-  - Loaded Configuration File: ./config.nxconf
-  - Executed File: ${nxlf}
-  `
-);
+patches_main();
