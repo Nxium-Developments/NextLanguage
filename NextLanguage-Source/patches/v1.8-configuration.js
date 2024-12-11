@@ -1,5 +1,6 @@
 const fs = require('fs');
-const run = require('./v1.8-rebulid')
+const run = require('./v1.8-rebulid');
+const path = require('path');
 
 const contents = require('./v1.8-contents.js');
 

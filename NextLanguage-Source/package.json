@@ -4,9 +4,8 @@
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
   "main": "app.js",
   "scripts": {
-    "build": "npm run install && npm run activate",
-    "install": "npm install -g fs electron path url fetch date-and-time nodemon",
-    "activate": "nodemon app.js"
+    "build": "npm install -g && npm run activate",
+    "activate": "nodemon app.js app.nxl"
   },
   "repository": {
     "type": "git",
