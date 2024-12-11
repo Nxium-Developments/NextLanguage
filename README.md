@@ -1,33 +1,17 @@
-## ✨ Introducing NextLanguage ✨
-A new file loader using javascript which allows, a file to be loaded in any language.
-This demo, includes index.js running a file named ``npm-test.a`` which cannot be run
-in javascript, but with NextLanguage. YOU are able to, in any language.
+## A Custom Programming Language
+This programming language was made as a request by Nxoscloud to be used for the Project Next coding language.
 
-You can even run it in java, typescript, and even c++ using a different file extension!
+## Why?
+The Goal for this programming language was for an optimized language engine for Maximum Security and Performance.
+Currently we have not reached any of our goals yet, and are working on them heavily.
 
-For Example: Run Demo
+## Features
+Currently this programming language is under heavy development and has not been fully tested. The features currently present are buggy and unstable. We're still working on making this a better language.
 
-```
-// index.js
+Some features are ready such as:
+- Functions
+- Outputs
+- Variables
 
-const { runJavascript } = require('@nyxast/nextlanguage')
-
-runJavacript('npm-test.a')
-```
-
-
-```
-// npm-test.a
-
-console.log('Helloworld')
-```
-
-Console Output:
-
-```
-user@EXAMPLE-DESKTOP ~/nextlanguage/npm-packaged-test (master)
-$ node index.js
-
-Helloworld
-
-```
+## Installation
+For a more in-depth install guide, check out the [Installation Guide](documentation/Installation_Guide.md)
