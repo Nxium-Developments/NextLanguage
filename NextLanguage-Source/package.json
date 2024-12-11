@@ -4,11 +4,9 @@
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
   "main": "app.js",
   "scripts": {
-    "test": "bash ./build/cmd/modules/sendErr.sh",
-    "build": "npm run install && npm run update",
-    "install": "npm install fs electron path url fetch",
-    "update": "npm update",
-    "activate": "node app.js"
+    "build": "npm run install && npm run activate",
+    "install": "npm install -g fs electron path url fetch date-and-time nodemon",
+    "activate": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -34,11 +32,11 @@
     "http": "^0.0.1-security",
     "path": "^0.12.7",
     "querystring": "^0.2.1",
-    "url": "^0.11.3"
+    "url": "^0.11.4"
   },
   "devDependencies": {
     "capture-console": "^1.0.2",
     "date-and-time": "^3.1.1",
-    "electron": "^29.1.4"
+    "electron": "^29.4.6"
   }
 }
