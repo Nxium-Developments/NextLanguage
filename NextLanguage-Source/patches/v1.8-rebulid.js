@@ -41,7 +41,9 @@ module.exports = async function run(file) {
           if (match) {
               debug = match[1].toLowerCase() === "on";
               addOutput(`Debug mode ${debug ? "enabled" : "disabled"}.`);
-              setPackageDebugMode("true");
+              if (match[1].toLowerCase() === "on") {
+                  setPackageDebugMode("true");
+              }
           }
           continue;
         }
@@ -95,24 +97,10 @@ module.exports = async function run(file) {
           // Creates a Separator for variables given within a space
           const functionMatch = line.match(/@function \[(.+?)\]/);
           if (!functionMatch) continue; // Checks if match is iterable
-
           const [, name] = functionMatch; // Separates a variable
 
-          // Get the function body
-          const functionBodyIndex = lines.indexOf(line) + 1;
-
-          // Get the function body contents
-          const functionBody = lines[functionBodyIndex]?.trim();
-
-          // Register the function contents
-          functions[name] = () => {
-              // Checks if the function body has any registered commands
-              if (functionBody?.startsWith("@output")) {
-                  // Currently for debugging only
-                  const text = functionBody.split("@output")[1].trim();
-                  debugOutput(line, text);
-              }
-          };
+          // Executes the function
+          executeFunction(lines, line, name, functionMatch);
           debugOutput(line, `Function '${name}' registered.`); // Debug Output
         }
 
@@ -158,15 +146,9 @@ module.exports = async function run(file) {
             }
         }
 
-        if (line.startsWith("if")) {
-          // Separates the contents of if
-          const conditionMatch = line.match(/if \[(.+)\]/);
-          if (!conditionMatch) continue; // Checks if conditionMatch is iterable
-
-          const [, condition] = conditionMatch;
-          
-
-          ifHandler.parseIfStatement(line);
+        if (line.startsWith("@if")) {                 
+          // Refer to modules/IfStatementHandler.js
+          ifHandler.parseIfStatement(line, lines);
         }
     }
 };
