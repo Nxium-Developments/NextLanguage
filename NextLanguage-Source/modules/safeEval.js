@@ -1,3 +1,4 @@
+// Local Imports for logging and Variable Data
 const addOutput = require('./addOutput');
 const getVariables = require('./localStorage').getVariables;
 
