@@ -10,7 +10,7 @@ function patches_main() {
 if (fs.existsSync('../config.nxconf')) {
     const filePath = fs.readFileSync('../config.nxconf', 'utf8');
 
-    run(filePath);
+    run(`../${filePath}`);
 }
 
 patches_main();
