@@ -18,7 +18,7 @@
       # Code block if condition is false
   );
   ```
-- **Example**:
+- **Example 1**:
   ```
   @function [hello](tra): (
       if [tra === true]: (
@@ -29,6 +29,17 @@
   );
 
   :call [@function] /hello(true)@run;
+  ```
+
+- **Example 2**:
+  ```
+  @var [raining]: (boolean)true;
+
+  if [raining === true]: (
+      @output It's raining;
+  ) else (
+      @output It's not raining;
+  );
   ```
 
 #### `@function`
