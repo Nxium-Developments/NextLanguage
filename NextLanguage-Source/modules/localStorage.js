@@ -4,7 +4,11 @@ const packages = {
     main: null,
     commands: [],
     advanced: false,
+<<<<<<< Updated upstream
     debugMode: null,
+=======
+    debugMode: true,
+>>>>>>> Stashed changes
 };
 
 // Getter functions
