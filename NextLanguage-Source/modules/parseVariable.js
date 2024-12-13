@@ -9,6 +9,7 @@ module.exports = function parseVariable(line) {
     const [, name, type, value] = match;
 
     let parsedValue = value.trim();
+    let parsedtype = type.trim();
     if (type.toLowerCase() === "negative") {
         parsedValue = parseFloat(value.replace("(negative)", "-"));
     } else if (type.toLowerCase() === "percent" || type.toLowerCase() === "percentage") {
@@ -19,6 +20,11 @@ module.exports = function parseVariable(line) {
         parsedValue = parseFloat(value);
     } else if (type.toLowerCase() === "boolean") {
         parsedValue = value.toLowerCase() === "true";
+    } else if (type.toLowerCase() === "string") {
+        parsedValue = value;
+    } else {
+        parsedValue = value;
+        parsedtype = "string";
     }
 
     const variable = { name, type, value: parsedValue };
