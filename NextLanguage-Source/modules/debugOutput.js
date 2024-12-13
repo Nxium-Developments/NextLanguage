@@ -5,7 +5,7 @@ const debug = getPackages().debugMode;
 // Debug Output Modules
 module.exports = function debugOutput(line, text) {
     // Check if debug mode is enabled
-    if (debug === null) return;
+    if (debug === false) return;
 
     // Parse debug message from the line
     const debugMatch = line.match(/output:debug\((.+?)\)/);
