@@ -1,12 +1,12 @@
 const fs = require('fs');
 
-const addOutput = require('../modules/addOutput');
-const safeEval = require('../modules/safeEval');
-const IfStatementHandler = require('../modules/IfStatementHandler');
+const addOutput = require('../../modules/addOutput');
+const safeEval = require('../../modules/safeEval');
+const IfStatementHandler = require('../../modules/IfStatementHandler');
 const ifHandler = IfStatementHandler(addOutput, safeEval);
-const debugOutput = require('../modules/debugOutput');
-const parseVariable = require('../modules/parseVariable');
-const executeFunction = require('../modules/executeFunction');
+const debugOutput = require('../../modules/debugOutput');
+const parseVariable = require('../../modules/parseVariable');
+const executeFunction = require('../../modules/executeFunction');
 
 const {
   getVariables,
@@ -18,7 +18,7 @@ const {
   addPackageCommand,
   setPackageAdvanced,
   setPackageDebugMode,
-} = require('../modules/localStorage.js');
+} = require('../../modules/localStorage.js');
 const packages = getPackages();
 const variables = getVariables();
 const functions = getFunctions();
@@ -30,20 +30,25 @@ module.exports = async function run(file) {
     // Parse and execute the NXL code
     const lines = nxlCode.split("\n").map(line => line.trim());
 
+    // Read and execute the NXL code, line by line
     for (let i = 0; i < lines.length; i++) {
+        // Execute the current line
         const line = lines[i];
 
         // Ignore comments
         if (line.startsWith("#") || line === "") continue;
 
+        // Depreated debug mode
         if (line.startsWith(":debug-mode")) {
           const match = line.match(/:debug-mode (.+)/);
           if (match) {
-              debug = match[1].toLowerCase() === "on";
-              addOutput(`Debug mode ${debug ? "enabled" : "disabled"}.`);
-              if (match[1].toLowerCase() === "on") {
-                  setPackageDebugMode("true");
-              }
+            //   debug = main.toLowerCase() === "on";
+            //   addOutput(`Debug mode ${debug ? "enabled" : "disabled"}.`);
+            //   if (main.toLowerCase() === "on") {
+            //       setPackageDebugMode(debug);
+            //   }
+
+            addOutput(`Debug mode ${match[1].toLowerCase() === "on" ? "is deprecated" : "disabled"}.`);
           }
           continue;
         }
@@ -52,10 +57,26 @@ module.exports = async function run(file) {
         if (line.startsWith(":package-main")) {
             // Creates a separates a variable
             const match = line.match(/:package-main (.+);/);
-            if (match) {
-                setPackageMain(match[1]); // Sets the main package
+
+            // Checks if match is iterable
+            if (!match) continue;
+
+            // Separates a variable
+            const [, main] = match;
+
+            // Sets the main package
+            if (main === "root/me") {
+                setPackageMain(main); // Sets the main package
                 // Debugging for Developers
                 debugOutput(line, `Main package set to: ${packages.main}`);
+            } else {
+                const read = main.split("root/")[0]; // Creates a read path
+                // Returns the file contents
+                const contents = fs.readFileSync(path.join(read), 'utf8');
+                if (match) {
+                    addPackageCommand(main); // Adds the command to modules/localStorage.js
+                    debugOutput(line, `Command package added: ${main}`); // Debug output
+                }
             }
         }
 
@@ -68,11 +89,11 @@ module.exports = async function run(file) {
             const [, auto] = match; // Creates a separator variable
             const read = auto.split("root/")[0]; // Creates a read path
 
-            // Returns the file contents
+            // Returns the file contents (currently out of use)
             const contents = fs.readFileSync(path.join(read), 'utf8');
             if (match) {
-                addPackageCommand(match[1]); // Adds the command to modules/localStorage.js
-                debugOutput(line, `Command package added: ${match[1]}`); // Debug output
+                addPackageCommand(main); // Adds the command to modules/localStorage.js
+                debugOutput(line, `Command package added: ${main}`); // Debug output
             }
         }
 
@@ -83,6 +104,9 @@ module.exports = async function run(file) {
 
             if (match) {
                 setPackageAdvanced("true"); // Sets an package to advanced mode
+                debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
+            } else {
+                setPackageAdvanced("false"); // Sets an package to normal mode
                 debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
             }
         }
