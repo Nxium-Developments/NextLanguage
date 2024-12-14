@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "build": "npm install -g && npm run activate",
-    "activate": "nodemon app.js app.nxl"
+    "activate": "nodemon app.js app.nxl",
+    "rebuild": "npm update && npm run initialize",
+    "initialize": "nodemon init.js"
   },
   "repository": {
     "type": "git",
