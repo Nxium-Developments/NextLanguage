@@ -3,58 +3,60 @@
 #### `@output`
 - **Definition**: Outputs text or variable contents to the program’s output.
 - **Syntax**: `@output <content>;`
-- **Example**:
+- **Example 1**:
   ```
   @output Hello World;
+  ```
+- **Example 2**:
+  ```
+  @var [username]: "abie";
+  @output username;
   ```
 
 #### `@if` Statement
 - **Definition**: Implements conditional logic.
 - **Syntax**:
   ```
-  if [condition]: (
+  @if [condition]:
       # Code block if condition is true
-  ) else (
+  @else
       # Code block if condition is false
-  );
+  @end
   ```
 - **Example 1**:
   ```
-  @function [hello](tra): (
-      if [tra === true]: (
-          @output Hello;
-      ) else (
-          @output Else;
-      );
-  );
-
-  :call [@function] /hello(true)@run;
+  @var [x]: (integer)11
+  @if [x > 10]
+      @output x is greater than 10;
+  @else
+      @output x is less than 10;
+  @end
   ```
 
 - **Example 2**:
   ```
   @var [raining]: (boolean)true;
 
-  if [raining === true]: (
+  @if [raining === true]:
       @output It's raining;
-  ) else (
+  @else
       @output It's not raining;
-  );
+  @end
   ```
 
 #### `@function`
 - **Definition**: Defines a function that can be executed later.
 - **Syntax**:
   ```
-  @function [name]: (
+  @function [name]:
       # Function body
-  );
+  @end
   ```
 - **Examples**:
   ```
-  @function [say_abc]: (
+  @function [say_abc]:
       @output abc;
-  );
+  @end
 
   :call [@function] /say_abc@run;
   ```

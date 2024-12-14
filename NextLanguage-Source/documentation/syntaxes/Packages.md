@@ -42,6 +42,6 @@
 - **Example**:
   ```
   :packaged [
-      @output Hello World;
+      @output Hello World
   ];
   ```
