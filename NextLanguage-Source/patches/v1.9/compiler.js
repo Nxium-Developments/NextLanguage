@@ -36,6 +36,7 @@ const createWindow = require('../../modules/createWindow.js');
 const varMain = require('./modules/parts/varMain.js');
 const packageMain = require('./modules/parts/packageMain.js');
 const electronWindow = require('./modules/nodejs/electronWindow.js');
+const exportCommand = require('../../build/patches/command.js');
 
 module.exports = function compiler(lines) {
     // Read and execute the NXL code, line by line
@@ -125,6 +126,12 @@ module.exports = function compiler(lines) {
 
             // Creates a new window with the given command and arguments
             createWindow(line, addOutput, command, args, name, windows, createWindowsProcess, electronWindow);
+        }
+
+        // Exports all of NXL code into javascript.
+        if (line.startsWith(":export")) {
+            // Export function logic
+            exportCommand(line);
         }
         
     }
