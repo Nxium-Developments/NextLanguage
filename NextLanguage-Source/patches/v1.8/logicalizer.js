@@ -1,7 +1,9 @@
 const fs = require('fs');
+const path = require('path');
 
-const currenttime = require('./v1.8-clock.js');
-const nxlf = fs.readFileSync('config.nxconf', 'utf8');
+const currenttime = require('./clock.js');
+const config = require('./contents.js');
+const nxlf = fs.readFileSync(config, 'utf8');
 
 fs.writeFileSync('./build/lib/log/' + currenttime + '-NXL_Debug.log', `
     Visit https://github.com/Nxium-Developments/NextLanguage for
