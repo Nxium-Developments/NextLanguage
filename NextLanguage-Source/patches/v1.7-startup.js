@@ -3,7 +3,7 @@ const fs = require('fs');
 const currenttime = require('./v1.8/clock.js');
 const { contents } = require('./v1.8/contents.js');
 
-if (!fs.existsSync('../../config.nxconf')) {
+if (!fs.existsSync('../../CONFIG')) {
 
     const filePath = process.argv[2];
 
@@ -14,7 +14,7 @@ if (!fs.existsSync('../../config.nxconf')) {
     }
 
     // Writes the configuration File
-    fs.writeFile('../../config.nxconf', filePath, 'utf8', (err) => {
+    fs.writeFile('../../CONFIG', filePath, 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
@@ -22,7 +22,7 @@ if (!fs.existsSync('../../config.nxconf')) {
     })
 
     // Writes the main file contents
-    fs.writeFileSync('../../config.nxconf' + filePath, contents, 'utf8', (err) => {
+    fs.writeFileSync('../../CONFIG' + filePath, contents, 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
