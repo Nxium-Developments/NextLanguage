@@ -16,10 +16,13 @@ const {
   addPackageCommand,
   setPackageAdvanced,
   setPackageDebugMode,
+  createWindowsProcess,
+  getWindows,
 } = require('../../modules/localStorage.js');
 const packages = getPackages();
 const variables = getVariables();
 const functions = getFunctions();
+const windows = getWindows();
 
 const { 
     debugMode,
@@ -29,7 +32,10 @@ const {
     ifCommand 
 } = require('./storage/storage.js');
 
+const createWindow = require('../../modules/createWindow.js');
+const varMain = require('./modules/parts/varMain.js');
 const packageMain = require('./modules/parts/packageMain.js');
+const electronWindow = require('./modules/nodejs/electronWindow.js');
 
 module.exports = function compiler(lines) {
     // Read and execute the NXL code, line by line
@@ -109,6 +115,16 @@ module.exports = function compiler(lines) {
             const [, type, name, action] = callMatch;
   
             varMain(line, type, variables, name, action);
+        }
+
+        if (line.startsWith(":windows")) {
+            // Variable Separator
+            const match = line.match(/:windows\((.+)\.(.+?)\)\.(.+)/)
+            if (!match) continue; // Checks if match is iterable
+            const [, command, args, name] = match; // Separates the contents of @call]
+
+            // Creates a new window with the given command and arguments
+            createWindow(line, addOutput, command, args, name, windows, createWindowsProcess, electronWindow);
         }
         
     }
