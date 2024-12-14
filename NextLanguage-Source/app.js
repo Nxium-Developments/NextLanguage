@@ -7,8 +7,8 @@ function patches_main() {
     require('./patches/v1.7-startup.js');
 }
 
-if (fs.existsSync('../config.nxconf')) {
-    const filePath = fs.readFileSync('../config.nxconf', 'utf8');
+if (fs.existsSync('../CONFIG')) {
+    const filePath = fs.readFileSync('../CONFIG', 'utf8');
 
     run(`../${filePath}`);
 }
