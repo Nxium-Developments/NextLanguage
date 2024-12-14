@@ -12,11 +12,11 @@ if (!existsSync(preloadPath)) {
 }
 
 // Set the window dimensions based on the file size
-const win = new BrowserWindow({
-    webPreferences: {
-        preload: preloadPath, // Use the correct preload script path
-    },
-});
+// const win = new BrowserWindow({
+//     webPreferences: {
+//         preload: preloadPath, // Use the correct preload script path
+//     },
+// });
 
 module.exports = async function electronWindow(filepath, width, height) {
     const indexFilePath = path.join(__dirname, '../../../../../', filepath);
