@@ -1,5 +1,5 @@
 const fs = require('fs');
-const run = require('./patches/v1.8-rebulid.js');
+const run = require('./patches/v1.8/rebulid.js');
 
 function patches_main() {
     require('./patches/v1.8/builder.js')
