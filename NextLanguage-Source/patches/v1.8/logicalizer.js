@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const currenttime = require('./clock.js');
-const config = require('./contents.js');
+const { config } = require('./contents.js');
 const nxlf = fs.readFileSync(config, 'utf8');
 
 fs.writeFileSync('./build/lib/log/' + currenttime + '-NXL_Debug.log', `
@@ -11,7 +11,7 @@ fs.writeFileSync('./build/lib/log/' + currenttime + '-NXL_Debug.log', `
 
     Initializing NextLanguage:
 
-        Loaded Configuration File: ./config.nxconf
+        Loaded Configuration File: ./CONFIG
         Loaded .nxl File: ${nxlf}
 
         Building ID Patches:
@@ -79,7 +79,7 @@ fs.writeFileSync('./build/lib/log/' + currenttime + '-NXL_Debug.log', `
         Generating Project Files:
 
             Generated Root File: app.nxl
-            Generated Root File: config.nxconf
+            Generated Root File: CONFIG
             Generated Root File: enable.bat
             Generated Root File: init.js
 

@@ -1,7 +1,8 @@
 const run = require('./rebulid.js');
 const fs = require('fs');
+const path = require('path');
 
-const config = require('./contents.js');
+const { config } = require('./contents.js');
 
 if (fs.existsSync(config)) {
     const filePath = fs.readFileSync(config, 'utf8');
@@ -16,7 +17,7 @@ if (fs.existsSync(config)) {
         process.exit(1);
     } else if (!fs.existsSync(config)) {
         if (!fs.existsSync(config)) {
-            fs.writeFile(config, filePath, 'utf8', (err) => {
+            fs.writeFileSync(config, path.join(__dirname, '../../../' + filePath), 'utf8', (err) => {
             if (err) {
                 console.error(err);
                 return;

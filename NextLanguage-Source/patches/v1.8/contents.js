@@ -1,4 +1,5 @@
 const path = require('path');
+const config = path.join(__dirname, '../../../CONFIG');
 
 const contents = `# This is a comment, anything you write in this wont be executed.
 # The commands below me are what initializes the file structure.
@@ -65,8 +66,6 @@ const contents = `# This is a comment, anything you write in this wont be execut
     # Currently its broken, so I made it so we don't really need :call any function registered will be
     # automatically executed. I'm working on fixing the :call command atm, so be patient
     :call [@function] /hello@run;
-];`
-
-const config = path.join(__dirname, '../../../config.nxconf');
+];`;
 
 module.exports = { contents, config }
