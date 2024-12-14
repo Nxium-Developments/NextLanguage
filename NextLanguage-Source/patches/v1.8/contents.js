@@ -69,4 +69,4 @@ const contents = `# This is a comment, anything you write in this wont be execut
 
 const config = path.join(__dirname, '../../../config.nxconf');
 
-module.exports = contents, config
+module.exports = { contents, config }
