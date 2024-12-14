@@ -1,3 +1,5 @@
+const path = require('path');
+
 const contents = `# This is a comment, anything you write in this wont be executed.
 # The commands below me are what initializes the file structure.
 # Currently :package-main does not have a functionality, but it is
@@ -65,4 +67,6 @@ const contents = `# This is a comment, anything you write in this wont be execut
     :call [@function] /hello@run;
 ];`
 
-module.exports = contents
+const config = path.join(__dirname, '../../../config.nxconf');
+
+module.exports = contents, config
