@@ -1,4 +1,5 @@
 const variables = {};
+const windows = {}
 const functions = {};
 const packages = {
     main: null,
@@ -17,6 +18,7 @@ const getVariables = (name) => {
 };
 const getFunctions = () => functions;
 const getPackages = () => packages;
+const getWindows = () => windows;
 
 // Setter functions
 const setVariable = (name, type, value) => {
@@ -43,6 +45,10 @@ const setPackageDebugMode = (value) => {
     packages.debugMode = value;
 };
 
+const createWindowsProcess = (name, active, width, height, Filepath) => {
+    windows[name] = { active, size: { width, height }, display: { Filepath } };
+}
+
 // Export the getter and setter functions
 module.exports = {
     getVariables,
@@ -54,4 +60,6 @@ module.exports = {
     addPackageCommand,
     setPackageAdvanced,
     setPackageDebugMode,
+    createWindowsProcess,
+    getWindows,
 };
