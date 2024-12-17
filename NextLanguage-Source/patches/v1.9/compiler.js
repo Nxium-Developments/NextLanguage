@@ -1,10 +1,11 @@
 const {
     addOutput,
     ifHandler,
-    debugOutput,
     parseVariable,
     executeFunction,
 } = require('./storage/functions.js');
+
+const debugOutput = require('../../modules/debugOutput.js');
 
 const {
   getVariables,
@@ -37,10 +38,14 @@ const varMain = require('./modules/parts/varMain.js');
 const packageMain = require('./modules/parts/packageMain.js');
 const electronWindow = require('./modules/nodejs/electronWindow.js');
 
+// Advanced Code Execution Imports
+const createPreload = require("./modules/nodejs/pre/createPreload");
+const runPreload = require("./modules/nodejs/pre/runPreload");
+
 // This is broken asf
 // const exportCommand = require('../../build/patches/command.js');
 
-module.exports = function compiler(lines) {
+module.exports = async function compiler(lines) {
     // Read and execute the NXL code, line by line
     for (let i = 0; i < lines.length; i++) {
         // Execute the current line
@@ -49,13 +54,15 @@ module.exports = function compiler(lines) {
         // Ignore comments
         if (line.startsWith("#") || line === "") continue;
 
+        const script = await createPreload(line);
+
         // Handle :debug-mode directive
-        debugMode(line, addOutput);
+        // debugMode(line, addOutput);
 
         // Handle :package-main directive
         if (line.startsWith(":package-main")) {
             // Extract the main value using a regex
-            const match = line.match(/:package-main (.+);/);
+            const match = line.match(/:package-main (.+)/);
     
             // Ensure match is valid (not null or undefined)
             if (!match) continue;
@@ -70,7 +77,7 @@ module.exports = function compiler(lines) {
         // Handle :package-com directive
         if (line.startsWith(":package-com")) {
             // Creates a Separator for variables given within a space
-            const match = line.match(/:package-com (.+);/);
+            const match = line.match(/:package-com (.+)/);
             if (!match) continue; // Checks if match is iterable
 
             const [, auto] = match; // Creates a separator variable
@@ -79,13 +86,33 @@ module.exports = function compiler(lines) {
             // // Returns the file contents (currently out of use)
             // const contents = fs.readFileSync(path.join(read), 'utf8');
             if (match) {
-                addPackageCommand(main); // Adds the command to modules/localStorage.js
-                debugOutput(line, `Command package added: ${main}`); // Debug output
+                addPackageCommand(auto); // Adds the command to modules/localStorage.js
+                debugOutput(line, `Command package added: ${auto}`); // Debug output
             }
         }
 
-        // Handle :package-advanced
-        packageAdvancedCommand(line, packages)
+        // Handle :package-advanced directive
+        if (line.startsWith(":package-advanced")) {
+            // Creates a Separator for variables given within a space
+            const match = line.match(/:package-advanced (.+)/);
+
+            if (!match) continue; 
+
+            const [, value] = match;       
+            
+            if (value === "false") {
+                setPackageAdvanced("false"); // Sets an package to normal mode
+                debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
+                return;
+            };
+
+            setPackageAdvanced("true"); // Sets an package to advanced mode
+            debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
+
+            if (script === "true") {
+                runPreload();
+            }
+        }
 
         // Handle @var modules
         variable(line, parseVariable);
