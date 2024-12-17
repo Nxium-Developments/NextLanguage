@@ -2,7 +2,9 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
 const { existsSync, writeFileSync } = require('fs');
-const { indexFileContents, preloadContent } = require('../../storage/preloadContent');
+
+// Remove Unnesscary imports
+// const { indexFileContents, preloadContent } = require('../../storage/preloadContent');
 const preloadPath = path.join(__dirname, '../../../../../preload.js');
 
 // Create the preload script if it doesn't exist
