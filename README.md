@@ -14,4 +14,4 @@ Some features are ready such as:
 - Variables
 
 ## Installation
-For a more in-depth install guide, check out the [Installation Guide](documentation/Installation_Guide.md)
+For a more in-depth install guide, check out the [Installation Guide](NextLanguague-Source/documentation/Installation_Guide.md)
