@@ -1,5 +1,7 @@
 const path = require('path');
 const config = path.join(__dirname, '../../../CONFIG');
+const preloadPath = path.join(__dirname, '../../../preload.js');
+const postloadPath = path.join(__dirname, '../../../postload.js');
 
 const contents = `# This is a comment, anything you write in this wont be executed.
 # The commands below me are what initializes the file structure.
@@ -68,4 +70,4 @@ const contents = `# This is a comment, anything you write in this wont be execut
     :call [@function] /hello@run;
 ];`;
 
-module.exports = { contents, config }
+module.exports = { contents, config, preloadPath, postloadPath }
