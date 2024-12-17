@@ -36,7 +36,9 @@ const createWindow = require('../../modules/createWindow.js');
 const varMain = require('./modules/parts/varMain.js');
 const packageMain = require('./modules/parts/packageMain.js');
 const electronWindow = require('./modules/nodejs/electronWindow.js');
-const exportCommand = require('../../build/patches/command.js');
+
+// This is broken asf
+// const exportCommand = require('../../build/patches/command.js');
 
 module.exports = function compiler(lines) {
     // Read and execute the NXL code, line by line
@@ -62,7 +64,7 @@ module.exports = function compiler(lines) {
             const [, main] = match;
     
             // Handle root/me params for package-main
-            packageMain(line, main, packages);
+            packageMain(line, main, packages, setPackageMain, addPackageCommand, debugOutput);
         }
 
         // Handle :package-com directive
@@ -131,7 +133,8 @@ module.exports = function compiler(lines) {
         // Exports all of NXL code into javascript.
         if (line.startsWith(":export")) {
             // Export function logic
-            exportCommand(line);
+            // HOLY Fuck, this is broken asf, do not enable this
+            // exportCommand(line);
         }
         
     }

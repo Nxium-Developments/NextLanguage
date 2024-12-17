@@ -1,4 +1,4 @@
-module.exports = function packageMain(line, main, packages) {
+module.exports = function packageMain(line, main, packages, setPackageMain, addPackageCommand, debugOutput) {
     // Sets the main package
     if (main === "root/me") {
         setPackageMain(main); // Sets the main package
