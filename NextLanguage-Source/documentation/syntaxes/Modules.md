@@ -57,21 +57,6 @@
   @function [say_abc]:
       @output abc;
   @end
-
-  :call [@function] /say_abc@run;
-  ```
-
-#### `:call`
-- **Definition**: Executes a variable or function.
-- **Syntax**:
-  ```
-  :call [@variable]: /name@output;
-  :call [@function] /name(arguments)@run;
-  ```
-- **Examples**:
-  ```
-  :call [@variable]: /negatives@output;
-  :call [@function] /set_raining(false)@run;
   ```
 
 #### `:set`
