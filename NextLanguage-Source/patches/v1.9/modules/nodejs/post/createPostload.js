@@ -1,5 +1,5 @@
-const { preloadContent } = require('./postloadContent.js');
-const { postloadPath } = require('../../v1.8/contents.js');
+const { postloadContent } = require('./postloadContent.js');
+const { postloadPath } = require('../../../../v1.8/contents.js');
 const { existsSync, writeFileSync } = require('fs');
 
 module.exports = function createPreload() {
