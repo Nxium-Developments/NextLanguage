@@ -12,3 +12,4 @@ CONFIG
 app.nxl
 index.html
 preload.js
+postload.js
