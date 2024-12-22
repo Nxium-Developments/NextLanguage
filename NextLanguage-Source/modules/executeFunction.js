@@ -2,7 +2,7 @@ const setFunction = require('./localStorage.js').setFunction;
 const addOutput = require('./addOutput.js');
 
 // Helper to execute functions
-module.exports = function executeFunction(lines, inline, name, functionMatch) {
+module.exports = function executeFunction(lines, inline, functionMatch) {
     // Get the function body
     const functionBodyIndex = lines.indexOf(inline) + 1;
 
@@ -14,9 +14,6 @@ module.exports = function executeFunction(lines, inline, name, functionMatch) {
 
     // Sets the actual Function Input
     functionMatch.input = functionBody
-
-    // Register the function contents
-    setFunction(name, functionMatch)
     
     // Checks if the function body has any registered commands
     if (Block?.startsWith(":output")) {
