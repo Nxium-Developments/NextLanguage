@@ -1,10 +1,3 @@
-const {
-    addOutput,
-    ifHandler,
-    parseVariable,
-    executeFunction,
-} = require('./storage/functions.js');
-
 const debugOutput = require('../../modules/debugOutput.js');
 
 const {
@@ -25,22 +18,32 @@ const variables = getVariables();
 const functions = getFunctions();
 const windows = getWindows();
 
-const { 
-    debugMode,
-    packageAdvancedCommand,
-    variable,
-    outputCommand,
-    ifCommand 
-} = require('./storage/storage.js');
+const debugMode = require('./modules/debugmode.js');
+const variable = require('./modules/variable.js');
+const outputCommand = require('./modules/output.js');
+const ifCommand = require('./modules/if.js');
+
+const addOutput = require('../../modules/addOutput');
+const parseVariable = require('../../modules/parseVariable');
+const executeFunction = require('../../modules/executeFunction');
+
+const safeEval = require('../../modules/safeEval');
+const IfStatementHandler = require('../../modules/IfStatementHandler');
+const ifHandler = IfStatementHandler(addOutput, safeEval);
 
 const createWindow = require('../../modules/createWindow.js');
-const varMain = require('./modules/parts/varMain.js');
-const packageMain = require('./modules/parts/packageMain.js');
+const executeCall = require('./modules/func/executeCall.js');
+const packageMain = require('./modules/func/packageMain.js');
+
+// Electron Window
 const electronWindow = require('./modules/nodejs/electronWindow.js');
 
 // Advanced Code Execution Imports
 const createPreload = require("./modules/nodejs/pre/createPreload");
 const runPreload = require("./modules/nodejs/pre/runPreload");
+
+const createPostload = require("./modules/nodejs/post/createPostload");
+const runPostload = require("./modules/nodejs/post/runPostload");
 
 // This is broken asf
 // const exportCommand = require('../../build/patches/command.js');
@@ -54,10 +57,9 @@ module.exports = async function compiler(lines) {
         // Ignore comments
         if (line.startsWith("#") || line === "") continue;
 
+        // Handle preload scripts
         const script = await createPreload(line);
-
-        // Handle :debug-mode directive
-        // debugMode(line, addOutput);
+        const post = await createPostload(line);
 
         // Handle :package-main directive
         if (line.startsWith(":package-main")) {
@@ -103,15 +105,18 @@ module.exports = async function compiler(lines) {
             if (value === "false") {
                 setPackageAdvanced("false"); // Sets an package to normal mode
                 debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
-                return;
+            } else {
+                setPackageAdvanced("true"); // Sets an package to advanced mode
+                debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
+
+                if (script === "true") {
+                    runPreload();
+                }
+
+                if (post === "true") {
+                    runPostload();
+                }
             };
-
-            setPackageAdvanced("true"); // Sets an package to advanced mode
-            debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
-
-            if (script === "true") {
-                runPreload();
-            }
         }
 
         // Handle @var modules
@@ -130,6 +135,9 @@ module.exports = async function compiler(lines) {
           if (!functionMatch) continue; // Checks if match is iterable
           const [, name] = functionMatch; // Separates a variable
 
+          // Register the function contents
+          setFunction(name, functionMatch)
+
           // Executes the function
           executeFunction(lines, line, name, functionMatch);
           debugOutput(line, `Function '${name}' registered.`); // Debug Output
@@ -144,7 +152,9 @@ module.exports = async function compiler(lines) {
             // Separates the contents of @call
             const [, type, name, action] = callMatch;
   
-            varMain(line, type, variables, name, action);
+            executeCall(line, type, variables, name, action, addOutput, debugOutput);
+
+            addOutput(`:call command is deprecated, use @output variable_name instead`);
         }
 
         if (line.startsWith(":windows")) {
@@ -154,7 +164,9 @@ module.exports = async function compiler(lines) {
             const [, command, args, name] = match; // Separates the contents of @call]
 
             // Creates a new window with the given command and arguments
-            createWindow(line, addOutput, command, args, name, windows, createWindowsProcess, electronWindow);
+            // createWindow(line, addOutput, command, args, name, windows, createWindowsProcess, electronWindow);
+
+            addOutput(`:windows command is indevelopment`);
         }
 
         // Exports all of NXL code into javascript.
@@ -162,6 +174,8 @@ module.exports = async function compiler(lines) {
             // Export function logic
             // HOLY Fuck, this is broken asf, do not enable this
             // exportCommand(line);
+
+            addOutput(`:export command is indevelopment`);
         }
         
     }
