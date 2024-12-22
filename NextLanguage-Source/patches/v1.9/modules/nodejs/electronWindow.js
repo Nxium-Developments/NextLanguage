@@ -5,13 +5,13 @@ const { existsSync, writeFileSync } = require('fs');
 
 // Remove Unnesscary imports
 // const { indexFileContents, preloadContent } = require('../../storage/preloadContent');
-const preloadPath = path.join(__dirname, '../../../../../preload.js');
-
 // Create the preload script if it doesn't exist
-if (!existsSync(preloadPath)) {
+if (!existsSync(path.join(__dirname, '../../../../../preload.js'))) {
     console.warn('Preload script not found. Creating one at:', preloadPath);
     writeFileSync(preloadPath, preloadContent, 'utf-8');
 }
+
+const preloadPath = path.join(__dirname, '../../../../../preload.js');
 
 // Set the window dimensions based on the file size
 // const win = new BrowserWindow({

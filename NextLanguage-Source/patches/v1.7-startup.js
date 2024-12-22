@@ -2,8 +2,9 @@ const fs = require('fs');
 
 const currenttime = require('./v1.8/clock.js');
 const { contents } = require('./v1.8/contents.js');
+const path = require('path');
 
-if (!fs.existsSync('../../CONFIG')) {
+if (!fs.existsSync('../CONFIG')) {
 
     const filePath = process.argv[2];
 
@@ -14,7 +15,7 @@ if (!fs.existsSync('../../CONFIG')) {
     }
 
     // Writes the configuration File
-    fs.writeFile('../../CONFIG', filePath, 'utf8', (err) => {
+    fs.writeFile('../CONFIG', path.join(__dirname, '../../' + filePath), 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
@@ -22,7 +23,7 @@ if (!fs.existsSync('../../CONFIG')) {
     })
 
     // Writes the main file contents
-    fs.writeFileSync('../../CONFIG' + filePath, contents, 'utf8', (err) => {
+    fs.writeFileSync('../' + filePath, contents, 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;

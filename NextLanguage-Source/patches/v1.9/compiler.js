@@ -1,24 +1,24 @@
 const debugOutput = require('../../modules/debugOutput.js');
 
+// Advanced Code Execution Imports
+const createPreload = require("./modules/nodejs/pre/createPreload");
+const runPreload = require("./modules/nodejs/pre/runPreload");
+
+const createPostload = require("./modules/nodejs/post/createPostload");
+const runPostload = require("./modules/nodejs/post/runPostload");
+
 const {
   getVariables,
   getFunctions,
   getPackages,
-  setVariable,
   setFunction,
   setPackageMain,
   addPackageCommand,
   setPackageAdvanced,
-  setPackageDebugMode,
-  createWindowsProcess,
-  getWindows,
 } = require('../../modules/localStorage.js');
 const packages = getPackages();
 const variables = getVariables();
-const functions = getFunctions();
-const windows = getWindows();
 
-const debugMode = require('./modules/debugmode.js');
 const variable = require('./modules/variable.js');
 const outputCommand = require('./modules/output.js');
 const ifCommand = require('./modules/if.js');
@@ -31,19 +31,8 @@ const safeEval = require('../../modules/safeEval');
 const IfStatementHandler = require('../../modules/IfStatementHandler');
 const ifHandler = IfStatementHandler(addOutput, safeEval);
 
-const createWindow = require('../../modules/createWindow.js');
 const executeCall = require('./modules/func/executeCall.js');
 const packageMain = require('./modules/func/packageMain.js');
-
-// Electron Window
-const electronWindow = require('./modules/nodejs/electronWindow.js');
-
-// Advanced Code Execution Imports
-const createPreload = require("./modules/nodejs/pre/createPreload");
-const runPreload = require("./modules/nodejs/pre/runPreload");
-
-const createPostload = require("./modules/nodejs/post/createPostload");
-const runPostload = require("./modules/nodejs/post/runPostload");
 
 // This is broken asf
 // const exportCommand = require('../../build/patches/command.js');

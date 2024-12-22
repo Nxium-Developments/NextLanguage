@@ -5,12 +5,13 @@ function patches_main() {
     require('./patches/v1.8/builder.js')
     require('./patches/v1.6-patch_vdetection-err.js');
     require('./patches/v1.7-startup.js');
+    require('./patches/v1.8/configuration.js');
 }
 
 if (fs.existsSync('../CONFIG')) {
     const filePath = fs.readFileSync('../CONFIG', 'utf8');
 
-    run(`../${filePath}`);
+    run(`./${filePath}`);
 }
 
 patches_main();

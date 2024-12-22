@@ -4,9 +4,9 @@
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
   "main": "app.js",
   "scripts": {
-    "build": "npm install -g && npm run activate",
-    "activate": "nodemon app.js app.nxl",
-    "rebuild": "npm update && npm run initialize",
+    "build": "npm install && npm run activate && echo Run `npm run rebuild` to start the project after building",
+    "activate": "node app.js app.nxl",
+    "rebuild": "npm install && npm run initialize",
     "initialize": "nodemon init.js"
   },
   "repository": {

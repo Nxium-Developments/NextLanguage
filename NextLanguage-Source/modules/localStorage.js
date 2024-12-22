@@ -5,7 +5,7 @@ const packages = {
     main: null,
     commands: [],
     advanced: false,
-    debugMode: true,
+    debugMode: false,
 };
 
 // Getter functions
