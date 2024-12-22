@@ -9,7 +9,7 @@ module.exports = function debugMode(line, addOutput) {
           //       setPackageDebugMode(debug);
           //   }
 
-          addOutput(`Debug mode ${match[1].toLowerCase() === "on" ? "is deprecated" : "disabled"}.`);
+          addOutput(`Debug mode ${match[1].toLowerCase() === "on" ? "is deprecated" : "is no longer supported"}.`);
         }
       }
 }
