@@ -47,7 +47,7 @@ const contents = `# This is a comment, anything you write in this wont be execut
     @output -----------------------------------------------------------------
 
     @var [x]: (integer)11
-    @var [usernames]: "Someone"
+    @var [usernames]: (string)Someone
     @var [negativity]: (negatives)-10
     @var [decimal]: (double)0.1
 
@@ -64,10 +64,12 @@ const contents = `# This is a comment, anything you write in this wont be execut
 
     @output -----------------------------------------------------------------
 
-    # The :call command is the only way to call functions (The variable part is now handled by @ouput)
-    # Currently its broken, so I made it so we don't really need :call any function registered will be
-    # automatically executed. I'm working on fixing the :call command atm, so be patient
-    :call [@function] /hello@run;
+    # The @output command can now output variables, as of the update to v1.9
+    # The bug where @output command can only output variables once is also fixed!
+    @output usernames
+
+    # This a demonstration of the fix!
+    @output decimal
 ];`;
 
 module.exports = { contents, config, preloadPath, postloadPath }
