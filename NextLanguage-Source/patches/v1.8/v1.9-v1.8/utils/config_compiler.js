@@ -1,36 +1,17 @@
-const {
-    addOutput,
-    ifHandler,
-    debugOutput,
-    parseVariable,
-    executeFunction,
-} = require('../../../v1.9/storage/functions.js');
+const debugMode = require('../../../v1.9/modules/debugmode.js');
+const variable = require('../../../v1.9/modules/variable.js');
+const outputCommand = require('../../../v1.9/modules/output.js');
+const ifCommand = require('../../../v1.9/modules/if.js');
 
-const { 
-    debugMode,
-    packageAdvancedCommand,
-    variable,
-    outputCommand,
-    ifCommand 
-} = require('../../../v1.9/storage/storage.js');
-
+const addOutput = require('../../../../modules/addOutput');
+const parseVariable = require('../../../../modules/parseVariable');
 const {
-    getVariables,
-    getFunctions,
     getPackages,
-    setVariable,
-    setFunction,
     setPackageMain,
     addPackageCommand,
-    setPackageAdvanced,
-    setPackageDebugMode,
-    createWindowsProcess,
-    getWindows,
-  } = require('../../../../modules/localStorage.js');
+} = require('../../../../modules/localStorage.js');
 
-  const packages = getPackages();
-  const variables = getVariables();
-  const functions = getFunctions();
+const packages = getPackages();
 
 module.exports = async function runConfig(lines, contents) {
     // Read and execute the NXL code, line by line
