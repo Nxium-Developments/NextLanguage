@@ -15,8 +15,8 @@ module.exports = function addOutput(text) {
         })
     } else {
         fs.writeFileSync(path.join(__dirname,'../build/lib/log/') + currenttime + '-NXL.log', `
-        Visit https://github.com/Nxium-Developments/NextLanguage for
-        more information on the configuration of this log file.
+Visit https://github.com/Nxium-Developments/NextLanguage for
+more information on the configuration of this log file.
         `, 'utf8', (err) => {
             if (err) {
                 console.error(err);
