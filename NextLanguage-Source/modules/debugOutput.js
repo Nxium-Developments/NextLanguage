@@ -3,7 +3,7 @@ const { getPackages } = require('./localStorage');
 const debug = getPackages().debugMode;
 
 // Debug Output Modules
-module.exports = function debugOutput(line, text) {
+module.exports = function debugOutput(text) {
     // Check if debug mode is enabled
     if (debug === false) return;
 

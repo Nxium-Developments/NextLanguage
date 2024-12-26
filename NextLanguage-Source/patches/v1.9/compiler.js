@@ -1,11 +1,11 @@
 const debugOutput = require('../../modules/debugOutput.js');
 
 // Advanced Code Execution Imports
-const createPreload = require("./modules/nodejs/pre/createPreload");
-const runPreload = require("./modules/nodejs/pre/runPreload");
+const createPreload = require("./modules/nodejs/pre/createPreload.js");
+const runPreload = require("./modules/nodejs/pre/runPreload.js");
 
-const createPostload = require("./modules/nodejs/post/createPostload");
-const runPostload = require("./modules/nodejs/post/runPostload");
+const createPostload = require("./modules/nodejs/post/createPostload.js");
+const runPostload = require("./modules/nodejs/post/runPostload.js");
 
 const {
   getVariables,
@@ -23,12 +23,12 @@ const variable = require('./modules/variable.js');
 const outputCommand = require('./modules/output.js');
 const ifCommand = require('./modules/if.js');
 
-const addOutput = require('../../modules/addOutput');
-const parseVariable = require('../../modules/parseVariable');
-const executeFunction = require('../../modules/executeFunction');
+const addOutput = require('../../modules/addOutput.js');
+const parseVariable = require('../../modules/parseVariable.js');
+const executeFunction = require('../../modules/executeFunction.js');
 
-const safeEval = require('../../modules/safeEval');
-const IfStatementHandler = require('../../modules/IfStatementHandler');
+const safeEval = require('../../modules/safeEval.js');
+const IfStatementHandler = require('../../modules/IfStatementHandler.js');
 const ifHandler = IfStatementHandler(addOutput, safeEval);
 
 const executeCall = require('./modules/func/executeCall.js');
@@ -78,7 +78,7 @@ module.exports = async function compiler(lines) {
             // const contents = fs.readFileSync(path.join(read), 'utf8');
             if (match) {
                 addPackageCommand(auto); // Adds the command to modules/localStorage.js
-                debugOutput(line, `Command package added: ${auto}`); // Debug output
+                debugOutput(`Command package added: ${auto}`); // Debug output
             }
         }
 
@@ -93,10 +93,10 @@ module.exports = async function compiler(lines) {
             
             if (value === "false") {
                 setPackageAdvanced("false"); // Sets an package to normal mode
-                debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
+                debugOutput(`Advanced mode: ${packages.advanced}`); // Debug Output
             } else {
                 setPackageAdvanced("true"); // Sets an package to advanced mode
-                debugOutput(line, `Advanced mode: ${packages.advanced}`); // Debug Output
+                debugOutput(`Advanced mode: ${packages.advanced}`); // Debug Output
 
                 if (script === "true") {
                     runPreload();
@@ -129,7 +129,7 @@ module.exports = async function compiler(lines) {
 
           // Executes the function
           executeFunction(lines, line, name, functionMatch);
-          debugOutput(line, `Function '${name}' registered.`); // Debug Output
+          debugOutput(`Function '${name}' registered.`); // Debug Output
         }
 
         // Handle call commands

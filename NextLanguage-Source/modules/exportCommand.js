@@ -1,7 +1,7 @@
 const { copyFileSync, readFileSync, existsSync } = require('fs');
 const path = require('path');
 
-const exporter = require('../../patches/v1.9/exporter.js');
+const exporter = require('../patches/v1.9/exporter.js');
 const mainPath = path.join(__dirname, "../../../CONFIG");
 
 if (!existsSync(mainPath)) return;

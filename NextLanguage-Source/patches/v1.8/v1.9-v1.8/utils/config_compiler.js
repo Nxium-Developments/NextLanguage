@@ -12,8 +12,10 @@ const {
 } = require('../../../../modules/localStorage.js');
 
 const packages = getPackages();
+const debugOutput = require('../../../../modules/debugOutput');
+const install = require('../../../../modules/updateCheck.js');
 
-module.exports = async function runConfig(lines, contents) {
+module.exports = async function runConfig(lines) {
     // Read and execute the NXL code, line by line
     for (let i = 0; i < lines.length; i++) {
         // Execute the current line
@@ -28,7 +30,7 @@ module.exports = async function runConfig(lines, contents) {
             const [, main] = match;
 
             if (main === "root/me") {
-                packages.main = contents;
+                packages.main = main;
                 setPackageMain(packages.main);
             } else {
                 addOutput("No main file set in BUILD CONFIG");
@@ -49,7 +51,7 @@ module.exports = async function runConfig(lines, contents) {
         }
 
         if (line.startsWith("PRELOAD-PATH")) {
-            const match = line.match(/PRELOAD-PATH (.+)/);
+            const match = line.match(/PRELOAD-PATH: (.+)/);
             if (!match) continue;
             const [, path] = match;
 
@@ -58,12 +60,25 @@ module.exports = async function runConfig(lines, contents) {
         }
 
         if (line.startsWith("POSTLOAD-PATH")) {
-            const match = line.match(/POSTLOAD-PATH (.+)/);
+            const match = line.match(/POSTLOAD-PATH: (.+)/);
             if (!match) continue;
             const [, path] = match;
 
             packages.postloadPath = path;
             debugOutput(line, `Postload path set to: ${path}`);
+        }
+
+        if (line.startsWith("CHECK-FOR-UPDATES")) {
+            const match = line.match(/CHECK-FOR-UPDATES: (.+)/);
+            if (!match) continue;
+            const [, value] = match;
+
+            if (value === "true") {
+                install();
+            } else {
+                // Add no-update command
+                addOutput("Not checking for updates. Update Box set to false.");
+            }
         }
     }
 }

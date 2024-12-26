@@ -12,6 +12,9 @@ PACKAGES-LIST: [START]
 # Preload File paths
 PRELOAD-PATH: ${preloadPath}
 POSTLOAD-PATH: ${postloadPath}
+
+# Check box for checking for updates
+CHECK-FOR-UPDATES: true
 `
 
 module.exports = configurationFile

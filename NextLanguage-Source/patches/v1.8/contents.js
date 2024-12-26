@@ -21,9 +21,7 @@ const contents = `# This is a comment, anything you write in this wont be execut
 # The :packaged []; will execute whatever codes inside it. If any code
 # is placed outside it, it may not work.
 :packaged [
-    # Enables/Disables debuggging for developers
-    :debug-mode off
-
+    # The @var command is used to create variables.
     @var [score]: (integer)10
     @var [percentage]: (percentage)11%
 
@@ -46,32 +44,29 @@ const contents = `# This is a comment, anything you write in this wont be execut
         :end
     @end
 
-    @output -----------------------------------------------------------------
+    @output
 
     @var [x]: (integer)11
     @var [usernames]: (string)Someone
     @var [negativity]: (negatives)-10
     @var [decimal]: (double)0.1
 
+    # The @if command is used to create if statements. The bug related to @if not executing
+    # the @else block is now fixed.
+
     @if [x > 10]:
         :output This is a if statement, if X is greater than 10. You will see this message!
-
-            Unfortunately anything you write that is registered in these block chains,
-            Including @if and @function will only be allowed to be written once. Each of the
-            registered commands can only be written on once.
-        :end
     @else
         :output Sadly, you changed this value (x). So you couldn't see the message I wrote for you :d
     @end
 
-    @output -----------------------------------------------------------------
-
     # The @output command can now output variables, as of the update to v1.9
     # The bug where @output command can only output variables once is also fixed!
-    @output usernames
+    # Uncomment these to run them!
+    # @output usernames
 
     # This a demonstration of the fix!
-    @output decimal
+    # @output decimal
 ];`;
 
 module.exports = { contents, config, preloadPath, postloadPath }
