@@ -36,7 +36,7 @@ const createWindow = require('../../modules/createWindow.js');
 const varMain = require('./modules/parts/varMain.js');
 const packageMain = require('./modules/parts/packageMain.js');
 const electronWindow = require('./modules/nodejs/electronWindow.js');
-const exportCommand = require('../../build/patches/command.js');
+const exportCommand = require('../../modules/exportCommand.js');
 
 module.exports = function exporter(response) {
     // Parse and execute the NXL code
