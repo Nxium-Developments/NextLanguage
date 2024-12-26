@@ -5,6 +5,7 @@ NextLanguage-Source/node_modules/
 NextLanguage-Source/build/lib/log/
 NextLanguage-Source/build.config.nxlf
 NextLanguage-Source/package-lock.json
+NextLanguage-Source/builded
 
 # Single project built files
 BUILD_CONFIG
