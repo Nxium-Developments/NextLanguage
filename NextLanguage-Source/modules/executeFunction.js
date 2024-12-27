@@ -1,4 +1,3 @@
-const setFunction = require('./localStorage.js').setFunction;
 const addOutput = require('./addOutput.js');
 
 // Helper to execute functions
