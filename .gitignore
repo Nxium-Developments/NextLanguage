@@ -1,0 +1,16 @@
+# Ignore node modules folder
+NextLanguage-Source/node_modules/
+
+# Ignore more build files
+NextLanguage-Source/build/lib/log/
+NextLanguage-Source/build.config.nxlf
+NextLanguage-Source/package-lock.json
+NextLanguage-Source/builded
+
+# Single project built files
+BUILD_CONFIG
+CONFIG
+app.nxl
+index.html
+preload.js
+postload.js

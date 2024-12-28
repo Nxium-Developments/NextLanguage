@@ -42,28 +42,3 @@ fs.writeFileSync('./build/lib/log/' + currenttime + '-NXL_Debug.log', `
             return;
         }
     })
-    
-    console.log('Deleting File: ./build/lib/log/temporary.txt');
-    console.log('Deleting File: ./build/lib/export/temporary.txt');
-    console.log('Deleting File: ./modules/security.js');
-
-    fs.rm('./modules/security.js', (err) => {
-        if (err) {
-            console.error(err);
-            return;
-        };
-    })
-
-    fs.rm('./build/lib/log/temporary.txt', (err) => {
-        if (err) {
-            console.error(err);
-            return;
-        };
-    })
-
-    fs.rm('./build/lib/export/temporary.txt', (err) => {
-        if (err) {
-            console.error(err);
-            return;
-        };
-    })
