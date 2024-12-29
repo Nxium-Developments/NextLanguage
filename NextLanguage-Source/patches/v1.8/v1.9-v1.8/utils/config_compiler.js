@@ -3,6 +3,9 @@ const debugOutput = require('../../../../modules/functions/debugOutput');
 const install = require('../../../../modules/updateCheck.js');
 const Plugin = require('../../../../package/bulit-in/Secure/default.js');
 
+const path = require('path');
+const fs = require('fs');
+
 const Local = require('../../../../modules/class/temp/Local');
 const data = new Local();
 
@@ -80,8 +83,12 @@ module.exports = async function runConfig(lines) {
             const [, name, plugins] = match;
 
             debugOutput(`Enabling plugin: ${name}`);
-            if (name === "Secure") { eval(plugins) } else {
-                Plugin(plugins);
+            if (name === "Secure ") { eval(plugins) } else {
+                const extractPath = plugins.match(/require(.+)\'\)\);/);
+                if (!extractPath) continue;
+                const [, path ] = extractPath
+                const output = fs.readFileSync(path, 'utf8');
+                Plugin(output, name);
             };            
         }
     }
