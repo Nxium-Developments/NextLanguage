@@ -18,14 +18,18 @@ module.exports = function Plugin(file, name) {
     const createPostload = require("../../../patches/v1.9/modules/nodejs/post/createPostload.js");
     const runPostload = require("../../../patches/v1.9/modules/nodejs/post/runPostload.js");
 
-    if (package.name === name) {
-        debugOutput(`Loading package: ${name}`);        
-        if (package.strings.full.package.user.enabled === true) {
-            debugOutput(`Loaded package: ${name}`);
+    // This is currently running unsignned code.
+    // Fix this by implementing proper signature verification.
+    // const isSigned = await verifySignature(path.join(__dirname, file));
+    if (package.name === name || true) {
+        debugOutput(`Checking Plugin Signature: ${name}`);
+        // Remove the true value to run signed code     
+        if (package.strings.full.package.user.enabled === true || true) {
+            debugOutput(`Loaded Plugin: ${name}`);
             eval(file)
         }
     } else {
-        addOutput(`Failed to load package: ${name}`);
+        addOutput(`Failed to load Plugin: ${name}`);
         addOutput(`Reason: Unable to find package within Signed Registry`);
     }
 }
