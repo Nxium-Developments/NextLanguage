@@ -2,6 +2,7 @@ const addOutput = require('../../../../modules/functions/addOutput');
 const debugOutput = require('../../../../modules/functions/debugOutput');
 const install = require('../../../../modules/updateCheck.js');
 const Plugin = require('../../../../package/bulit-in/Secure/default.js');
+const SecureService = require('../../../../package/bulit-in/Secure/package.js');
 
 const path = require('path');
 const fs = require('fs');
@@ -82,13 +83,27 @@ module.exports = async function runConfig(lines) {
             if (!match) continue;
             const [, name, plugins] = match;
 
+            // IF DISABLING THIS SECURE PLUGIN METHOD IS
+            // WHAT U WANT TO DO. TO REMIND YOU THAT, DISABLING THIS
+            // MAY FIRST CAUSE UNINTENDED SIDE EFFECTS. AND MAY THEN
+            // CRASH NEXTLANGUAGE ENTIRELY. I RECOMMEND U NOT DISABLE THIS.
             debugOutput(`Enabling plugin: ${name}`);
-            if (name === "Secure ") { eval(plugins) } else {
-                const extractPath = plugins.match(/require(.+)\'\)\);/);
-                if (!extractPath) continue;
-                const [, path ] = extractPath
-                const output = fs.readFileSync(path, 'utf8');
-                Plugin(output, name);
+            if (name === "Secure ") { eval(plugins); SecureService(); } else if (name) {
+                // Import the plugin, Secure
+                const enabled = require('../../../../package/bulit-in/Secure/package.js').secured;
+
+                // Reads the Plugin file
+                const output = fs.readFileSync(plugins, 'utf8');
+
+                // Check if the plugin is enabled in the build config
+                if (enabled !== null) {
+                    debugOutput(`Plugin ${name} was sucessfully installed`);
+                    debugOutput(`Loading plugin: ${name}`);
+                    Plugin(output, name);
+                } else {
+                    addOutput(`Failed to load plugin: ${name}`);
+                    addOutput(`Reason: Unable to load the bulit-in Secure Plugin`);
+                }
             };            
         }
     }
