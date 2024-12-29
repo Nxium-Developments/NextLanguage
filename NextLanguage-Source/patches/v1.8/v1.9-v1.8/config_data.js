@@ -15,6 +15,9 @@ POSTLOAD-PATH: ${postloadPath}
 
 # Check box for checking for updates
 CHECK-FOR-UPDATES: true
+
+# Plugins registrations
+PLUGINS: Secure @require(path.join(__dirname, './NextLanguage-Source/package/bulit-in/Secure/package.js'));
 `
 
 module.exports = configurationFile
