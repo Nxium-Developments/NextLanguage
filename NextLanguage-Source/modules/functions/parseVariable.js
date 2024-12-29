@@ -1,5 +1,5 @@
 const debugOutput = require('./debugOutput');
-const { setVariable } = require('./localStorage');
+const { setVariable } = require('./temp/Variables');
 
 // Helper to parse variables
 module.exports = function parseVariable(line) {
@@ -19,6 +19,8 @@ module.exports = function parseVariable(line) {
         parsedValue = parseFloat(value);
     } else if (type.toLowerCase() === "boolean") {
         parsedValue = value.toLowerCase() === "true";
+    } else if (type.toLowerCase() === "string") {
+        parsedValue = value;
     }
 
     const variable = { name, type, value: parsedValue };

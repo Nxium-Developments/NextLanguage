@@ -1,6 +1,6 @@
 const addOutput = require('./addOutput.js');
-const { getPackages } = require('./localStorage');
-const debug = getPackages().debugMode;
+const Debug = require('../class/debug/Debug.js');
+const debug = new Debug();
 
 // Debug Output Modules
 module.exports = function debugOutput(text) {
