@@ -1,19 +1,12 @@
-const debugMode = require('../../../v1.9/modules/debugmode.js');
-const variable = require('../../../v1.9/modules/variable.js');
-const outputCommand = require('../../../v1.9/modules/output.js');
-const ifCommand = require('../../../v1.9/modules/if.js');
-
-const addOutput = require('../../../../modules/addOutput');
-const parseVariable = require('../../../../modules/parseVariable');
-const {
-    getPackages,
-    setPackageMain,
-    addPackageCommand,
-} = require('../../../../modules/localStorage.js');
-
-const packages = getPackages();
-const debugOutput = require('../../../../modules/debugOutput');
+const addOutput = require('../../../../modules/functions/addOutput');
+const debugOutput = require('../../../../modules/functions/debugOutput');
 const install = require('../../../../modules/updateCheck.js');
+const Plugin = require('../../../../package/bulit-in/Secure/default.js');
+
+const Local = require('../../../../modules/class/temp/Local');
+const data = new Local();
+
+const packages = data.commands;
 
 module.exports = async function runConfig(lines) {
     // Read and execute the NXL code, line by line
@@ -31,12 +24,12 @@ module.exports = async function runConfig(lines) {
 
             if (main === "root/me") {
                 packages.main = main;
-                setPackageMain(packages.main);
+                data.main(packages.main);
             } else {
                 addOutput("No main file set in BUILD CONFIG");
             }
 
-            debugOutput(line, `Main package set to: ${main}`);
+            debugOutput(`Main package set to: ${main}`);
         }
 
         if (line.startsWith("PACKAGES-LIST")) {
@@ -45,8 +38,8 @@ module.exports = async function runConfig(lines) {
             const [, packages] = match;
 
             packages.forEach((package) => {
-                addPackageCommand(package);
-                debugOutput(line, `Command package added: ${package}`);
+                data.addCommand(package);
+                debugOutput(`Command package added: ${package}`);
             });
         }
 
@@ -56,7 +49,7 @@ module.exports = async function runConfig(lines) {
             const [, path] = match;
 
             packages.preloadPath = path;
-            debugOutput(line, `Preload path set to: ${path}`);
+            debugOutput(`Preload path set to: ${path}`);
         }
 
         if (line.startsWith("POSTLOAD-PATH")) {
@@ -65,7 +58,7 @@ module.exports = async function runConfig(lines) {
             const [, path] = match;
 
             packages.postloadPath = path;
-            debugOutput(line, `Postload path set to: ${path}`);
+            debugOutput(`Postload path set to: ${path}`);
         }
 
         if (line.startsWith("CHECK-FOR-UPDATES")) {
@@ -79,6 +72,17 @@ module.exports = async function runConfig(lines) {
                 // Add no-update command
                 addOutput("Not checking for updates. Update Box set to false.");
             }
+        }
+
+        if (line.startsWith("PLUGINS")) {
+            const match = line.match(/PLUGINS: (.+)\@(.+)/);
+            if (!match) continue;
+            const [, name, plugins] = match;
+
+            debugOutput(`Enabling plugin: ${name}`);
+            if (name === "Secure") { eval(plugins) } else {
+                Plugin(plugins);
+            };            
         }
     }
 }
