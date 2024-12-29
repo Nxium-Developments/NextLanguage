@@ -1,7 +1,7 @@
-module.exports = function packageMain(line, main, packages, setPackageMain, addPackageCommand, debugOutput) {
+module.exports = function packageMain(line, main, packages, data, debugOutput) {
     // Sets the main package
     if (main === "root/me") {
-        setPackageMain(main); // Sets the main package
+        data.setMain(main); // Sets the main package
         // Debugging for Developers
         debugOutput(line, `Main package set to: ${packages.main}`);
     } else {
@@ -11,7 +11,7 @@ module.exports = function packageMain(line, main, packages, setPackageMain, addP
             // Reads the file contents (currently disabled)
             // const contents = fs.readFileSync(path.join(read), 'utf8');
 
-            addPackageCommand(main); // Adds the command to modules/localStorage.js
+            data.addCommand(main); // Adds the command to modules/localStorage.js
             debugOutput(line, `Command package added: ${main}`); // Debug output
         } catch (err) {
             debugOutput(line, `Error reading package: ${err.message}`);
