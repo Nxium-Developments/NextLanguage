@@ -7,6 +7,7 @@ const path = require('path');
 if (!fs.existsSync('../CONFIG')) {
 
     const filePath = process.argv[2];
+    const content = path.join(__dirname, '../../' + filePath)
 
     // Checks if the provided argument is empty or not.
     if (!filePath) {
@@ -15,7 +16,7 @@ if (!fs.existsSync('../CONFIG')) {
     }
 
     // Writes the configuration File
-    fs.writeFile('../CONFIG', path.join(__dirname, '../../' + filePath), 'utf8', (err) => {
+    fs.writeFile('../CONFIG', content, 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
