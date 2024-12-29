@@ -7,6 +7,10 @@ NextLanguage-Source/build.config.nxlf
 NextLanguage-Source/package-lock.json
 NextLanguage-Source/builded
 
+# Testing files
+Custom/App.js
+Custom/default.js
+
 # Single project built files
 BUILD_CONFIG
 CONFIG
@@ -14,4 +18,3 @@ app.nxl
 index.html
 preload.js
 postload.js
-app.js
