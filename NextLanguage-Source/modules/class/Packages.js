@@ -220,7 +220,7 @@ module.exports = class Packages {
                     this.strings.full.package.user.license = value;
                 }
                 if (param === 'app') {
-                    this.strings.full.package.user.app = value;
+                    this.application = value;
                 }
                 if (param === 'enabled') {
                     this.package[1] = value;
@@ -241,6 +241,21 @@ module.exports = class Packages {
             addOutput(`Unknown config type: ${type}`);
             addOutput(`To Note: This editor is for Packages only!`);
         }
-        
+    }
+
+    getPackages(type, name) {
+        if (type === 'package') {
+            if (name === 'Secure') {
+                return this.strings.full.package.dev.self;
+            }
+
+            return this.strings.full.package.dev.self;
+        }
+        if (type === 'folder') {
+            return this.strings.full.folder.dev.self;
+        }
+        if (type === 'file') {
+            return this.strings.full.file.dev.self;
+        }
     }
 }
