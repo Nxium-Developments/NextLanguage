@@ -16,8 +16,16 @@ POSTLOAD-PATH: ${postloadPath}
 # Check box for checking for updates
 CHECK-FOR-UPDATES: true
 
+# WARNING: If you remove Secure as a Plugin Import, you will completely remove NextLanguage's Plugin system.
+# Any plugin that wasn't ran successfully, without the secure plugin installed was because of Secure's security
+# system that secures plugin pass through for NextLanguage. Running plugins with Secure disabled, will completely remove
+# NextLanguage's plugin system. So do not remove the secure plugin. This will also result to NextLanguage's crashing.
+
 # Plugins registrations
 PLUGINS: Secure @require(path.join(__dirname, '../../../../package/bulit-in/Secure/package.js'));
+
+# Non-official plugins registration examples
+# PLUGINS: App @path: ../../../App.js
 `
 
 module.exports = configurationFile
