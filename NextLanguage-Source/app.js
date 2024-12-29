@@ -11,7 +11,7 @@ function patches_main() {
 if (fs.existsSync('../CONFIG')) {
     const filePath = fs.readFileSync('../CONFIG', 'utf8');
 
-    run(`./${filePath}`);
+    run(filePath);
 }
 
 patches_main();
