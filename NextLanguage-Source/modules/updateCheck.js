@@ -1,6 +1,6 @@
 // githubLatestBuild.js
 
-const fetch = require('node-fetch');
+const fetch = require('fetch');
 const fs = require('fs');
 const path = require('path');
 
