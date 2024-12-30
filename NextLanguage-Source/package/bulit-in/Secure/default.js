@@ -23,8 +23,9 @@ module.exports = function Plugin(file, name) {
     // const isSigned = await verifySignature(path.join(__dirname, file));
     if (package.name === name || true) {
         debugOutput(`Checking Plugin Signature: ${name}`);
-        // Remove the true value to run signed code     
-        if (package.strings.full.package.user.enabled === true || true) {
+        // Remove the true value to run signed code    
+        // package.strings.full.package.user.enabled === true || 
+        if (true) {
             debugOutput(`Loaded Plugin: ${name}`);
             eval(file)
         }
