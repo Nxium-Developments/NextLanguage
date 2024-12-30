@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 
 const config = path.join(__dirname, '../../../CONFIG');
 const preloadPath = path.join(__dirname, '../../../preload.js');

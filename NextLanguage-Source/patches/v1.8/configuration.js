@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const runConfig = require('./v1.9-v1.8/utils/config_compiler');
-const configurationFile = require('./v1.9-v1.8/config_data');
+const runConfig = require('../../modules/config/interpreter');
+const configurationFile = require('../../modules/config/template');
 
 async function readConfig(file) {
     const response = fs.readFileSync(file, 'utf8');

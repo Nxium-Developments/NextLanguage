@@ -1,4 +1,4 @@
-const run = require('./rebulid.js');
+const run = require('../../package/start.js');
 const fs = require('fs');
 const path = require('path');
 

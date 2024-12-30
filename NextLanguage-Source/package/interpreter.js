@@ -1,38 +1,34 @@
-const debugOutput = require('../../modules/debugOutput.js');
+const debugOutput = require('../modules/functions/debugOutput.js');
 
 // Advanced Code Execution Imports
-const createPreload = require("./modules/nodejs/pre/createPreload.js");
-const runPreload = require("./modules/nodejs/pre/runPreload.js");
+const createPreload = require("../patches/v1.9/modules/nodejs/pre/createPreload.js");
+const runPreload = require("../patches/v1.9/modules/nodejs/pre/runPreload.js");
 
-const createPostload = require("./modules/nodejs/post/createPostload.js");
-const runPostload = require("./modules/nodejs/post/runPostload.js");
+const createPostload = require("../patches/v1.9/modules/nodejs/post/createPostload.js");
+const runPostload = require("../patches/v1.9/modules/nodejs/post/runPostload.js");
 
-const {
-  getVariables,
-  getFunctions,
-  getPackages,
-  setFunction,
-  setPackageMain,
-  addPackageCommand,
-  setPackageAdvanced,
-} = require('../../modules/localStorage.js');
-const packages = getPackages();
-const variables = getVariables();
+const { getVariables, setVariable } = require('../modules/functions/temp/Variables.js');
+const { getFunctions, setFunction } = require('../modules/functions/temp/Functions.js');
 
-const variable = require('./modules/variable.js');
-const outputCommand = require('./modules/output.js');
-const ifCommand = require('./modules/if.js');
+const Local = require('../modules/class/temp/Local.js');
+const local = new Local();
 
-const addOutput = require('../../modules/addOutput.js');
-const parseVariable = require('../../modules/parseVariable.js');
-const executeFunction = require('../../modules/executeFunction.js');
+const packages = local.commands;
 
-const safeEval = require('../../modules/safeEval.js');
-const IfStatementHandler = require('../../modules/IfStatementHandler.js');
+const variable = require('../patches/v1.9/modules/variable.js');
+const outputCommand = require('../patches/v1.9/modules/output.js');
+const ifCommand = require('../patches/v1.9/modules/if.js');
+
+const addOutput = require('../modules/functions/addOutput.js');
+const parseVariable = require('../modules/functions/parseVariable.js');
+const executeFunction = require('../modules/functions/executeFunction.js');
+
+const safeEval = require('../modules/functions/safeEval.js');
+const IfStatementHandler = require('../modules/functions/IfStatementHandler.js');
 const ifHandler = IfStatementHandler(addOutput, safeEval);
 
-const executeCall = require('./modules/func/executeCall.js');
-const packageMain = require('./modules/func/packageMain.js');
+const executeCall = require('../patches/v1.9/modules/func/executeCall.js');
+const packageMain = require('../patches/v1.9/modules/func/packageMain.js');
 
 // This is broken asf
 // const exportCommand = require('../../build/patches/command.js');
@@ -62,7 +58,7 @@ module.exports = async function compiler(lines) {
             const [, main] = match;
     
             // Handle root/me params for package-main
-            packageMain(line, main, packages, setPackageMain, addPackageCommand, debugOutput);
+            packageMain(line, main, packages, local, debugOutput);
         }
 
         // Handle :package-com directive
@@ -77,7 +73,7 @@ module.exports = async function compiler(lines) {
             // // Returns the file contents (currently out of use)
             // const contents = fs.readFileSync(path.join(read), 'utf8');
             if (match) {
-                addPackageCommand(auto); // Adds the command to modules/localStorage.js
+                local.addCommand(auto); // Adds the command to modules/localStorage.js
                 debugOutput(`Command package added: ${auto}`); // Debug output
             }
         }
@@ -119,17 +115,49 @@ module.exports = async function compiler(lines) {
 
         // Handle functions
         if (line.startsWith("@function")) {
-          // Creates a Separator for variables given within a space
-          const functionMatch = line.match(/@function \[(.+?)\]/);
-          if (!functionMatch) continue; // Checks if match is iterable
-          const [, name] = functionMatch; // Separates a variable
+            // Match and extract the function name
+            const functionMatch = line.match(/@function \[(.+)\]/);
+            if (!functionMatch) continue; // Skip if no match is found
+            const [, name] = functionMatch; // Extract the function name
 
-          // Register the function contents
-          setFunction(name, functionMatch)
+            // Register the function contents
+            setFunction(name, lines, line, functionMatch);
 
-          // Executes the function
-          executeFunction(lines, line, name, functionMatch);
-          debugOutput(`Function '${name}' registered.`); // Debug Output
+            function runFunction() {         
+                // Execute the function body and get the result
+                const result = executeFunction(lines, line, functionMatch).block;
+                let a = 0;
+                const output = result.split('\n')[a++];
+                
+                if (output.startsWith(":params")) {
+                    // Extract the contents of :params
+                    const params = result.split(':params').slice(1).join('\n').split(':end')[0].trim();
+
+                    // Output the extracted text
+                    addOutput(params);
+                }
+
+                // Check if the result contains an output directive
+                if (output.startsWith(":output")) {
+                    // Extract the contents of :output
+                    const text = result.split(':output').slice(1).join('\n').split('\n:end')[0].trim();
+
+                    // Output the extracted text
+                    addOutput(text);
+                }
+
+                return name;
+            }
+
+            module.exports = runFunction;
+
+            debugOutput(`Function registered: ${name}`);
+        }
+
+        // Handle @run commands separately
+        if (line.startsWith("@run")) {
+            // Execute the function body and get the result
+            runFunction();
         }
 
         // Handle call commands

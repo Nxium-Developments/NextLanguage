@@ -1,6 +1,6 @@
 // Local Imports for logging and Variable Data
 const addOutput = require('./addOutput');
-const getVariables = require('./localStorage').getVariables;
+const getVariables = require('../class/Packages').getVariables;
 
 // Module Helper to safely evaluate conditions
 module.exports = function safeEval(condition) {

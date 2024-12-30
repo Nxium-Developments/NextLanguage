@@ -1,5 +1,5 @@
 const fs = require('fs');
-const compiler = require('../v1.9/compiler');
+const compiler = require('./interpreter');
 const path = require('path');
 
 module.exports = async function run(file) {

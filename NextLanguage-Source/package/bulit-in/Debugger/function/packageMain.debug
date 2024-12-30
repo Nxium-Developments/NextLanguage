@@ -1,0 +1,7 @@
+:package-main root/me
+:package-com x-auto
+:package-advanced true
+
+:packaged [
+    @output true
+];

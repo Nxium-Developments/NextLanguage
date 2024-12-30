@@ -1,7 +1,7 @@
 const { preloadContent } = require('./preloadContent.js');
 const { preloadPath } = require("../../../../v1.8/contents.js");
 const { existsSync, writeFileSync } = require('fs');
-const debugOutput = require('../../../../../modules/debugOutput.js');
+const debugOutput = require('../../../../../modules/functions/debugOutput.js');
 
 module.exports = async function createPreload(line) {
     // Create the preload script if it doesn't exist

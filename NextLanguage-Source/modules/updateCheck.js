@@ -1,12 +1,12 @@
 // githubLatestBuild.js
 
-const fetch = require('node-fetch');
+const fetch = require('fetch');
 const fs = require('fs');
 const path = require('path');
 
 // Custom modules
-const debugOutput = require('./debugOutput');
-const addOutput = require('./addOutput');
+const debugOutput = require('./functions/debugOutput');
+const addOutput = require('./functions/addOutput');
 
 async function getLatestBuildTag(owner, repo) {
   /**
@@ -47,7 +47,7 @@ module.exports = async function install() {
     const owner = 'Nxium-Developments';
     const repo = 'NextLanguage';
     const latestTag = await getLatestBuildTag(owner, repo);
-    const currentPackage = fs.readFileSync(path.join(__dirname, '../package/current_package'), 'utf-8');
+    const currentPackage = fs.readFileSync(path.join(__dirname, '../package/bulit-in/versions.package'), 'utf-8');
     const buildVersion = currentPackage.split('\nver: Build_').pop().trim().split('\n\r')[0];
     const developmentStatus = currentPackage.split('status: ').pop().trim().split('\r\n')[0];
 

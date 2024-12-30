@@ -7,6 +7,7 @@ const path = require('path');
 if (!fs.existsSync('../CONFIG')) {
 
     const filePath = process.argv[2];
+    const content = path.join(__dirname, '../../' + filePath)
 
     // Checks if the provided argument is empty or not.
     if (!filePath) {
@@ -15,7 +16,7 @@ if (!fs.existsSync('../CONFIG')) {
     }
 
     // Writes the configuration File
-    fs.writeFile('../CONFIG', path.join(__dirname, '../../' + filePath), 'utf8', (err) => {
+    fs.writeFile('../CONFIG', content, 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
@@ -29,22 +30,15 @@ if (!fs.existsSync('../CONFIG')) {
             return;
         }
     })
-    
-    // Writes unnesscary logs.
-    fs.writeFileSync('./build/lib/log/' + 'NXL_Startup-Initization.log', `
-    Visit https://github.com/Nxium-Developments/NextLanguage for
-    more information on the configuration of this log file.
 
-    Initialized Successfully` + `
-    
-    < ---------------------------------------------------------------- >
-
-    Log File: ./build/lib/log/${currenttime}-NXL_Startup.log
-
-    `, 'utf8', (err) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-    })
+    // Checks if the logs folder has been bulit
+    if (!fs.existsSync(path.join(__dirname, '../../build/log') + 'Startup.log')) {
+        fs.mkdirSync(path.join(__dirname, '../../build/log'))
+        fs.writeFileSync(path.join(__dirname, '../../build/log') + 'Startup.log', 'utf8', (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+        })
+    }
 }

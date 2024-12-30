@@ -2,10 +2,15 @@
 NextLanguage-Source/node_modules/
 
 # Ignore more build files
-NextLanguage-Source/build/lib/log/
+NextLanguage-Source/build/log
 NextLanguage-Source/build.config.nxlf
 NextLanguage-Source/package-lock.json
 NextLanguage-Source/builded
+
+# Testing files
+Custom/App.js
+Custom/default.js
+app.js
 
 # Single project built files
 BUILD_CONFIG
