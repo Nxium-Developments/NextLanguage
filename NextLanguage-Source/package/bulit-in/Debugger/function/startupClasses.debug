@@ -1,0 +1,6 @@
+:package-main root/me
+:package-com x-auto
+
+:packaged [
+    @output Output Command
+];

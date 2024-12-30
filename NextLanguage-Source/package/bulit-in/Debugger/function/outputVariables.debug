@@ -1,0 +1,11 @@
+@var [percentage]: (percentage)11%
+@var [x]: (integer)11
+@var [usernames]: (string)Someone
+@var [negativity]: (negatives)-10
+@var [decimal]: (double)0.1
+
+@output decimal
+@output negativity
+@output usernames
+@output x
+@output percentage

@@ -1,0 +1,13 @@
+# Expected: line 1
+@function [number11]:
+    :output line 1
+@end
+
+# Expected:
+# line 2
+# line 3
+@function [number10]:
+    :output line 2
+        line 3
+    :end
+@end

@@ -1,0 +1,31 @@
+# Expected:
+# first line
+# second line
+@function [twoline]:
+    :output first line
+        second line
+    :end
+@end
+
+# Expected: one line
+@function [oneline]:
+    :output one line
+@end
+
+# Expected:
+# line 1
+# line 2
+# line 3
+# line 4
+@function [number10]:
+    :output line 1
+    :output line 2
+
+    :output line 3
+        line 4
+    :end
+@end
+
+@function [1]
+    :output 1
+@end

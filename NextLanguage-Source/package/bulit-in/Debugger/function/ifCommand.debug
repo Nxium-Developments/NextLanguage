@@ -1,0 +1,67 @@
+@var [percentage]: (percentage)11%
+@var [x]: (integer)11
+@var [usernames]: (string)Someone
+@var [negativity]: (negatives)-10
+@var [decimal]: (double)0.1
+@var [boolean]: (boolean)true
+
+# Output: True
+@if [x > 10]:
+    :output x is greater than 10
+@else
+    :output x is not greater than 10
+@end
+
+# Output: True
+@if [x === 11]:
+    :output x is equal to 11
+@else
+    :output x is not equal to 11
+@end
+
+# Output: False
+@if [x < 9]:
+    :output x is smaller than 9
+@else
+    :output x is bigger than 9
+@end
+
+# Output: True
+@if [percentage === 11%]:
+    :output percentage is equal to 11%
+@else
+    :output percentage isn't equal to 11%
+@end
+
+# Output: True
+@if [boolean]:
+    :output boolean is true
+@else
+    :output boolean is false
+@end
+
+# Output: True
+@if [decimal === 0.1]:
+    :output decimal is equal to 0.1
+@else
+    :output decimal isn't equal to 0.1
+@end
+
+# Output: False
+@if [decimal > 0.1]:
+    :output decimal is greater than 0.1
+@else
+    :output decimal isn't greater than 0.1
+@end
+
+# Output: False
+@if [decimal < 0.1]:
+    :output decimal is smaller than 0.1
+@else
+    :output decimal is bigger than 0.1
+@end
+
+# Output: True
+@if [boolean]:
+    :output this can only be true
+@end
