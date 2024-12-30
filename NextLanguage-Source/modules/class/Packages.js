@@ -1,6 +1,9 @@
 const addOutput = require('../functions/addOutput');
 const debugOutput = require('../functions/debugOutput');
 
+const { readFileSync } = require('fs');
+const path = require('path')
+
 module.exports = class Packages {
         /**
          * Documentation on (constructor: Packages)
@@ -257,5 +260,10 @@ module.exports = class Packages {
         if (type === 'file') {
             return this.strings.full.file.dev.self;
         }
+    }
+
+    request(file) {  
+        const output = readFileSync(file, 'utf8')
+        eval(`${output}`);
     }
 }
