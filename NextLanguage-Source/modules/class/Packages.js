@@ -1,8 +1,8 @@
 const addOutput = require('../functions/addOutput');
 const debugOutput = require('../functions/debugOutput');
 
-const { readFileSync } = require('fs');
-const path = require('path')
+const { readFileSync, writeFileSync } = require('fs');
+const path = require('path');
 
 module.exports = class Packages {
         /**
@@ -168,6 +168,18 @@ module.exports = class Packages {
                     dev: {
                         self: this.package,
                         global: packages,
+                        enabled: this.enabled[1],
+                        path: this.path,
+                    },
+                    export: {
+                        name: this.name,
+                        author: this.author,
+                        repo: this.repository,
+                        description: this.description,
+                        enabled: this.enabled,
+                        version: this.version,
+                        license: this.license,
+                        app: this.application,
                     }
                 },
                 folder: {
@@ -202,68 +214,81 @@ module.exports = class Packages {
     }
 
     config(type, name, param, value) {
-        if (type === 'package') {
-            if (name === this.name) {
-                if (param === 'name') {
-                    this.strings.full.package.user.name = value;
-                }
-                if (param === 'author') {
-                    this.strings.full.package.user.author = value;
-                }
-                if (param === 'repo') {
-                    this.strings.full.package.user.repo = value;
-                }
-                if (param === 'description') {
-                    this.strings.full.package.user.description = value;
-                }
-                if (param === 'version') {
-                    this.strings.full.package.user.version = value;
-                }
-                if (param === 'license') {
-                    this.strings.full.package.user.license = value;
-                }
-                if (param === 'app') {
-                    this.application = value;
-                }
-                if (param === 'enabled') {
-                    this.package[1] = value;
-    
-                    // Executes the package if it is enabled
-                    if (this.package[1] === true) {
-                        debugOutput(`Enabled package: ${this.package[0]}`);
-                        require(this.path);
-                    } else {
-                        debugOutput(`Disabled package: ${this.package[0]}`);
-                        debugOutput(`Unable to enable package: ${this.package[0]} \n Package (${this.package[0]}) wasn't set to be enabled.`);
-                    }
-                }
-            } else {
-                debugOutput(`Unknown package: ${name}`);
-            }
-        } else {
+        // Checks if the type is a package
+        if (type !== 'package') {
             addOutput(`Unknown config type: ${type}`);
             addOutput(`To Note: This editor is for Packages only!`);
+            return;
         }
-    }
 
-    getPackages(type, name) {
-        if (type === 'package') {
-            if (name === 'Secure') {
-                return this.strings.full.package.dev.self;
+        // Checks if the package exists
+        if (name !== this.name) {
+            debugOutput(`Unknown package: ${name}`);
+            return;
+        }
+
+        // Sets the package information
+        if (param === 'name') {
+            this.strings.full.package.user.name = value;
+        }
+
+        if (param === 'author') {
+            this.strings.full.package.user.author = value;
+        }
+
+        if (param === 'repo') {
+            this.strings.full.package.user.repo = value;
+        }
+
+        if (param === 'description') {
+            this.strings.full.package.user.description = value;
+        }
+
+        if (param === 'version') {
+            this.strings.full.package.user.version = value;
+        }
+
+        if (param === 'license') {
+            this.strings.full.package.user.license = value;
+        }
+
+        if (param === 'app') {
+            this.application = value;
+        }
+
+        // Executes the package if it is enabled
+        if (param === 'enabled') {
+            this.package[1] = value;
+
+            // Executes the package if it is enabled
+            if (this.package[1] === true) {
+                debugOutput(`Enabled package: ${this.package[0]}`);
+                require(this.path);
+            } else {
+                debugOutput(`Disabled package: ${this.package[0]}`);
+                debugOutput(`Unable to enable package: ${this.package[0]} \n Package (${this.package[0]}) wasn't set to be enabled.`);
             }
-
-            return this.strings.full.package.dev.self;
-        }
-        if (type === 'folder') {
-            return this.strings.full.folder.dev.self;
-        }
-        if (type === 'file') {
-            return this.strings.full.file.dev.self;
         }
     }
 
-    request(file) {  
-        const output = readFileSync(file, 'utf8')
-        eval(`${output}`);
+    saveConfig(location, file) {
+        const loc = location || '/';
+        const name = file || 'Signed.config.js';
+        writeFileSync(path.join(__dirname, '../../../' + loc + name), `
+// Move this file into your plugins folder.
+
+module.exports = function Information() {
+    const Information = {
+        name: '${this.name}',
+        author: '${this.author}',
+        repo: '${this.repository}',
+        description: '${this.description}',
+        version: '${this.version}',
+        license: '${this.license}',
+        app: '${this.application}',
+    }
+                
+    return Information
+}`, 'utf8');
     }
 }
