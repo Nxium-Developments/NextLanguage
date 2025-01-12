@@ -2,30 +2,28 @@
 # first line
 # second line
 @function [twoline]:
-    :output first line
-        second line
-    :end
+    :output first line;
+    :output second line;
 @end
 
 # Expected: one line
 @function [oneline]:
-    :output one line
+    :output one line;
 @end
 
 # Expected:
 # line 1
 # line 2
 # line 3
-# line 4
 @function [number10]:
-    :output line 1
-    :output line 2
+    :output line 1;
 
-    :output line 3
-        line 4
-    :end
+
+    :output line 2;
+
+    :output line 3;
 @end
 
 @function [1]
-    :output 1
+    :output 1;
 @end

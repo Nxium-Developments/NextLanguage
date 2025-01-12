@@ -14,3 +14,5 @@ module.exports = class enableDevelopment {
         
     }
 }
+
+startDebug('./function/functionState.debug', this.run);

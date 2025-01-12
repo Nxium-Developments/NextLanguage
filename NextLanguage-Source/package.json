@@ -4,10 +4,11 @@
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
   "main": "app.js",
   "scripts": {
-    "build": "npm install && npm run activate && echo Run `npm run rebuild` to start the project after building",
+    "build": "npm install && npm run activate && echo Run `npm run start` to start the project after building",
     "activate": "node app.js app.nxl",
-    "rebuild": "npm install && npm run initialize",
-    "initialize": "nodemon init.js"
+    "rebuild": "npm run activate && npm run start",
+    "start": "nodemon init.js",
+    "debug": "jest "
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "capture-console": "^1.0.2",
     "date-and-time": "^3.1.1",
-    "electron": "^29.4.6"
+    "electron": "^29.4.6",
+    "jest": "^29.7.0"
   }
 }

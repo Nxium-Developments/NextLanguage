@@ -21,7 +21,6 @@ const ifCommand = require('../patches/v1.9/modules/if.js');
 
 const addOutput = require('../modules/functions/addOutput.js');
 const parseVariable = require('../modules/functions/parseVariable.js');
-const executeFunction = require('../modules/functions/executeFunction.js');
 
 const safeEval = require('../modules/functions/safeEval.js');
 const IfStatementHandler = require('../modules/functions/IfStatementHandler.js');
@@ -29,6 +28,8 @@ const ifHandler = IfStatementHandler(addOutput, safeEval);
 
 const executeCall = require('../patches/v1.9/modules/func/executeCall.js');
 const packageMain = require('../patches/v1.9/modules/func/packageMain.js');
+const runFunction = require('../modules/functions/runFunction.js');
+const executeFunction = require('../modules/functions/executeFunction.js');
 
 // This is broken asf
 // const exportCommand = require('../../build/patches/command.js');
@@ -123,41 +124,9 @@ module.exports = async function compiler(lines) {
             // Register the function contents
             setFunction(name, lines, line, functionMatch);
 
-            function runFunction() {         
-                // Execute the function body and get the result
-                const result = executeFunction(lines, line, functionMatch).block;
-                let a = 0;
-                const output = result.split('\n')[a++];
-                
-                if (output.startsWith(":params")) {
-                    // Extract the contents of :params
-                    const params = result.split(':params').slice(1).join('\n').split(':end')[0].trim();
-
-                    // Output the extracted text
-                    addOutput(params);
-                }
-
-                // Check if the result contains an output directive
-                if (output.startsWith(":output")) {
-                    // Extract the contents of :output
-                    const text = result.split(':output').slice(1).join('\n').split('\n:end')[0].trim();
-
-                    // Output the extracted text
-                    addOutput(text);
-                }
-
-                return name;
-            }
-
-            module.exports = runFunction;
+            executeFunction(lines, line, functionMatch);
 
             debugOutput(`Function registered: ${name}`);
-        }
-
-        // Handle @run commands separately
-        if (line.startsWith("@run")) {
-            // Execute the function body and get the result
-            runFunction();
         }
 
         // Handle call commands
