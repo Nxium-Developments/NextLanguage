@@ -8,7 +8,7 @@ module.exports = class Debug {
      * const debug = new Debug(true);
      */
     constructor() {
-        this.debugMode = true
+        this.debugMode = false
     }
 
     setValue(value) {

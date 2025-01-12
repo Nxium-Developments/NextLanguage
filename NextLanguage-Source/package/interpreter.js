@@ -163,6 +163,8 @@ module.exports = async function compiler(lines) {
 
             addOutput(`:export command is indevelopment`);
         }
+
+        console.log("ADI::::" +line)
         
     }
 }
