@@ -4,7 +4,7 @@ const variables = {};
 const getVariables = (name) => {
     const variable = variables[name];
     if (variable !== undefined) {
-        return variable.value; // Return the value of the variable
+        return { returnName: variable.name, value: variable.value }; // Return the value of the variable
     }
     return null; // Return null if the variable doesn't exist
 };
