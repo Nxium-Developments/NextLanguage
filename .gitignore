@@ -14,9 +14,10 @@ app.js
 
 # Single project built files
 BUILD_CONFIG
-./CONFIG
+CONFIG
 app.nxl
 index.html
 preload.js
 postload.js
-CONFIG
+
+!NextLanguage/build/config
