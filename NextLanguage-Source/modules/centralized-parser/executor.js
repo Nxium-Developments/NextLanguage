@@ -3,46 +3,56 @@ const variables = require('../../build/lib/memoryStore/temp/Variables.js');
 
 const evaluateCondition = require('./evaluater.js');
 
+const addOutput = require('../../build/lib/output/addOutput.js');
+const debugOutput = require('../../build/lib/output/debugOutput.js');
+
 // AST Executor
 module.exports = centralExecutor = async (ast) => {
-    let variableList = null;
+    let variablesList = null
     let currentIfBlock = null;
     let currentFunction = null;
+    let functions = {};
 
     for (const node of ast) {
         switch (node.type) {
+            /** TODO: Add functionality */
             case "PackageMain":
-                console.log(`PackageMain: ${node.value}`);
+                addOutput(`PackageMain: ${node.value}`);
                 break;
 
             case "PackageCommand":
-                console.log(`PackageCommand: ${node.value}`);
+                addOutput(`PackageCommand: ${node.value}`);
                 break;
 
             case "PackageAdvanced":
-                console.log(`PackageAdvanced: ${node.value === "true" ? "Enabled" : "Disabled"}`);
+                addOutput(`PackageAdvanced: ${node.value === "true" ? "Enabled" : "Disabled"}`);
                 break;
 
+            /** FUNCTION STATEMENT */
             case "Function":
                 currentFunction = node;
-                functions[node.name] = { body: [] }; // Initialize function storage
+                functions[node.name] = { body: [], executed: false }; // Initialize function storage
                 break;
 
             case "Call":
-                if (node.match) {
-                    const [, type, name, action] = node.match;
-                    console.log(`Call: type=${type}, name=${name}, action=${action}`);
+                if (node.arguments !== "function") return false;
+                
+                if (functions[node.param]) {
+                    if (!functions[node.param].executed) {
+                        functions[node.param].executed = true;
+                    }
                 }
                 break;
 
-            case "Windows":
-                console.log(":windows command is under development");
-                break;
+            // case "Windows":
+            //     addOutput(":windows command is under development");
+            //     break;
 
-            case "Export":
-                console.log(":export command is under development");
-                break;
+            // case "Export":
+            //     addOutput(":export command is under development");
+            //     break;
 
+            /** IF STATEMENTs */            
             case "IfStatement":
                 currentIfBlock = node;
                 break;
@@ -53,11 +63,7 @@ module.exports = centralExecutor = async (ast) => {
                 }
                 break;
 
-            case "EndStatement":
-                currentIfBlock = null;
-                currentFunction = null;
-                break;
-
+            /** OUTPUT STATEMENTS */
             case "OutputStatement":
                 if (currentIfBlock) {
                     if (currentIfBlock.isElse) {
@@ -66,15 +72,27 @@ module.exports = centralExecutor = async (ast) => {
                         currentIfBlock.consequent.push(node);
                     }
                 } else if (currentFunction) {
-                    functions[currentFunction.name].body.push(node);
+                    functions[currentFunction.name].body.push(node)
+                    debugOutput(functions[currentFunction.name])
                 } else {
-                    console.log(node.value); // Top-level output
+                    addOutput(node.value); // Top-level output
                 }
                 break;
 
+            /** VARIABLE STATEMENTS */
             case "Variable":
-                if (variableList) {
-                    variables[node.name] = { param: node.param, value: node.value };
+                variablesList = node;
+                variables[node.name] = { param: node.param, value: node.value };
+                break;
+
+            /** GENERIC STATEMENTS */
+            case "ArgumentStatement":
+                if (currentIfBlock) {
+                    currentIfBlock.consequent.push(node.line);
+                } else
+
+                if (currentFunction) {
+                    functions[currentFunction.name].body.push(node.line);
                 }
                 break;
 
@@ -82,6 +100,12 @@ module.exports = centralExecutor = async (ast) => {
                 if (currentFunction) {
                     functions[currentFunction.name].body.push(node);
                 }
+                break;
+
+            /** END STATEMENTS */
+            case "EndStatement":
+                currentIfBlock = null;
+                currentFunction = null;
                 break;
 
             default:
@@ -92,31 +116,32 @@ module.exports = centralExecutor = async (ast) => {
     // Execute all IfStatements
     ast.forEach((node) => {
         if (node.type === "IfStatement") {
-            if (evaluateCondition(node.condition)) {
+            if (evaluateCondition(node.condition, variables)) {
                 node.consequent.forEach((child) => {
                     if (child.type === "OutputStatement") {
-                        console.log(child.value);
+                        addOutput(child.value);
                     }
                 });
             } else {
                 node.alternate.forEach((child) => {
                     if (child.type === "OutputStatement") {
-                        console.log(child.value);
+                        addOutput(child.value);
                     }
                 });
             }
         }
 
         if (node.type === "Function") {
+            if (!functions[node.name].executed) return false;
             functions[node.name].body.forEach((child) => {
                 if (child.type === "OutputStatement") {
-                    console.log(child.value);
+                    addOutput(child.value);
                 }
             });
         }
 
         if (node.type === "Variable") {
-            variables[node.name] = { type: node.type, value: node.value };
+            // variables[node.name] = { type: node.type, value: node.value };
         }
     });
 };
