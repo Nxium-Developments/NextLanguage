@@ -1,0 +1,1 @@
+require('../debug.config.js');
