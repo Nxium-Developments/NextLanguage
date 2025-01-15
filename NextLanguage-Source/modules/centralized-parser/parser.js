@@ -18,13 +18,13 @@ module.exports = centralParse = (lines) => {
             
             if (line.startsWith("@function")) {
                 /** Refer to this incase of an issue. line.match(/@ function \[(.+)\]\:/)?.[1++] */
-                return { type: "Function", name: line.match(/@function \[(.+)\]:/)?.[1], lines: [] };
+                return { type: "Function", name: line.match(/@function \[(.+)\]:/)?.[1], body: [] };
             } else
             
-            // if (line.startsWith(":call")) {
-            //     const match = line.match(/:call \[(.+?)\]\/(.+?)(@.+)/);
-            //     return { type: "Call", match };
-            // } else
+            if (line.startsWith("@call")) {
+                const match = line.match(/@call \:(.+?)\[(.+?)\]/);
+                return { type: "Call", line: match[0], arguments: match[1], param: match[2] };
+            } else
             
             // if (line.startsWith(":windows")) {
             //     const match = line.match(/:windows\((.+)\.(.+?)\)\.(.+)/);
@@ -53,15 +53,19 @@ module.exports = centralParse = (lines) => {
             /** OUTPUT STATEMENTS */
             
             if (line.startsWith("@output")) {
-                return { type: "OutputStatement", value: line.match(/:output (.+)/)?.[1] };
+                return { type: "OutputStatement", value: line.match(/@output (.+)/)?.[1], line: line.match(/@output (.+)/)?.[0] };
             }
             
             /** VARIABLE STATEMENTS */
             if (line.startsWith("@var")) {
                 return { type: "Variable", name: line.match(/@var \[(.+?)\]:/)?.[1], param: line.match(/@var \[(.+?)\]: \((.+?)\)/)?.[2], value: line.match(/@var \[(.+?)\]: \((.+?)\)(.+)/)?.[3] };
-            }
+            } else
 
             /** GENERIC STATEMENTS */
+            if (line.startsWith(":@")) {
+                return { type: "ArgumentStatement", arguments: line.match(/:@(.+?) /)?.[1], param: line.match(/:@(.+?) (.+)/)?.[2], full: line.match(/:@(.+?) (.+)/)?.[0] };
+            }
+
             else {
                 return { type: "Generic", content: line };
             }
