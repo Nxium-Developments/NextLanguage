@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 // Custom modules
-const debugOutput = require('./functions/debugOutput');
-const addOutput = require('./functions/addOutput');
+const debugOutput = require('../build/lib/output/debugOutput');
+const addOutput = require('../build/lib/output/addOutput');
 
 async function getLatestBuildTag(owner, repo) {
   /**

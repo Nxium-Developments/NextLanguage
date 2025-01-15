@@ -1,5 +1,5 @@
-const addOutput = require('../functions/addOutput.js');
-const debugOutput = require('../functions/debugOutput.js');
+const addOutput = require('../../build/lib/output/addOutput.js');
+const debugOutput = require('../../build/lib/output/debugOutput.js');
 const install = require('../updateCheck.js');
 const Plugin = require('../../package/bulit-in/Secure/default.js');
 const SecureService = require('../../package/bulit-in/Secure/package.js');
@@ -8,7 +8,7 @@ const { DebugService } = require('../../package/bulit-in/Debugger/package.js');
 const path = require('path');
 const fs = require('fs');
 
-const Local = require('../class/temp/Local.js');
+const Local = require('../../build/lib/memoryStore/Local.js');
 const data = new Local();
 
 const packages = data.commands;
