@@ -32,7 +32,6 @@ module.exports = parseVars = (lines) => {
                     throw new Error(`Unknown type: ${varType}`);
             }
             variables[varName] = parsedValue;
-            return variables;
         }
     }
 };
