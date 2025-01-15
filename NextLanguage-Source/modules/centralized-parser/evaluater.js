@@ -3,14 +3,14 @@
  * @param {string} condition - The condition to evaluate.
  * @returns {boolean} - The result of the condition.
  */
-module.exports = evaluateCondition = (condition, varName) => {
+module.exports = evaluateCondition = (condition, variables) => {
     try {
         // Replace variable names with their values
         const replacedCondition = condition.replace(
             /\b[a-zA-Z_][a-zA-Z0-9_]*\b/g,
             (varName) => {
-                if (variables.hasOwnProperty(varName)) {
-                    return JSON.stringify(variables[varName]);
+                if (variables[varName]) {
+                    return JSON.stringify(variables[varName].value);
                 }
                 throw new Error(`Undefined variable: ${varName}`);
             }
