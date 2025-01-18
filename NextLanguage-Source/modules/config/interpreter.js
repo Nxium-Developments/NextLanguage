@@ -1,17 +1,17 @@
 const addOutput = require('../../build/lib/output/addOutput.js');
 const debugOutput = require('../../build/lib/output/debugOutput.js');
-const install = require('../updateCheck.js');
+
+/** PLUGIN IMPORTS */
 const Plugin = require('../../package/bulit-in/Secure/default.js');
 const SecureService = require('../../package/bulit-in/Secure/package.js');
 const { DebugService } = require('../../package/bulit-in/Debugger/package.js');
 
+/** NODEJS IMPORTS */
 const path = require('path');
 const fs = require('fs');
 
-const Local = require('../../build/lib/memoryStore/Local.js');
-const data = new Local();
-
-const packages = data.commands;
+const packages = require('../../patches/v1.8/returns.js').packages;
+const run = require('../../package/start.js');
 
 module.exports = async function runConfig(lines) {
     // Read and execute the NXL code, line by line
@@ -22,61 +22,40 @@ module.exports = async function runConfig(lines) {
         // Ignore comments
         if (line.startsWith("#") || line === "") continue;
 
-        if (line.startsWith("PACKAGE-MAIN")) {
-            const match = line.match(/PACKAGE-MAIN (.+)/);
+        if (line.startsWith("PACKAGES")) {
+            const match = line.match(/PACKAGES: \@(.+?) (.+) \@(.+?) (.+)/);
             if (!match) continue;
-            const [, main] = match;
+            const [, args, value, type, path] = match;
+            if (type !== "path") throw new Error("Package type must be 'path'");
 
-            if (main === "root/me") {
-                packages.main = main;
-                data.main(packages.main);
-            } else {
-                addOutput("No main file set in BUILD CONFIG");
+            // Set main package
+            if (args === "main") {
+                debugOutput(`Setting main package: ${value}`);
+                packages.setMain(path);
+                run(path);
             }
 
-            debugOutput(`Main package set to: ${main}`);
-        }
-
-        if (line.startsWith("PACKAGES-LIST")) {
-            const match = line.match(/PACKAGES-LIST (.+)/);
-            if (!match) continue;
-            const [, packages] = match;
-
-            packages.forEach((package) => {
-                data.addCommand(package);
-                debugOutput(`Command package added: ${package}`);
-            });
-        }
-
-        if (line.startsWith("PRELOAD-PATH")) {
-            const match = line.match(/PRELOAD-PATH: (.+)/);
-            if (!match) continue;
-            const [, path] = match;
-
-            packages.preloadPath = path;
-            debugOutput(`Preload path set to: ${path}`);
-        }
-
-        if (line.startsWith("POSTLOAD-PATH")) {
-            const match = line.match(/POSTLOAD-PATH: (.+)/);
-            if (!match) continue;
-            const [, path] = match;
-
-            packages.postloadPath = path;
-            debugOutput(`Postload path set to: ${path}`);
-        }
-
-        if (line.startsWith("CHECK-FOR-UPDATES")) {
-            const match = line.match(/CHECK-FOR-UPDATES: (.+)/);
-            if (!match) continue;
-            const [, value] = match;
-
-            if (value === "true") {
-                install();
-            } else {
-                // Add no-update command
-                addOutput("Not checking for updates. Update Box set to false.");
+            // Add Packages
+            if (args === "add") {
+                debugOutput(`Adding package: ${value}`);
+                packages.addPackage(value);
+                run(path);
             }
+        }
+
+        if (line.startsWith("HEADERFILE")) {
+            const match = line.match(/HEADERFILE: (.+) \@(.+?) (.+)/);
+            if (!match) continue;
+            const [, name, args, value] = match;
+
+            if (!name) throw new Error("Headerfile name is required");
+
+            // Add Packages
+            if (args === "add") {
+                debugOutput(`Adding Header File: ${value}`);
+                packages.addHeader(name, value);
+            }
+
         }
 
         if (line.startsWith("PLUGINS")) {

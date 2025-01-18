@@ -1,5 +1,5 @@
-const { preloadPath } = require("../../patches/v1.8/contents.js");
-const { postloadPath } = require("../../patches/v1.8/contents.js");
+const { preloadPath } = require("../../patches/v1.8/returns.js");
+const { postloadPath } = require("../../patches/v1.8/returns.js");
 
 const configurationFile = `# Main File Path: root/me (typically for when you want to set which file is the main file.)
 PACKAGE-MAIN: root/me

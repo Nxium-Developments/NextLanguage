@@ -13,21 +13,31 @@ module.exports = class Local {
         this.main = null;
         this.commands = [];
         this.advanced = false;
+        this.packages = [];
+        this.headers = []
     }
 
+    // HEADERS
+    addHeader(name, header) {
+        this.headers.push(name, header);
+    }
+
+    // COMMANDS
     addCommand(command) {
         this.commands.push(command);
     }
-
-    removeCommand(command) {
-        this.commands = this.commands.filter(c => c !== command);
-    }
     
+    // OTHERS
     setMain(mainPackage) {
         this.main = mainPackage;
     }
 
     setAdvanced(advanced) {
         this.advanced = advanced;
+    }
+
+    // ADD PACKAGES
+    addPackage(command) {
+        this.packages.push(command);
     }
 }

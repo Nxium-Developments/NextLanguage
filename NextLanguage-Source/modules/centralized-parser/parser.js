@@ -1,21 +1,30 @@
-// AST Parser
+/** CENTRALIZED PARSER */
 module.exports = centralParse = (lines) => {
     return lines
         .filter(line => line.trim() && !line.startsWith("#") && !line.startsWith(undefined)) // Ignore empty lines and comments
         .map(line => {
             // TODO: Remove :package-main , :package-com , and :package-advanced or add functionality to them.
-            if (line.startsWith(":package-main")) {
-                return { type: "PackageMain", value: line.match(/:package-main (.+)/)?.[1] };
+            if (line.startsWith(":packages")) {
+                if (line.match(/:packages (.+) \@(.+?)/)?.[2] === "main") {
+                    return { type: "MainPackage", name: line.match(/:packages (.+)/)?.[1] };
+                } else
+
+                if (line.match(/:packages (.+) \@(.+?)/)?.[2] === "import") {
+                    return { type: "ImportPackage", name: line.match(/:packages (.+)/)?.[1] };
+                } else
+
+                if (line.match(/:packages (.+) \@(.+?)/)?.[2] === "require") {
+                    return { type: "RequirePackage", name: line.match(/:packages (.+)/)?.[1] };
+                } else
+
+                if (line.match(/:packages (.+) \@(.+?)/)?.[2] === "export") {
+                    return { type: "ExportPackage", name: line.match(/:packages (.+)/)?.[1] };
+                }
+                
+                return { type: "Packages", value: line.match(/:packages (.+)/)?.[1] };
             } else
             
-            if (line.startsWith(":package-com")) {
-                return { type: "PackageCommand", value: line.match(/:package-com (.+)/)?.[1] };
-            } else
-            
-            if (line.startsWith(":package-advanced")) {
-                return { type: "PackageAdvanced", value: line.match(/:package-advanced (.+)/)?.[1] };
-            } else
-            
+            /** FUNCTION STATEMENTS */
             if (line.startsWith("@function")) {
                 /** Refer to this incase of an issue. line.match(/@ function \[(.+)\]\:/)?.[1++] */
                 return { type: "Function", name: line.match(/@function \[(.+)\]:/)?.[1], body: [] };
@@ -26,6 +35,7 @@ module.exports = centralParse = (lines) => {
                 return { type: "Call", line: match[0], arguments: match[1], param: match[2] };
             } else
             
+            /** POSSIBLE REMOVAL */
             // if (line.startsWith(":windows")) {
             //     const match = line.match(/:windows\((.+)\.(.+?)\)\.(.+)/);
             //     return { type: "Windows", match };

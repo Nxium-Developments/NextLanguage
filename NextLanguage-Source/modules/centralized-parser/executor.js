@@ -1,12 +1,17 @@
-const functions = require('../../build/lib/memoryStore/temp/Functions.js');
+/** MEMORY UNIT IMPORTS */
+const { setFunction, getFunctions } = require('../../build/lib/memoryStore/temp/Functions.js');
 const variables = require('../../build/lib/memoryStore/temp/Variables.js');
 
+/** OTHER IMPORTS */
 const evaluateCondition = require('./evaluater.js');
 
+/** ESSENTIAL IMPORTS */
 const addOutput = require('../../build/lib/output/addOutput.js');
 const debugOutput = require('../../build/lib/output/debugOutput.js');
 
-// AST Executor
+const packages = require('../../patches/v1.8/returns.js').packages;
+
+/** CENTRAL EXECUTION CODE */
 module.exports = centralExecutor = async (ast) => {
     let variablesList = null
     let currentIfBlock = null;
@@ -16,16 +21,22 @@ module.exports = centralExecutor = async (ast) => {
     for (const node of ast) {
         switch (node.type) {
             /** TODO: Add functionality */
-            case "PackageMain":
+            case "MainPackage":
                 addOutput(`PackageMain: ${node.value}`);
                 break;
 
-            case "PackageCommand":
-                addOutput(`PackageCommand: ${node.value}`);
+            case "ImportPackage":
+                if (node.name !== packages.packages) return false;
+                else if (node.name === getFunctions()[node.name]) {
+                    functions[node.name] = getFunctions()[node.name];
+                }
                 break;
 
-            case "PackageAdvanced":
-                addOutput(`PackageAdvanced: ${node.value === "true" ? "Enabled" : "Disabled"}`);
+            case "ExportPackage":
+                if (node.name !== packages.packages) return false;
+                else if (node.name === functions[node.name]) {
+                    setFunction(node.name, functions[node.name]);
+                }
                 break;
 
             /** FUNCTION STATEMENT */
