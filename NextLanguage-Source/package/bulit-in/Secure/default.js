@@ -27,12 +27,6 @@ module.exports = function Plugin(file, name, signature) {
         
             const { getVariables, setVariable } = require('../../../build/lib/memoryStore/temp/Variables.js');
             const { getFunctions, setFunction } = require('../../../build/lib/memoryStore/temp/Functions.js');
-        
-            const createPreload = require("../../../patches/v1.9/modules/nodejs/pre/createPreload.js");
-            const runPreload = require("../../../patches/v1.9/modules/nodejs/pre/runPreload.js");
-        
-            const createPostload = require("../../../patches/v1.9/modules/nodejs/post/createPostload.js");
-            const runPostload = require("../../../patches/v1.9/modules/nodejs/post/runPostload.js");
             ${file}
             Service()`); // Load the plugin (file)
         } else {
