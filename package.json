@@ -5,8 +5,8 @@
   "main": "NextLanguage-Source/app.js",
   "scripts": {
     "build": "npm install && npm run activate && echo Run `npm run start` to start the project after building",
-    "activate": "node app.js app.nxl",
-    "start": "nodemon init.js",
+    "activate": "node . app.nxl",
+    "start": "nodemon NextLanguage/init.js",
     "test": "jest "
   },
   "repository": {
