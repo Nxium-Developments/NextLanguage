@@ -29,16 +29,8 @@ module.exports = async function runConfig(lines) {
             if (type !== "path") throw new Error("Package type must be 'path'");
 
             // Set main package
-            if (args === "main") {
-                debugOutput(`Setting main package: ${value}`);
-                packages.setMain(path);
-                run(path);
-            }
-
-            // Add Packages
-            if (args === "add") {
-                debugOutput(`Adding package: ${value}`);
-                packages.addPackage(value);
+            if (args === "main" || args === "add") {
+                debugOutput(`Setting package: ${value}`);
                 run(path);
             }
         }

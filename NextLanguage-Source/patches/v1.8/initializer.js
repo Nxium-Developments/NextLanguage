@@ -25,5 +25,5 @@ if (fs.existsSync(config)) {
     }
 
     // Execute the .nxl file
-    run(filePath);
+    // run(filePath);
 }
