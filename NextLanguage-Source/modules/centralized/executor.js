@@ -165,8 +165,10 @@ const handleOutputStatement = (node, context) => {
         }
     } else if (currentFunction) {
         functions[currentFunction].body.push(node);
+    } else if (context.variables[node.value]) {
+        addOutput(context.variables[node.value].value); // Top-level output
     } else {
-        addOutput(node.value); // Top-level output
+        addOutput(node.value); // Variable or constant output
     }
 };
 
