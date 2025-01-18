@@ -9,3 +9,11 @@
 @output usernames
 @output x
 @output percentage
+
+@output If the following outputs were sent in this order:
+@output #: 0.1
+@output #: -10
+@output #: Someone
+@output #: 11
+@output #: 11%
+@output Then the following file: outputVariables.debug has been sucessfully ran

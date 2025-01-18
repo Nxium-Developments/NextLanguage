@@ -1,29 +1,23 @@
-# Expected:
-# first line
-# second line
-@function [twoline]:
-    :output first line;
-    :output second line;
+@function [Hello]:
+    @output Hello
 @end
 
-# Expected: one line
-@function [oneline]:
-    :output one line;
-@end
-
-# Expected:
-# line 1
-# line 2
-# line 3
 @function [number10]:
-    :output line 1;
-
-
-    :output line 2;
-
-    :output line 3;
+    @output number 1
+    @output number 10
 @end
 
 @function [1]
-    :output 1;
+    :output 1
 @end
+
+@call :function[Hello]
+@call :function[number10]
+@call :function[1]
+
+@output If the following output were sent in this order:
+@output #: Hello
+@output #: number 1
+@output #: number 10
+@output #: 1
+@output Then the following file: functionState.debug has been sucessfully ran.
