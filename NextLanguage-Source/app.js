@@ -4,8 +4,8 @@ const path = require('path');
 const run = require('./package/start.js');
 const config = require('./patches/v1.8/returns.js').returns().path.config;
 
-function patches_main() {
-    require('./patches/initials.js');
+async function patches_main() {
+    await require('./patches/initials.js');
     require('./patches/v1.8/configuration.js');
     require('./patches/v1.8/returns.js');
 
