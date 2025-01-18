@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+const enableDevelopment = require("./package/bulit-in/Debugger/default.js");
+
+new enableDevelopment("function-state")
+
 const run = require('./package/start.js');
 const config = require('./patches/v1.8/returns.js').returns().path.config;
 

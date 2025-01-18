@@ -1,6 +1,6 @@
 # Ignore node modules folder
 NextLanguage-Source/node_modules/
-./node_modules/
+node_modules/
 
 # Ignore more build files
 NextLanguage-Source/build/log
