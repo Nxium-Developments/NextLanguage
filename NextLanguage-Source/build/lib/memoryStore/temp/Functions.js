@@ -1,4 +1,4 @@
-const functions = {};
+let functions = {};
 
 const getFunctions = () => functions;
 
