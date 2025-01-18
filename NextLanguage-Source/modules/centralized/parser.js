@@ -5,16 +5,8 @@ module.exports = centralParse = (lines) => {
         .map(line => {
             // TODO: Remove :package-main , :package-com , and :package-advanced or add functionality to them.
             if (line.startsWith(":packages")) {
-                if (line.match(/:packages (.+) \@(.+)/)?.[2] === "main") {
-                    return { type: "MainPackage", name: line.match(/:packages (.+) \@(.+)/)?.[1] };
-                } else
-
                 if (line.match(/:packages (.+) \@(.+?) (.+)/)?.[2] === "import") {
                     return { type: "ImportPackage", name: line.match(/:packages (.+) \@(.+)/)?.[1], value: line.match(/:packages (.+) \@(.+) (.+)/)?.[3] };
-                } else
-
-                if (line.match(/:packages (.+) \@(.+)/)?.[2] === "require") {
-                    return { type: "RequirePackage", name: line.match(/:packages (.+) \@(.+)/)?.[1] };
                 } else
 
                 if (line.match(/:packages (.+) \@(.+)/)?.[2] === "export") {

@@ -57,10 +57,6 @@ const processNode = async (node, basePath, context) => {
             await handleExportPackage(node.value, context);
             break;
 
-        case "MainPackage":
-            addOutput(`PackageMain: ${node.name}`);
-            break;
-
         case "Package":
             addOutput(`Package: ${node.value}`);
             break;
