@@ -6,18 +6,18 @@ module.exports = class enableDevelopment {
 
         if (active === 'all') {
             this.run = run;
-            startDebug('./function/outputVariables.debug', this.run);
-            startDebug('./function/functionState.debug', this.run);
+            startDebug('./normal-tests/outputVariables.debug', this.run);
+            startDebug('./normal-tests/functionState.debug', this.run);
         }
 
         if (active === 'debug-output') {
             this.run = run;
-            startDebug('./function/outputVariables.debug', this.run);
+            startDebug('./normal-tests/outputVariables.debug', this.run);
         }
 
         if (active === 'function-state') {
             this.run = run;
-            startDebug('./function/functionState.debug', this.run);
+            startDebug('./normal-tests/functionState.debug', this.run);
         }
         
     }
