@@ -5,6 +5,4 @@ const parseScript = require('../modules/centralized/executor.js');
 module.exports = async function compiler(lines) {
     const main = centralParse(lines);
     await parseScript(main);
-
-    console.log(main)
 };
