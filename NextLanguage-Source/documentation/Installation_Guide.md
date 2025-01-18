@@ -15,4 +15,4 @@ We're currently working on releasing our own vscode extension for this very Lang
 
 ---
 
-Once running `npm run build` it should automatically run the project, but if you want to start the project that has already been bulit just run `npm run activate` to start the project instead of rebuilding the entire project.
+Once running `npm run build` it should automatically run the project, but if you want to start the project that has already been bulit just run `npm run rebuild` to start the project instead of rebuilding the entire project.
