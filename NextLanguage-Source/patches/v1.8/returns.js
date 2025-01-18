@@ -1,8 +1,8 @@
 const path = require('path');
 
-const config = path.join(__dirname, '../../../CONFIG');
-const preloadPath = path.join(__dirname, '../../../preload.js');
-const postloadPath = path.join(__dirname, '../../../postload.js');
+const config = path.join(__dirname, '../../../main.config.file');
+const Local = require('../../build/lib/memoryStore/Local.js');
+const packages = new Local();
 
 const contents = `# This is a comment, anything you write in this wont be executed.
 # The commands below me are what initializes the file structure.
@@ -66,6 +66,17 @@ const contents = `# This is a comment, anything you write in this wont be execut
 
     # This a demonstration of the fix!
     # @output decimal
-];`;
+];`
 
-module.exports = { contents, config, preloadPath, postloadPath }
+function returns() { 
+    return {
+        template: { 
+            indexFile: contents
+        }, 
+        path: {
+            config: config,
+        }
+    }
+};
+
+module.exports = { returns, packages }
