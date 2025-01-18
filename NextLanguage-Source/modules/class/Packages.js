@@ -1,5 +1,5 @@
-const addOutput = require('../functions/addOutput');
-const debugOutput = require('../functions/debugOutput');
+const addOutput = require('../../build/lib/output/addOutput');
+const debugOutput = require('../../build/lib/output/debugOutput');
 
 const { readFileSync, writeFileSync } = require('fs');
 const path = require('path');

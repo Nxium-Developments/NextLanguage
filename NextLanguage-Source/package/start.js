@@ -1,6 +1,5 @@
 const fs = require('fs');
 const compiler = require('./interpreter');
-const path = require('path');
 
 module.exports = async function run(file) {
     const response = fs.readFileSync(file, 'utf8');

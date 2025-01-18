@@ -1,7 +1,7 @@
 const path = require('path');
 
 const compiler = require('../../interpreter.js');
-const addOutput = require('../../../modules/functions/addOutput.js');
+const addOutput = require('../../../build/lib/output/addOutput.js');
 
 const Packages = require('../../../modules/class/Packages.js');
 const Debug = require('../../../modules/class/Debug.js');

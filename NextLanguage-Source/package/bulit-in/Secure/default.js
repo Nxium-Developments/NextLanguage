@@ -1,6 +1,6 @@
 module.exports = function Plugin(file, name, signature) {
-    const addOutput = require('../../../modules/functions/addOutput.js');
-    const debugOutput = require('../../../modules/functions/debugOutput.js');
+    const addOutput = require('../../../build/lib/output/addOutput.js');
+    const debugOutput = require('../../../build/lib/output/debugOutput.js');
 
     const Information = require(signature);
     const ExtractInfo = Information()
@@ -16,23 +16,17 @@ module.exports = function Plugin(file, name, signature) {
             debugOutput(`Loaded Plugin: ${name}`);
             eval(`const path = require('path');
 
-            const addOutput = require('../../../modules/functions/addOutput.js');
-            const debugOutput = require('../../../modules/functions/debugOutput.js');
+            const addOutput = require('../../../build/lib/output/addOutput.js');
+            const debugOutput = require('../../../build/lib/output/debugOutput.js');
         
-            const Local = require('../../../modules/class/temp/Local.js');
+            const Local = require('../../../build/lib/memoryStore/Local.js');
             const Package = require('../../../modules/class/Packages.js');
             
             const package = new Package;
             const local = new Local;
         
-            const { getVariables, setVariable } = require('../../../modules/functions/temp/Variables.js');
-            const { getFunctions, setFunction } = require('../../../modules/functions/temp/Functions.js');
-        
-            const createPreload = require("../../../patches/v1.9/modules/nodejs/pre/createPreload.js");
-            const runPreload = require("../../../patches/v1.9/modules/nodejs/pre/runPreload.js");
-        
-            const createPostload = require("../../../patches/v1.9/modules/nodejs/post/createPostload.js");
-            const runPostload = require("../../../patches/v1.9/modules/nodejs/post/runPostload.js");
+            const { getVariables, setVariable } = require('../../../build/lib/memoryStore/temp/Variables.js');
+            const { getFunctions, setFunction } = require('../../../build/lib/memoryStore/temp/Functions.js');
             ${file}
             Service()`); // Load the plugin (file)
         } else {

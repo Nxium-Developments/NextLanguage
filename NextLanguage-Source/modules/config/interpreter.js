@@ -1,17 +1,17 @@
-const addOutput = require('../functions/addOutput.js');
-const debugOutput = require('../functions/debugOutput.js');
-const install = require('../updateCheck.js');
+const addOutput = require('../../build/lib/output/addOutput.js');
+const debugOutput = require('../../build/lib/output/debugOutput.js');
+
+/** PLUGIN IMPORTS */
 const Plugin = require('../../package/bulit-in/Secure/default.js');
 const SecureService = require('../../package/bulit-in/Secure/package.js');
 const { DebugService } = require('../../package/bulit-in/Debugger/package.js');
 
+/** NODEJS IMPORTS */
 const path = require('path');
 const fs = require('fs');
 
-const Local = require('../class/temp/Local.js');
-const data = new Local();
-
-const packages = data.commands;
+const packages = require('../../patches/v1.8/returns.js').packages;
+const run = require('../../package/start.js');
 
 module.exports = async function runConfig(lines) {
     // Read and execute the NXL code, line by line
@@ -22,60 +22,15 @@ module.exports = async function runConfig(lines) {
         // Ignore comments
         if (line.startsWith("#") || line === "") continue;
 
-        if (line.startsWith("PACKAGE-MAIN")) {
-            const match = line.match(/PACKAGE-MAIN (.+)/);
+        if (line.startsWith("PACKAGES")) {
+            const match = line.match(/PACKAGES: \@(.+?) (.+)/);
             if (!match) continue;
-            const [, main] = match;
+            const [, args, path] = match;
 
-            if (main === "root/me") {
-                packages.main = main;
-                data.main(packages.main);
-            } else {
-                addOutput("No main file set in BUILD CONFIG");
-            }
-
-            debugOutput(`Main package set to: ${main}`);
-        }
-
-        if (line.startsWith("PACKAGES-LIST")) {
-            const match = line.match(/PACKAGES-LIST (.+)/);
-            if (!match) continue;
-            const [, packages] = match;
-
-            packages.forEach((package) => {
-                data.addCommand(package);
-                debugOutput(`Command package added: ${package}`);
-            });
-        }
-
-        if (line.startsWith("PRELOAD-PATH")) {
-            const match = line.match(/PRELOAD-PATH: (.+)/);
-            if (!match) continue;
-            const [, path] = match;
-
-            packages.preloadPath = path;
-            debugOutput(`Preload path set to: ${path}`);
-        }
-
-        if (line.startsWith("POSTLOAD-PATH")) {
-            const match = line.match(/POSTLOAD-PATH: (.+)/);
-            if (!match) continue;
-            const [, path] = match;
-
-            packages.postloadPath = path;
-            debugOutput(`Postload path set to: ${path}`);
-        }
-
-        if (line.startsWith("CHECK-FOR-UPDATES")) {
-            const match = line.match(/CHECK-FOR-UPDATES: (.+)/);
-            if (!match) continue;
-            const [, value] = match;
-
-            if (value === "true") {
-                install();
-            } else {
-                // Add no-update command
-                addOutput("Not checking for updates. Update Box set to false.");
+            // Set main package
+            if (args === "main") {
+                debugOutput(`Setting package: ${path}`);
+                run(path);
             }
         }
 

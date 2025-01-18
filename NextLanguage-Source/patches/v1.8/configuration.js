@@ -15,11 +15,11 @@ async function readConfig(file) {
 
 // TODO: Create a config file. And update config function.
 async function config()  {
-    if (fs.existsSync(path.join(__dirname, '../../../BUILD_CONFIG'))) {
-        const pathFile = path.join(__dirname, '../../../BUILD_CONFIG');
+    if (fs.existsSync(path.join(__dirname, '../../../package.config.val'))) {
+        const pathFile = path.join(__dirname, '../../../package.config.val');
         readConfig(pathFile);
     } else {
-        fs.writeFileSync(path.join(__dirname, '../../../BUILD_CONFIG'), configurationFile, 'utf-8', (err) => {
+        fs.writeFileSync(path.join(__dirname, '../../../package.config.val'), configurationFile, 'utf-8', (err) => {
             if (err) {
                 console.error(err);
                 return;

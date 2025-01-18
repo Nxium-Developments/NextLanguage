@@ -1,5 +1,5 @@
 const addOutput = require('./addOutput.js');
-const Debug = require('../class/Debug.js');
+const Debug = require('../../../modules/class/Debug.js');
 const debug = new Debug().debugMode;
 
 // Debug Output Modules
