@@ -16,20 +16,22 @@ const debugOutput = require("../../build/lib/output/debugOutput.js");
 const packages = require("../../patches/v1.8/returns.js").packages;
 
 /** Main Executor Function */
-const centralExecutor = async (ast, basePath = path.join(__dirname, '../../../')) => {
+const centralExecutor = async (ast) => {
     const context = {
         variables: {},
         functions: {},
         currentFunction: null,
         currentIfBlock: null,
+        exportedPackages: {},
     };
 
+    let basePath = path.resolve(__dirname, '../../../')
     /** Process each node in the AST */
     for (const node of ast) {
         try {
-            await processNode(node, basePath, context);
+            await processNode(node, basePath, context);            
         } catch (error) {
-            console.error(`Error processing node of type ${node.type}: ${error.message}`);
+            addOutput(`Error processing node of type ${node.type}: ${error}`);
         }
     }
 
@@ -40,13 +42,19 @@ const centralExecutor = async (ast, basePath = path.join(__dirname, '../../../')
 /** Function to process individual AST nodes */
 const processNode = async (node, basePath, context) => {
     switch (node.type) {
+        /** Function handling */
+        case "Function":
+            context.functions[node.name] = { body: [], executed: false };
+            context.currentFunction = node.name;
+            break;
+
         /** Package-related nodes */
         case "ImportPackage":
-            await handleImportPackage(node, basePath);
+            await handleImportPackage(node, context, basePath);
             break;
 
         case "ExportPackage":
-            await handleExportPackage(node, basePath, context);
+            await handleExportPackage(node.value, context);
             break;
 
         case "MainPackage":
@@ -59,12 +67,6 @@ const processNode = async (node, basePath, context) => {
 
         case "RequirePackage":
             addOutput(`Require: ${node.value}`);
-            break;
-
-        /** Function handling */
-        case "Function":
-            context.functions[node.name] = { body: [], executed: false };
-            context.currentFunction = node.name;
             break;
 
         case "Call":
@@ -109,8 +111,22 @@ const processNode = async (node, basePath, context) => {
     }
 };
 
+/** Handle package export */
+const handleExportPackage = (packageName, lines) => {
+    try {
+        // Write the relevant lines to the export file
+        const exportContent = lines.functions[packageName];
+        // fs.writeFileSync(exportFilePath, JSON.stringify(exportContent), "utf8");
+        lines.exportedPackages[packageName] = exportContent;
+        setFunction(packageName, exportContent);
+        debugOutput(`Exported package '${packageName}'`);
+    } catch (err) {
+        addOutput(`Failed to export package '${packageName}':`, err.message);
+    }
+};
+
 /** Handle package import */
-const handleImportPackage = async (node, basePath) => {
+const handleImportPackage = async (node, lines, basePath) => {
     const importPath = path.resolve(basePath, node.value);
     if (!fs.existsSync(importPath)) {
         throw new Error(`Import package not found: ${node.value}`);
@@ -118,33 +134,10 @@ const handleImportPackage = async (node, basePath) => {
     const importedAST = loadAST(importPath);
     addOutput(`Importing package: ${node.value}`);
     await centralExecutor(importedAST, path.dirname(importPath));
-};
 
-/** Handle package export */
-const handleExportPackage = (packageName, lines, basePath) => {
-    const exportFilePath = path.resolve(basePath, `${packageName}.nxl`);
-
-    try {
-        // Write the relevant lines to the export file
-        const exportContent = lines.join("\n");
-        fs.writeFileSync(exportFilePath, exportContent, "utf8");
-        console.log(`Exported package '${packageName}' to '${exportFilePath}'`);
-    } catch (err) {
-        console.error(`Failed to export package '${packageName}':`, err.message);
-    }
-};
-
-/** Handle function export */
-const exportFunction = (functionName, functionLines, basePath) => {
-    const exportFilePath = path.resolve(basePath, `${functionName}.nxl`);
-
-    try {
-        const exportContent = functionLines.join("\n");
-        fs.writeFileSync(exportFilePath, exportContent, "utf8");
-        console.log(`Exported function '${functionName}' to '${exportFilePath}'`);
-    } catch (err) {
-        console.error(`Failed to export function '${functionName}':`, err.message);
-    }
+    const importedPackages = getFunctions(node.value);
+    lines.functions = importedPackages;
+    lines.currentFunction = node.name;
 };
 
 /** Handle function calls */
@@ -152,7 +145,7 @@ const handleFunctionCall = (node, context) => {
     const { functions } = context;
     const functionData = functions[node.param];
     if (!functionData) {
-        console.error(`Function "${node.param}" not defined.`);
+        addOutput(`Function "${node.param}" not defined.`);
         return;
     }
     if (!functionData.executed) {
@@ -208,15 +201,9 @@ const postProcessAST = (ast, context) => {
 
         if (node.type === "Function" && functions[node.name]) {
             const functionData = functions[node.name];
-            if (functionData.executed) {
-                functionData.body.forEach((child) => {
-                    if (child.type === "OutputStatement") {
-                        addOutput(child.value);
-                    }
-                });
-            }
+            if (!functionData.executed) return false;
         }
     });
 };
 
-module.exports = centralExecutor, exportFunction;
+module.exports = centralExecutor;
