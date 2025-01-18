@@ -23,31 +23,15 @@ module.exports = async function runConfig(lines) {
         if (line.startsWith("#") || line === "") continue;
 
         if (line.startsWith("PACKAGES")) {
-            const match = line.match(/PACKAGES: \@(.+?) (.+) \@(.+?) (.+)/);
+            const match = line.match(/PACKAGES: \@(.+?) (.+)/);
             if (!match) continue;
-            const [, args, value, type, path] = match;
-            if (type !== "path") throw new Error("Package type must be 'path'");
+            const [, args, path] = match;
 
             // Set main package
-            if (args === "main" || args === "add") {
-                debugOutput(`Setting package: ${value}`);
+            if (args === "main") {
+                debugOutput(`Setting package: ${path}`);
                 run(path);
             }
-        }
-
-        if (line.startsWith("HEADERFILE")) {
-            const match = line.match(/HEADERFILE: (.+) \@(.+?) (.+)/);
-            if (!match) continue;
-            const [, name, args, value] = match;
-
-            if (!name) throw new Error("Headerfile name is required");
-
-            // Add Packages
-            if (args === "add") {
-                debugOutput(`Adding Header File: ${value}`);
-                packages.addHeader(name, value);
-            }
-
         }
 
         if (line.startsWith("PLUGINS")) {
