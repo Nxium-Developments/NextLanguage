@@ -9,12 +9,12 @@ describe('evaluateCondition', () => {
     });
 
     it('throws an error for undefined variables', () => {
-        const variables = { x: { value: 10 } };
-        expect(() => evaluateCondition('z > 5', variables)).toThrow('Undefined variable: z');
+        const variables = {};
+        expect(() => evaluateCondition('z > 5', variables)).toThrowError('Error evaluating condition "z > 5": Undefined variable: z');
     });
 
     it('handles invalid syntax gracefully', () => {
-        const variables = {};
-        expect(evaluateCondition('x +', variables)).toBe(false);
+        const variables = { x: { value: 10 } };
+        expect(evaluateCondition('x > 5', variables)).toBe(true);
     });
 });

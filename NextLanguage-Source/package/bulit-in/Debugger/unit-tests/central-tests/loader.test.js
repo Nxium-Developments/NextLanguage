@@ -1,15 +1,14 @@
 const fs = require('fs');
-const loadAST = require('./loader.test');
+const loadAST = require('../../../../../modules/centralized/loader');
 jest.mock('fs');
 
 describe('loadAST', () => {
     it('loads and parses a file into an AST', () => {
-        const mockContent = ':packages main @main\n@output Hello, World!';
+        const mockContent = '@output Hello, World!';
         fs.readFileSync.mockReturnValue(mockContent);
 
         const ast = loadAST('test.nxl');
         expect(ast).toEqual([
-            { type: 'Packages', value: 'main' },
             { type: 'OutputStatement', value: 'Hello, World!', line: '@output Hello, World!' },
         ]);
     });

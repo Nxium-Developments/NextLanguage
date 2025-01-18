@@ -1,6 +1,6 @@
 const centralExecutor = require('../../../../../modules/centralized/executor');
 const addOutput = require('../../build/lib/output/addOutput');
-jest.mock('../../build/lib/output/addOutput');
+jest.mock('../../build/lib/output/addOutput')
 
 describe('centralExecutor', () => {
     it('processes OutputStatement nodes', async () => {
