@@ -1,0 +1,28 @@
+releaseAs:
+  description: 'Release as major|minor|patch'
+  required: false
+  default: 'minor'
+prerelease:
+  description: 'Pre-release version alpha|beta|...'
+  required: false
+
+name: "Standard Version Nodejs Updates"
+jobs:
+  standard-version-nodejs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ltv/standard-version-action@v1.8.0
+      - uses: actions/checkout@v2
+      - name: Configure committer
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: Bump version
+        id: release
+        uses: ltv/standard-version-action@v2
+        with:
+          releaseAs: 'minor'
+      - run: |
+        echo "Released version: $VERSION"
+      env:
+        VERSION: ${{ steps.release.output.version }}
