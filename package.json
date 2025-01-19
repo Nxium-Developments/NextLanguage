@@ -4,7 +4,8 @@
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
   "main": "NextLanguage-Source/github-build.js",
   "scripts": {
-    "github": "node . app.nxl",
+    "github": "node .",
+    "debug": "node NextLanguage-Source/run-debug.js",
     "build": "npm run activate && echo Run `npm run start` to start the project after building",
     "activate": "node NextLanguage-Source/app.js app.nxl",
     "start": "nodemon NextLanguage-Source/init.js",
