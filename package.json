@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm install && npm run activate && echo Run `npm run start` to start the project after building",
     "activate": "node . app.nxl",
-    "start": "nodemon NextLanguage/init.js",
+    "start": "nodemon NextLanguage-Source/init.js",
     "test": "jest "
   },
   "repository": {
