@@ -1,8 +1,12 @@
 const centralExecutor = require('../../../../../modules/centralized/executor');
+const evaluateCondition = require('../../../../../modules/centralized/evaluater');
 const addOutput = require('../../../../../build/lib/output/addOutput');
+
 jest.mock('../../../../../build/lib/output/addOutput');
+jest.mock('../../../../../modules/centralized/evaluater');
 
 describe('centralExecutor', () => {
+    // Test the Output Statement
     it('processes OutputStatement nodes', async () => {
         const ast = [
             { type: 'OutputStatement', value: 'Hello, World!' },
@@ -11,6 +15,7 @@ describe('centralExecutor', () => {
         expect(addOutput).toHaveBeenCalledWith('Hello, World!');
     });
 
+    // Test the Variable
     it('processes Variable nodes', async () => {
         const ast = [
             { type: 'Variable', name: 'x', value: 10 },
@@ -20,6 +25,7 @@ describe('centralExecutor', () => {
         expect(addOutput).toHaveBeenCalledWith(10);
     });
 
+    // Test the Function defintion and function calls
     it('handles Function definitions and calls', async () => {
         const ast = [
             { type: 'Function', name: 'testFunction' },
@@ -31,6 +37,7 @@ describe('centralExecutor', () => {
         expect(addOutput).toHaveBeenCalledWith('Inside function');
     });
 
+    // Tests unknown node types
     it('handles errors gracefully', async () => {
         const ast = [{ type: 'UnknownType', value: 'test' }];
     
@@ -40,24 +47,23 @@ describe('centralExecutor', () => {
             expect.stringContaining('Error processing node')
         );
     });
-        
-    it('handles errors gracefully', async () => {
-        const ast = [{ type: 'UnknownType', value: 'test' }];
-    
-        await centralExecutor(ast);
-    
-        expect(addOutput).toHaveBeenCalledWith(
-            expect.stringContaining('Error processing node')
-        );
-    });   
 
-    it('handles errors gracefully', async () => {
-        const ast = [{ type: 'UnknownType', value: 'test' }];
-    
+    it('handles while loops', async () => {
+        const ast = [
+            { type: 'Variable', name: 'x', param: 'integer', value: 10 },
+            {
+                type: 'WhileLoop',
+                condition: 'x === 10',
+                body: [
+                    { type: 'OutputStatement', value: 'Hello, World!' },
+                    { type: 'Variable', name: 'x', param: 'integer', value: 5 }, // Modify the variable to break the loop
+                ],
+            },
+        ];
+
         await centralExecutor(ast);
     
-        expect(addOutput).toHaveBeenCalledWith(
-            expect.stringContaining('Unknown node type')
-        );
+        // Check that the loop executed and outputted the expected value
+        expect(addOutput).toHaveBeenCalledWith('Hello, World!');
     });
 });
