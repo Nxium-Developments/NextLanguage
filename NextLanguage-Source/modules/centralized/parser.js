@@ -52,8 +52,16 @@ module.exports = centralParse = (lines) => {
                 return { type: "EndStatement" };
             } else
 
+            /** LOOP STATEMENTS */
+            if (line.startsWith("@while")) {
+                return { type: "WhileLoop", condition: line.match(/@while \[(.+?)\]:/)?.[1], body: [], index: line.match(/@while \[(.+?)\]:/)?.index };
+            } else
+
+            if (line.startsWith("@for")) {
+                return { type: "ForLoop", variable: line.match(/@for \[(.+?)\]/)?.[1], arguments: line.match(/@for \[(.+?)\] (.+)/)?.[2], range: line.match(/@for \[(.+?)\] (.+) \[(.+?)\]:/)?.[3], body: [], index: line.match(/@for \[(.+?)\] (.+) \[(.+?)\]:/)?.index };
+            } else
+
             /** OUTPUT STATEMENTS */
-            
             if (line.startsWith("@output")) {
                 return { type: "OutputStatement", value: line.match(/@output (.+)/)?.[1], line: line.match(/@output (.+)/)?.[0] };
             }
@@ -63,11 +71,11 @@ module.exports = centralParse = (lines) => {
                 return { type: "Variable", name: line.match(/@var \[(.+?)\]:/)?.[1], param: line.match(/@var \[(.+?)\]: \((.+?)\)/)?.[2], value: line.match(/@var \[(.+?)\]: \((.+?)\)(.+)/)?.[3] };
             } else
 
-            /** GENERIC STATEMENTS */
-            if (line.startsWith(":@")) {
-                return { type: "ArgumentStatement", arguments: line.match(/:@(.+?) /)?.[1], param: line.match(/:@(.+?) (.+)/)?.[2], full: line.match(/:@(.+?) (.+)/)?.[0] };
+            if (line.startsWith("@input")) {
+                return { type: "InputStatement", prompt: line.match(/@input \[(.+)\]:/)?.[1], variable: line.match(/@input \[(.+)\]: (.+)/)?.[2] };
             }
 
+            /** GENERIC STATEMENTS */
             else {
                 return { type: "Generic", content: line };
             }

@@ -15,10 +15,10 @@ module.exports = evaluateCondition = (condition, variables) => {
                 throw new Error(`Undefined variable: ${varName}`);
             }
         );
-        // Use `eval` to evaluate the condition
-        return eval(replacedCondition);
+        // Use `eval` to evaluate the condition and ensure only boolean is returned
+        return !!eval(replacedCondition); // Double negation ensures a boolean result
     } catch (error) {
         console.error(`Error evaluating condition "${condition}": ${error.message}`);
-        return false;
+        return false; // Return false in case of any error
     }
 };
