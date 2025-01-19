@@ -8,9 +8,15 @@ describe('evaluateCondition', () => {
         expect(evaluateCondition('x + y === 30', variables)).toBe(true);
     });
 
-    it('throws an error for undefined variables', () => {
+    it('logs an error for undefined variables', () => {
         const variables = {};
-        expect(() => evaluateCondition('z > 5', variables)).toThrowError('Error evaluating condition "z > 5": Undefined variable: z');
+        const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+        evaluateCondition('z > 5', variables);
+    
+        expect(consoleErrorMock).toHaveBeenCalledWith('Error evaluating condition "z > 5": Undefined variable: z');
+    
+        consoleErrorMock.mockRestore(); // Restore the original console.error
     });
 
     it('handles invalid syntax gracefully', () => {

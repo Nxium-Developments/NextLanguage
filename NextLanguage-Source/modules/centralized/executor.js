@@ -103,7 +103,8 @@ const processNode = async (node, basePath, context) => {
             break;
 
         default:
-            console.warn(`Unknown node type: ${node.type}`);
+            addOutput(`Unknown node type: ${node.type}`);
+            addOutput(`Error processing node: ${node.type}`);
     }
 };
 

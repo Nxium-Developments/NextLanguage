@@ -1,6 +1,6 @@
 const centralExecutor = require('../../../../../modules/centralized/executor');
-const addOutput = require('../../build/lib/output/addOutput');
-jest.mock('../../build/lib/output/addOutput')
+const addOutput = require('../../../../../build/lib/output/addOutput');
+jest.mock('../../../../../build/lib/output/addOutput');
 
 describe('centralExecutor', () => {
     it('processes OutputStatement nodes', async () => {
@@ -32,10 +32,32 @@ describe('centralExecutor', () => {
     });
 
     it('handles errors gracefully', async () => {
-        const ast = [
-            { type: 'UnknownType', value: 'test' },
-        ];
+        const ast = [{ type: 'UnknownType', value: 'test' }];
+    
         await centralExecutor(ast);
-        expect(addOutput).toHaveBeenCalledWith(expect.stringContaining('Error processing node'));
+    
+        expect(addOutput).toHaveBeenCalledWith(
+            expect.stringContaining('Error processing node')
+        );
+    });
+        
+    it('handles errors gracefully', async () => {
+        const ast = [{ type: 'UnknownType', value: 'test' }];
+    
+        await centralExecutor(ast);
+    
+        expect(addOutput).toHaveBeenCalledWith(
+            expect.stringContaining('Error processing node')
+        );
+    });   
+
+    it('handles errors gracefully', async () => {
+        const ast = [{ type: 'UnknownType', value: 'test' }];
+    
+        await centralExecutor(ast);
+    
+        expect(addOutput).toHaveBeenCalledWith(
+            expect.stringContaining('Unknown node type')
+        );
     });
 });
