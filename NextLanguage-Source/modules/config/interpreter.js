@@ -32,6 +32,10 @@ module.exports = async function runConfig(lines) {
                 debugOutput(`Setting package: ${path}`);
                 run(path);
             }
+
+            if (args === "others") {
+                run(path);
+            }
         }
 
         if (line.startsWith("PLUGINS")) {
