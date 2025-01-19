@@ -4,7 +4,7 @@
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
   "main": "NextLanguage-Source/app.js",
   "scripts": {
-    "build": "npm install && npm run activate && echo Run `npm run start` to start the project after building",
+    "build": "npm run activate && echo Run `npm run start` to start the project after building",
     "activate": "node . app.nxl",
     "start": "nodemon NextLanguage-Source/init.js",
     "test": "jest "
