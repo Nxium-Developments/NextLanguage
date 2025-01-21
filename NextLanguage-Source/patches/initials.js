@@ -1,7 +1,6 @@
 const fs = require('fs');
 
 const path = require('path');
-const config = require('./v1.8/returns.js').returns().path.config;
 const template = require('./v1.8/returns.js').returns().template.indexFile;
 
 if (!fs.existsSync(config)) {
@@ -14,14 +13,6 @@ if (!fs.existsSync(config)) {
         console.error('A: Please provide the path to the .nxl file as an argument.');
         process.exit(1);
     };
-
-    // Writes the configuration File
-    fs.writeFile(config, `${content}`, 'utf8', (err) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-    });
 
     // Writes the main file contents
     fs.writeFileSync(content, template, 'utf8', (err) => {
