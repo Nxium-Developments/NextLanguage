@@ -30,11 +30,7 @@ int main(int argc, char* argv[]) {
         // Execute the npm run build command
         std::system("npm start");
     } else if (command == "run") {
-        if (!file) {
-            std::cerr << "Please provide a file" << std::endl;
-            return 1;
-        }
-        std::system("npm start" << file)
+        std::system("npm start");
     } else {
         std::cerr << "Error: Invalid command. Use 'build' to run 'npm run build'." << std::endl;
         return 1;

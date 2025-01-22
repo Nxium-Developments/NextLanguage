@@ -20,5 +20,7 @@ package.config.val
 index.html
 preload.js
 postload.js
+nextlang
 
 !NextLanguage/build/config
+!generator/bin/scripts/nextlang
