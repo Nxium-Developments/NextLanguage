@@ -2,13 +2,13 @@
   "name": "nextlanguage",
   "version": "1.3.0",
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
-  "main": "NextLanguage-Source/github-build.js",
+  "main": "src/github-build.js",
   "scripts": {
     "github": "node .",
-    "debug": "node NextLanguage-Source/run-debug.js",
+    "debug": "node src/run-debug.js",
     "build": "npm run activate && echo Run `npm run start` to start the project after building",
-    "activate": "node NextLanguage-Source/app.js app.nxl",
-    "start": "nodemon NextLanguage-Source/init.js",
+    "activate": "node src/app.js app.nxl",
+    "start": "nodemon src/init.js",
     "test": "jest "
   },
   "repository": {
