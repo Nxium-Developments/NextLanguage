@@ -11,7 +11,6 @@ NextLanguage-Source/builded
 # Testing files
 Custom/App.js
 Custom/default.js
-app.js
 
 # Single project built files
 main.config.file
