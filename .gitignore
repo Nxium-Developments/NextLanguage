@@ -8,6 +8,11 @@ NextLanguage-Source/build.config.nxlf
 NextLanguage-Source/package-lock.json
 NextLanguage-Source/builded
 
+src/build/log
+src/build.config.nxlf
+src/package-lock.json
+src/builded
+
 # Testing files
 Custom/App.js
 Custom/default.js
