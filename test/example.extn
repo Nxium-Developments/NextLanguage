@@ -1,0 +1,4 @@
+let a = alloc::int(42)
+let b = alloc::int(8)
+let c = add::(a ~~ b)
+print c

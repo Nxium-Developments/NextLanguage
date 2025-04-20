@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build NextLang",
+        "type": "shell",
+        "command": "gcc",
+        "args": [
+          "src/nextlang.c",
+          "src/parser.c",
+          "src/codegen.c",
+          "src/memory.c",
+          "-o",
+          "nextlang"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  }
+  
