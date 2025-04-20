@@ -2,9 +2,9 @@ const addOutput = require('../../build/lib/output/addOutput.js');
 const debugOutput = require('../../build/lib/output/debugOutput.js');
 
 /** PLUGIN IMPORTS */
-const Plugin = require('../../package/bulit-in/Secure/default.js');
-const SecureService = require('../../package/bulit-in/Secure/package.js');
-const { DebugService } = require('../../package/bulit-in/Debugger/package.js');
+const Plugin = require('../../package/built-in/Secure/default.js');
+const SecureService = require('../../package/built-in/Secure/package.js');
+const { DebugService } = require('../../package/built-in/Debugger/package.js');
 
 /** NODEJS IMPORTS */
 const path = require('path');
@@ -52,7 +52,7 @@ module.exports = async function runConfig(lines) {
             if (rename === "Secure") { eval(plugins); SecureService(); 
             } else if (rename === "Debugger") { eval(plugins); DebugService(); } else if (name) {
                 // Import the plugin, Secure
-                const enabled = require('../../package/bulit-in/Secure/package.js').secured;
+                const enabled = require('../../package/built-in/Secure/package.js').secured;
                 
                 // Path Verification
                 const string = plugins.replace('path: ', '');

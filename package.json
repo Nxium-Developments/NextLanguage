@@ -1,6 +1,6 @@
 {
-  "name": "nextlanguage",
-  "version": "1.3.0",
+  "name": "@nxium/nextlanguage",
+  "version": "2.0.0",
   "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
   "main": "src/github-build.js",
   "scripts": {
