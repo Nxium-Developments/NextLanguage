@@ -1,6 +1,8 @@
 #include "codegen.h"
-#include "version.h"
 #include "parser.h"
+#include "version.h"
+#include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 void generate_c_code(FILE* in, FILE* out) {
