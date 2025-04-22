@@ -1,4 +1,6 @@
+#include "version.h"
 #include "parser.h"
+#include <stdlib.h>
 #include <string.h>
 
 void parse_by_version(char* line, FILE* out, int version) {
