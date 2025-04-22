@@ -1,3 +1,0 @@
-let x = alloc::int(5)
-let y = alloc::int(10)
-let z = add::(x ~~ y)
