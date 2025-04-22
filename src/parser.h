@@ -3,8 +3,10 @@
 
 #include <stdio.h>
 
-void parse_line(char* line, FILE* out);
 void init_parser(FILE* out);  // new
 void finish_parser(FILE* out); // new
+
+void parse_line_v1(char* line, FILE* out);
+void parse_line_v2(char* line, FILE* out); // Future version
 
 #endif

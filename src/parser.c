@@ -6,14 +6,58 @@
 
 void init_parser(FILE* out) {
     fprintf(out, "#include <stdio.h>\n");
-    fprintf(out, "#include <stdlib.h>\n");
-    fprintf(out, "#include \"memory.h\"\n");
-    fprintf(out, "\n");
-    fprintf(out, "int* alloc_int(int val) {\n");
+    fprintf(out, "#include <stdlib.h>\n\n");
+
+    // Inline memory system
+    fprintf(out, "typedef struct MemoryBlock {\n");
+    fprintf(out, "    void* ptr;\n");
+    fprintf(out, "    struct MemoryBlock* next;\n");
+    fprintf(out, "} MemoryBlock;\n\n");
+
+    fprintf(out, "MemoryBlock* memory_list = NULL;\n\n");
+
+    fprintf(out, "int* alloc_int(int value) {\n");
     fprintf(out, "    int* ptr = malloc(sizeof(int));\n");
-    fprintf(out, "    *ptr = val;\n");
+    fprintf(out, "    if (!ptr) { printf(\"Memory allocation failed!\\n\"); exit(1); }\n");
+    fprintf(out, "    *ptr = value;\n");
+    fprintf(out, "    MemoryBlock* block = malloc(sizeof(MemoryBlock));\n");
+    fprintf(out, "    block->ptr = ptr;\n");
+    fprintf(out, "    block->next = memory_list;\n");
+    fprintf(out, "    memory_list = block;\n");
     fprintf(out, "    return ptr;\n");
     fprintf(out, "}\n\n");
+
+    fprintf(out, "void free_int(int* ptr) {\n");
+    fprintf(out, "    if (!ptr) return;\n");
+    fprintf(out, "    MemoryBlock* prev = NULL;\n");
+    fprintf(out, "    MemoryBlock* current = memory_list;\n");
+    fprintf(out, "    while (current != NULL) {\n");
+    fprintf(out, "        if (current->ptr == ptr) {\n");
+    fprintf(out, "            if (prev) prev->next = current->next;\n");
+    fprintf(out, "            else memory_list = current->next;\n");
+    fprintf(out, "            free(ptr);\n");
+    fprintf(out, "            free(current);\n");
+    fprintf(out, "            return;\n");
+    fprintf(out, "        }\n");
+    fprintf(out, "        prev = current;\n");
+    fprintf(out, "        current = current->next;\n");
+    fprintf(out, "    }\n");
+    fprintf(out, "    printf(\"Attempted to free untracked memory!\\n\");\n");
+    fprintf(out, "    exit(1);\n");
+    fprintf(out, "}\n\n");
+
+    fprintf(out, "void free_all() {\n");
+    fprintf(out, "    MemoryBlock* current = memory_list;\n");
+    fprintf(out, "    while (current != NULL) {\n");
+    fprintf(out, "        free(current->ptr);\n");
+    fprintf(out, "        MemoryBlock* temp = current;\n");
+    fprintf(out, "        current = current->next;\n");
+    fprintf(out, "        free(temp);\n");
+    fprintf(out, "    }\n");
+    fprintf(out, "    memory_list = NULL;\n");
+    fprintf(out, "}\n\n");
+
+    // Start of main()
     fprintf(out, "int main() {\n");
 }
 
@@ -25,7 +69,7 @@ int is_identifier_char(char c) {
     return isalnum(c) || c == '_';
 }
 
-void parse_line(char* line, FILE* out) {
+void parse_line_v1(char* line, FILE* out) {
     if (strncmp(line, "let ", 4) == 0) {
         // Handle variable declarations
         char var[64], expr[256];
@@ -88,3 +132,68 @@ void parse_line(char* line, FILE* out) {
     }
 }
 
+void parse_line_v2(char* line, FILE* out) {
+    // Handle variable declaration
+    if (strncmp(line, "let ", 4) == 0) {
+        char var[64], expr[256];
+        if (sscanf(line + 4, "%s = %[^\n]", var, expr) == 2) {
+
+            if (strncmp(expr, "new int = ", 10) == 0) {
+                int val;
+                sscanf(expr + 10, "%d", &val);
+                fprintf(out, "    int* %s = alloc_int(%d);\n", var, val);
+            }
+
+            else if (strncmp(expr, "new int", 7) == 0) {
+                fprintf(out, "    int* %s = NULL;\n", var);
+            }
+
+            else if (strncmp(expr, "copy ", 5) == 0) {
+                char source[64];
+                sscanf(expr + 5, "%s", source);
+                fprintf(out, "    int* %s = alloc_int(*%s);\n", var, source);
+            }
+
+            else if (strchr(expr, '+')) {
+                char left[64], right[64];
+                sscanf(expr, "%s + %s", left, right);
+                fprintf(out, "    int* %s = alloc_int(*%s + *%s);\n", var, left, right);
+            }
+
+            else if (strncmp(expr, "*", 1) == 0) {
+                char src[64];
+                sscanf(expr + 1, "%s", src);
+                fprintf(out, "    int %s = *%s;\n", var, src);
+            }
+        }
+    }
+
+    // Handle print
+    else if (strncmp(line, "print ", 6) == 0) {
+        char expr[256];
+        strcpy(expr, line + 6);
+        expr[strcspn(expr, "\n")] = 0;
+
+        if (expr[0] == '"') {
+            expr[strlen(expr) - 1] = '\0';
+            fprintf(out, "    printf(\"%%s\\n\", \"%s\");\n", expr + 1);
+        } else {
+            fprintf(out, "    printf(\"%%d\\n\", %s);\n", expr);
+        }
+    }
+
+    // Drop memory
+    else if (strncmp(line, "drop ", 5) == 0) {
+        char var[64];
+        sscanf(line + 5, "%s", var);
+        fprintf(out, "    free(%s);\n", var);
+    }
+
+    // Mutate pointer value: *x = 5
+    else if (line[0] == '*' && strstr(line, "=")) {
+        char var[64];
+        int value;
+        sscanf(line, "*%s = %d", var, &value);
+        fprintf(out, "    *%s = %d;\n", var, value);
+    }
+}

@@ -5,7 +5,7 @@
 #include "codegen.h"
 
 void print_help() {
-    printf("NextLanguage Compiler v0.1\n");
+    printf("NextLanguage Compiler v1.0\n");
     printf("Usage: nextlang [options] <source.extn>\n");
     printf("Options:\n");
     printf("  -o <file>        Output filename (default: output.exe)\n");
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
 
     // Build compile command
     char cmd[512];
-    snprintf(cmd, sizeof(cmd), "%s output.c src/memory.c -o \"%s\" %s", compiler, outfile, cflags);
+    snprintf(cmd, sizeof(cmd), "%s output.c -o \"%s\" %s", compiler, outfile, cflags);
 
     int status = system(cmd);
     if (status == 0)

@@ -6,19 +6,24 @@ typedef struct MemoryBlock {
     struct MemoryBlock* next;
 } MemoryBlock;
 
-MemoryBlock* memory_list = NULL; // Keep track of allocated memory blocks
+static MemoryBlock* memory_list = NULL; // Internal memory tracking list
 
-// Function to allocate memory for an integer and add it to memory tracking list
+// Allocate memory for an int and track it
 int* alloc_int(int value) {
-    int* ptr = malloc(sizeof(int));  // Allocate memory
+    int* ptr = (int*)malloc(sizeof(int));
     if (!ptr) {
-        printf("Memory allocation failed!\n");
-        exit(1);
+        fprintf(stderr, "[memory.c] Memory allocation failed!\n");
+        exit(EXIT_FAILURE);
     }
-    *ptr = value;  // Initialize the allocated memory with the given value
+    *ptr = value;
 
-    // Add to memory tracking list
-    MemoryBlock* block = malloc(sizeof(MemoryBlock));
+    MemoryBlock* block = (MemoryBlock*)malloc(sizeof(MemoryBlock));
+    if (!block) {
+        fprintf(stderr, "[memory.c] Failed to track memory allocation!\n");
+        free(ptr);
+        exit(EXIT_FAILURE);
+    }
+
     block->ptr = ptr;
     block->next = memory_list;
     memory_list = block;
@@ -26,25 +31,20 @@ int* alloc_int(int value) {
     return ptr;
 }
 
-
-// Function to free memory and remove from memory tracking list
+// Free a specific int* and remove it from tracking
 void free_int(int* ptr) {
-    if (!ptr) return; // Don't free a null pointer
+    if (!ptr) return;
 
-    // Find the block in the list and remove it
     MemoryBlock* prev = NULL;
     MemoryBlock* current = memory_list;
 
     while (current != NULL) {
         if (current->ptr == ptr) {
-            if (prev) {
-                prev->next = current->next;
-            } else {
-                memory_list = current->next; // Removing the first element
-            }
+            if (prev) prev->next = current->next;
+            else memory_list = current->next;
 
-            free(ptr);  // Free the allocated memory
-            free(current);  // Free the memory block itself
+            free(ptr);
+            free(current);
             return;
         }
 
@@ -52,21 +52,20 @@ void free_int(int* ptr) {
         current = current->next;
     }
 
-    // If no block was found, that's an error
-    printf("Attempted to free untracked memory!\n");
-    exit(1);
+    fprintf(stderr, "[memory.c] Attempted to free untracked memory at %p!\n", (void*)ptr);
+    exit(EXIT_FAILURE);
 }
 
-// Function to free all allocated memory
+// Free all tracked allocations
 void free_all() {
     MemoryBlock* current = memory_list;
-
     while (current != NULL) {
-        free(current->ptr);  // Free the memory
+        free(current->ptr);
+
         MemoryBlock* temp = current;
         current = current->next;
-        free(temp);  // Free the memory block itself
+        free(temp);
     }
 
-    memory_list = NULL;  // Reset the memory list
+    memory_list = NULL;
 }
