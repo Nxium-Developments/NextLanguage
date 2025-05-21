@@ -10,6 +10,7 @@
           "src/parser.c",
           "src/codegen.c",
           "src/memory.c",
+          "src/version.c", // This took me an embarrassingly long time to figure out
           "-o",
           "nextlang"
         ],
