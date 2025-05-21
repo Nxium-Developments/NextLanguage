@@ -5,4 +5,4 @@ function printCurrentLoops continue
     print currentLoops
 end
 
-for if currentLoops < maxLoops exec function printCurrentLoops
+for [if currentLoops < maxLoops] exec [function printCurrentLoops]
