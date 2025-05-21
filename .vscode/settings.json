@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "string.h": "c"
+        "string.h": "c",
+        "stdlib.h": "c",
+        "version.h": "c",
+        "parser.h": "c"
     }
 }
