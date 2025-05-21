@@ -1,4 +1,5 @@
 #include "parser.h"
+#include <cstring>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -133,8 +134,44 @@ void parse_line_v1(char* line, FILE* out) {
 }
 
 void parse_line_v2(char* line, FILE* out) {
+    static bool in_function = false; // Keeps track if we're inside a function
+
+    if (strncmp(line, "function ", 9) == 0) {
+        char name[64];
+        sscanf(line + 9, "%s", name);
+        size_t name_length = std::strlen(name);
+        
+        if (strncmp(line + 9 + name_length + 1, "continue ", 9) == 0) {
+            // Handle the continue logic: reparse or continue the logic inside the function
+            fprintf(out, "    // Handling continue logic for function %s\n", name);
+            in_function = true; // Enable function processing
+            parse_line_v2(line, out); // Start processing function
+        } else if (strncmp(line, + 9 + name_length + 1, "exec ", 5) == 0) {
+            // Not implemented.
+        }
+    }
+    // If we're inside a function, continue processing until we hit "end" or "}"
+    else if (in_function) {
+        // Handle the function body
+        if (strncmp(line, "end", 3) == 0 || line[0] == '}') {
+            // End of the function or block reached, stop the recursion
+            in_function = false;
+            fprintf(out, "// Function processing ended.\n");
+            return; // End processing this function
+        }
+
+        // Continue processing the line (inside the function)
+        fprintf(out, "// Processing function body: %s\n", line);
+        // Recursively call parse_line_v2 for the next line
+        parse_line_v2(line, out);
+    }
+
+    else if (strncmp(line, "for ", 4) == 0) {
+        // not implemented
+    }
+
     // Handle variable declaration
-    if (strncmp(line, "let ", 4) == 0) {
+    else if (strncmp(line, "let ", 4) == 0) {
         char var[64], expr[256];
         if (sscanf(line + 4, "%s = %[^\n]", var, expr) == 2) {
 
