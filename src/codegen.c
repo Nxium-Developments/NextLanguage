@@ -1,6 +1,6 @@
-#include "codegen.h"
 #include "parser.h"
 #include "version.h"
+#include "codegen.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
