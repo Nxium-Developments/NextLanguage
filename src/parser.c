@@ -167,7 +167,15 @@ void parse_line_v2(char* line, FILE* out) {
     }
 
     else if (strncmp(line, "for ", 4) == 0) {
-        // not implemented
+        char condition[256];
+        if (sscanf(line + 4, "[%s] ", condition) == 2) {
+            if (strncmp(condition, "if ", 3) == 0) {
+                char value_1[64]; // The values in the condition
+                char value_2[64];
+                char expression[12]; // the condition? aka = (equals) > (more than), etc
+                sscanf(condition + 3, "%s %s %s", value_1, expression, value_2);
+            }
+        }
     }
 
     // Handle variable declaration
