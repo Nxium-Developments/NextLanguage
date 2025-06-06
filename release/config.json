@@ -9,5 +9,5 @@
     "build_changelog": "updates/v1.0.0/changelog.md",
     "changes": ["Initial release."],
     "update_available": false
-  }
+}
   
