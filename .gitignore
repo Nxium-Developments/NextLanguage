@@ -6,3 +6,8 @@ index.js
 config.json
 package.js
 nextlang_old
+nextlang-portable
+nextlang-musl
+nextlang-portable-musl
+nextlang-portable-x64.exe
+nextlang-x64.exe
