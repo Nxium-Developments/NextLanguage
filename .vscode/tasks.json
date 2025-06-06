@@ -20,6 +20,27 @@
           "kind": "build",
           "isDefault": true
         }
+      },
+      {
+        "label": "Build NextLang (Portable)",
+        "type": "shell",
+        "command": "musl-gcc",
+        "args": [
+          "-static",
+          "src/nextlang.c",
+          "src/parser.c",
+          "src/codegen.c",
+          "src/memory.c",
+          "src/version.c", // This took me an embarrassingly long time to figure out
+          "src/utils/updater.c",
+          "src/utils/package.c",
+          "-o",
+          "nextlang"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
       }
     ]
   }
