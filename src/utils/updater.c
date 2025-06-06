@@ -39,7 +39,7 @@ int validate_update_environment() {
         return 0;
     }
 
-    FILE *fp = fopen("index.js", "r");
+    FILE *fp = fopen("./index.js", "r");
     if (!fp) {
         fprintf(stderr, "❌ index.js not found.\n");
         return 0;
