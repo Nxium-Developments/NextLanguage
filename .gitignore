@@ -1,6 +1,6 @@
-nextlang
-output.c
-output.exe
-nul
-index.js
-config.json
+./nextlang
+./output.c
+./output.exe
+./nul
+./index.js
+./config.json
