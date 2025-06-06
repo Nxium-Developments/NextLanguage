@@ -1,0 +1,46 @@
+@version 2
+
+// Function definition with continue
+function my_func continue
+    let a = new int = 10
+    let b = new int = 5
+    let c = copy a
+    let d = a + b
+    let e = *a
+    print "Inside function"
+    print a
+end
+
+// Variable declarations
+let x = new int = 42
+let y = new int
+let z = copy x
+let sum = x + z
+let value = *z
+
+// Print operations
+print "Hello, World"
+print sum
+
+// Pointer mutation
+*sum = 100
+print sum
+
+// Drop memory
+drop sum
+drop x
+drop y
+drop z
+
+// While loop
+while [1]
+    print "In while loop"
+    let temp = new int = 99
+    drop temp
+end
+
+// Unsupported or edge-case
+// print unsupported_var
+// let invalid = unknown_expr
+// *badptr = 777
+// drop nothing

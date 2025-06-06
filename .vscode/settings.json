@@ -48,7 +48,8 @@
         "streambuf": "c",
         "cinttypes": "c",
         "typeinfo": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdbool.h": "c"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/g++",
     "C_Cpp.errorSquiggles": "disabled"
