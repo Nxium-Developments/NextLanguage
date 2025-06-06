@@ -1,0 +1,22 @@
+{
+    "version": "v2.0-dev_2",
+    "name": "NextLanguage Remaster",
+    "description": "An Development Release, that rewrites all NextLanguage logics into C.",
+    "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev_2/changelog.md",
+    "changes": "Rewrote updater logic in C, added JS logic for index checking.",
+    "language": "C",
+    "release_type": "dev",
+    "files": [
+      "nextlang",
+      "package.js",
+      "index.js",
+      "config.json"
+    ],
+    "links": [
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_2/nextlang",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_2/package.js",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_2/index.js",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_2/config.json"
+    ]
+}
+  

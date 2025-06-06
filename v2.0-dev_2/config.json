@@ -1,0 +1,25 @@
+{
+    "release_type": "dev",
+    "last_update_check": "",
+    "last_updated": "",
+    "build_version": "v2.0",
+    "build_language": ["C", "JS"],
+    "build_name": "Remaster of NextLanguage (from JS to C)",
+    "build_description": "Rewritten the entirety of the codebase from JS to C.",
+    "build_changelog": "updates/v2.0/changelog.md",
+    "changes": [
+        "Rewrote the entire parser logic from JS to C.",
+        "Rewrote the code generation logic from JS to C.",
+        "Added an auto updater utility.",
+        "Added a command line interface.",
+        "Added a versioning system.",
+        "Added a changelog system.",
+        "Added a packaging system.",
+        "Added a new memory management system.",
+
+        "Fixed Update systems.",
+        "Removed always checking for updates on each run.",
+        "Updated help menu (minor adjustment)."
+    ],
+    "update_available": false
+}
