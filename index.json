@@ -3,17 +3,22 @@
     {
       "version": "v2.0-dev_0",
       "release_type": "dev",
-      "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev_0/changelog.md"
+      "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev/changelog.md"
     },
     {
       "version": "v2.0-dev_1",
       "release_type": "dev",
-      "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev_1/changelog.md"
+      "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev/changelog.md"
     },
     {
       "version": "v2.0-dev_2",
       "release_type": "dev",
-      "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev_2/changelog.md"
+      "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev/changelog.md"
+    },
+    {
+      "version": "v2.0-dev_3",
+      "release_type": "dev",
+      "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev/changelog.md"
     }
   ]
 }
