@@ -1,5 +1,9 @@
 {
     "files.associations": {
+        "*.page-template": "vue",
+        "*.layout-template": "vue",
+        "*.vue": "vue",
+        "*.sh": "shellscript",
         "string.h": "c",
         "stdlib.h": "c",
         "version.h": "c",
@@ -49,7 +53,9 @@
         "cinttypes": "c",
         "typeinfo": "c",
         "stdio.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "updater.h": "c",
+        "package.h": "c"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/g++",
     "C_Cpp.errorSquiggles": "disabled"
