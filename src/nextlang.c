@@ -18,12 +18,14 @@ void print_help() {
     printf("Usage: nextlang [options] <source.extn>\n");
     printf("Options:\n");
     printf("  -o <file>        Output filename (default: output.exe)\n");
+    printf("  -au              Apply updates without prompt\n");
     printf("  --output <file>  Same as -o\n");
     printf("  --cc <compiler>  Compiler to use (default: gcc)\n");
     printf("  --cflags <flags> Extra flags to pass to compiler\n");
     printf("  --version        Show compiler version\n");
     printf("  --silent         Suppress non-error output\n");
     printf("  --auto           Auto update without prompt\n");
+    printf("  --apply-updates  Same as -au\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -102,8 +104,6 @@ int main(int argc, char* argv[]) {
         check_for_updates(MODE_AUTO);
     else if (silent)
         check_for_updates(MODE_SILENT);
-    else
-        check_for_updates(MODE_DEFAULT);
     
     if (apply_updates) {
         apply_update();
