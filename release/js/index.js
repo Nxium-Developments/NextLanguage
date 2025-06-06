@@ -104,7 +104,7 @@ function markUpdate(config, build) {
         changelog: buildMeta.changelog || "",
         files: buildMeta.files || [],
         download_links: buildMeta.files.map(f =>
-            `https://raw.githubusercontent.com/<your-org-or-user>/<your-repo>/updates/${build.version}/${f}`
+            `https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/${build.version}/${f}`
         )
     };
 
