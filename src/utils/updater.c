@@ -52,6 +52,22 @@ void check_for_updates() {
     check_for_updates_mode(MODE_DEFAULT);
 }
 
+void apply_update_package() {
+    printf("🚚 Applying update package...\n");
+    int result = run_cmd("node package.js");
+    if (result == 0) {
+        printf("✅ Update package applied successfully.\n");
+    } else {
+        fprintf(stderr, "❌ Failed to apply update package.\n");
+    }
+}
+
+void apply_update() {
+    if (!validate_update_environment()) return;
+
+    apply_update_package();
+}
+
 void check_for_updates_mode(UpdateMode mode) {
     if (!validate_update_environment()) return;
 
@@ -76,6 +92,11 @@ void check_for_updates_mode(UpdateMode mode) {
     if (result == 0) {
         if (mode != MODE_SILENT) {
             printf("✅ Update check completed.\n");
+        }
+
+        // If auto mode, apply update right away
+        if (mode == MODE_AUTO) {
+            apply_update_package();
         }
     } else {
         fprintf(stderr, "⚠️ Failed to run update checker.\n");
