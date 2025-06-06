@@ -1,9 +1,0 @@
-@version 2
-
-let a = new int = 5
-let b = new int = 10
-let c = a + b
-print *c
-drop a
-drop b
-drop c

@@ -1,4 +1,0 @@
-@version 1
-
-let x = alloc::int(5)
-print x

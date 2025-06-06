@@ -1,0 +1,20 @@
+{
+    "version": "1.2.3",
+    "name": "NextLanguage Auto-Updater",
+    "description": "Stable release with full auto-updating logic.",
+    "changelog": "https://github.com/YOUR_USER/YOUR_REPO/blob/updates/1.2.3/changelog.md",
+    "changes": "Rewrote updater logic in C, added JS logic for index checking.",
+    "language": "C, JS",
+    "release_type": "stable",
+    "files": [
+      "app.exe",
+      "package.js",
+      "index.js"
+    ],
+    "links": [
+      "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/updates/1.2.3/app.exe",
+      "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/updates/1.2.3/package.js",
+      "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/updates/1.2.3/index.js"
+    ]
+}
+  

@@ -1,8 +1,0 @@
-let maxLoops = new int = 5
-let currentLoops = new int
-
-function printCurrentLoops continue
-    print currentLoops
-end
-
-for [if currentLoops < maxLoops] exec [function printCurrentLoops]

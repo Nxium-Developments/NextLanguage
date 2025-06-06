@@ -1,0 +1,13 @@
+{
+    "release_type": "beta",
+    "last_update_check": "2025-06-06T12:00:00Z",
+    "last_updated": "2025-06-01T12:00:00Z",
+    "build_version": "v1.0.0",
+    "build_language": ["C", "JS"],
+    "build_name": "MyApp",
+    "build_description": "Initial beta release.",
+    "build_changelog": "updates/v1.0.0/changelog.md",
+    "changes": ["Initial release."],
+    "update_available": false
+}
+  

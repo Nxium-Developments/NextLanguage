@@ -1,0 +1,20 @@
+{
+    "version": "v2.0-dev",
+    "name": "NextLanguage Remaster",
+    "description": "An Development Release, that rewrites all NextLanguage logics into C.",
+    "changelog": "https://github.com/YOUR_USER/YOUR_REPO/blob/updates/v2.0-dev/changelog.md",
+    "changes": "Rewrote updater logic in C, added JS logic for index checking.",
+    "language": "C",
+    "release_type": "dev",
+    "files": [
+      "app.exe",
+      "package.js",
+      "index.js"
+    ],
+    "links": [
+      "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/updates/v2.0-dev/app.exe",
+      "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/updates/v2.0-dev/package.js",
+      "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/updates/v2.0-dev/index.js"
+    ]
+}
+  
