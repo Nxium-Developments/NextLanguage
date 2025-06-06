@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
     char* cflags = "";
     int silent = 0;
     int auto_mode = 0;
+    int apply_updates = 0;
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--version") == 0) {
@@ -56,6 +57,12 @@ int main(int argc, char* argv[]) {
             auto_mode = 1;
         } else if (strstr(argv[i], ".extn")) {
             infile = argv[i];
+        }
+
+        // Apply updates
+        else if (strcmp(argv[i], "-au") == 0 || strcmp(argv[i], "--apply-updates") == 0) {
+            auto_mode = 1;
+            apply_updates = 1;
         }
 
         // Debugging dev features
@@ -97,6 +104,11 @@ int main(int argc, char* argv[]) {
         check_for_updates(MODE_SILENT);
     else
         check_for_updates(MODE_DEFAULT);
+    
+    if (apply_updates) {
+        apply_update();
+        return 0;
+    }
 
     if (!infile) {
         if (!silent) printf("❌ Error: No source .extn file provided\n");
