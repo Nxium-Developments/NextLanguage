@@ -56,7 +56,35 @@ int main(int argc, char* argv[]) {
             auto_mode = 1;
         } else if (strstr(argv[i], ".extn")) {
             infile = argv[i];
-        } else {
+        }
+
+        // Debugging dev features
+        else if (strcmp(argv[i], "--debug") == 0) {
+            BuildInfo info; // Checks if config.json exists
+            if (read_build_info(&info)) { // And if it's a dev build
+                if (strcmp(info.release_type, "dev") != 0) return 0;
+            }
+
+            if (i + 1 >= argc) {
+                printf("Missing debug command after --debug\n");
+                return 1;
+            }
+
+            // Debug commands
+            char* args = argv[i + 1];
+            if (strstr(args, "test-update") != NULL) {
+                check_for_updates();
+            }
+            
+            else {
+                printf("Unknown debug command: %s\n", args);
+                return 1;
+            }
+            
+            i++; // Skip the debug command
+        }
+
+        else {
             if (!silent) printf("Unknown option: %s\n", argv[i]);
             return 1;
         }
