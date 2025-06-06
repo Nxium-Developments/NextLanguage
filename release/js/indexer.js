@@ -14,6 +14,7 @@ function generateIndex() {
 
     const builds = versions.map(version => {
         const buildPath = path.join(updatesDir, version, 'build.json');
+        if (buildPath.includes('release')) return null;
         if (fs.existsSync(buildPath)) {
             try {
                 const buildData = JSON.parse(fs.readFileSync(buildPath, 'utf8'));
