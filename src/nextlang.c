@@ -3,15 +3,15 @@
 #include <string.h>
 #include "parser.h"
 #include "codegen.h"
-#include "../utils/updater.h"
+#include "./utils/updater.h"
 #include "./utils/package.h"
 
 void print_help() {
-    char *build_info_json = get_build_info();
-    if (build_info_json) {
-        printf("NextLanguage Compiler %s", build_info_json.build_version, "\n");
-        free(build_info_json);
+    BuildInfo info;
+    if (read_build_info(&info)) {
+        printf("NextLanguage Compiler %s\n", info.build_version);
     } else {
+        printf("Failed to retrieve build version info.\n\n");
         printf("NextLanguage Compiler (null)\n");
     }
 
@@ -41,13 +41,8 @@ int main(int argc, char* argv[]) {
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--version") == 0) {
-            char *build_info_json = get_build_info();
-            if (build_info_json) {
-                printf("\n%s\n", build_info_json);
-                free(build_info_json);
-            } else {
-                printf("Failed to retrieve build info.\n");
-            }
+            BuildInfo info;
+            if (read_build_info(&info)) print_build_info(&info);
             return 0;
         } else if ((strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) && i + 1 < argc) {
             outfile = argv[++i];
