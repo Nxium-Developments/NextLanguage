@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 function generateIndex() {
-    const updatesDir = path.join('../..');
+    const updatesDir = path.join('.');
     if (!fs.existsSync(updatesDir)) {
         console.error('❌ "updates/" directory not found.');
         process.exit(1);
