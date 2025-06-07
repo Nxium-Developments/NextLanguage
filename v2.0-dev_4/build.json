@@ -1,0 +1,34 @@
+{
+    "version": "v2.0-dev_4",
+    "name": "NextLanguage Remaster",
+    "description": "An Development Release, that rewrites all NextLanguage logics into C.",
+    "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev/changelog.md",
+    "changes": "Rewrote updater logic in C, added JS logic for index checking.",
+    "language": "C",
+    "release_type": "dev",
+    "files": [
+      "nextlang",
+      "nextlang-musl",
+      "nextlang-portable",
+      "nextlang-portable-musl",
+      "nextlang-portable-x64.exe",
+      "nextlang-x64.exe",
+
+      "package.js",
+      "index.js",
+      "config.json"
+    ],
+    "links": [
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/nextlang",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/nextlang-musl",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/nextlang-portable",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/nextlang-portable-musl",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/nextlang-portable-x64.exe",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/nextlang-x64.exe",
+
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/package.js",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/index.js",
+      "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev_3/config.json"
+    ]
+}
+  
