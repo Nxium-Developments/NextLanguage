@@ -18,13 +18,14 @@ void print_help() {
     printf("Usage: nextlang [options] <source.extn>\n");
     printf("Options:\n");
     printf("  -o <file>        Output filename (default: output.exe)\n");
-    printf("  -au              Apply updates without prompt\n");
+    printf("  -au              Apply updates\n");
+    printf("  -cu              Checks for updates\n");
     printf("  --output <file>  Same as -o\n");
     printf("  --cc <compiler>  Compiler to use (default: gcc)\n");
     printf("  --cflags <flags> Extra flags to pass to compiler\n");
     printf("  --version        Show compiler version\n");
     printf("  --silent         Suppress non-error output\n");
-    printf("  --auto           Auto update without prompt\n");
+    printf("  --check-updates  Same as -cu\n");
     printf("  --apply-updates  Same as -au\n");
 }
 
@@ -55,23 +56,28 @@ int main(int argc, char* argv[]) {
             cflags = argv[++i];
         } else if (strcmp(argv[i], "--silent") == 0) {
             silent = 1;
-        } else if (strcmp(argv[i], "--auto") == 0) {
-            auto_mode = 1;
         } else if (strstr(argv[i], ".extn")) {
             infile = argv[i];
         }
 
         // Apply updates
         else if (strcmp(argv[i], "-au") == 0 || strcmp(argv[i], "--apply-updates") == 0) {
-            auto_mode = 1;
             apply_updates = 1;
+        }
+
+        // Check for updates
+        else if (strcmp(argv[i], "-cu") == 0 || strcmp(argv[i], "--check-updates") == 0) {
+            auto_mode = 1;
         }
 
         // Debugging dev features
         else if (strcmp(argv[i], "--debug") == 0) {
             BuildInfo info; // Checks if config.json exists
             if (read_build_info(&info)) { // And if it's a dev build
-                if (strcmp(info.release_type, "dev") != 0) return 0;
+                if (strcmp(info.release_type, "dev") != 0) {
+                    printf("--debug is only available in dev builds\n");
+                    return 0;
+                }
             }
 
             if (i + 1 >= argc) {
