@@ -12,8 +12,6 @@
     "cleanup.js",
     "config.json",
     "index.js",
-    "nextlang-linux.exe",
-    "nextlang-win.exe",
     "package.js"
   ],
   "binaries": [
@@ -21,11 +19,11 @@
     "nextlang-win.exe"
   ],
   "links": [
-    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev5/cleanup.js",
-    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev5/config.json",
-    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev5/index.js",
-    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev5/nextlang-linux.exe",
-    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev5/nextlang-win.exe",
-    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev5/package.js"
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev6/cleanup.js",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev6/config.json",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev6/index.js",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev6/nextlang-linux.exe",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev6/nextlang-win.exe",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev6/package.js"
   ]
 }
