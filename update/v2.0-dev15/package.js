@@ -19,6 +19,7 @@ function getLatestUpdateDir() {
   const updateDir = path.join(updateRoot, updateVersion);
   return updateDir;
 }
+
 function stopRunningBinary(tempName) {
   try {
     const baseName = tempName.replace('_old', '');
@@ -62,7 +63,7 @@ function applyUpdate(latestDir) {
         fs.writeFileSync(destPath, binaryBuffer);
         console.log(`✅ Updated ${bin} from embedded binary data`);
       } else {
-        const srcPath = path.join(updateRoot, latestDir, bin);
+        const srcPath = path.join(latestDir, bin);
         if (!fs.existsSync(srcPath)) {
           console.error(`❌ Binary file missing: ${srcPath}`);
           return;
@@ -114,4 +115,4 @@ if (!updateDir) {
 }
 
 applyUpdate(updateDir);
-updateConfig(updateDir);
+updateConfig(readConfig().update_info.version);

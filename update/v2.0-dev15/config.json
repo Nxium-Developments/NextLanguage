@@ -2,7 +2,7 @@
     "release_type": "dev",
     "last_update_check": "",
     "last_updated": "",
-    "build_version": "v2.0-dev14",
+    "build_version": "v2.0-dev15",
     "build_language": ["C", "JS"],
     "build_name": "Remaster of NextLanguage (from JS to C)",
     "build_description": "Rewritten the entirety of the codebase from JS to C.",
