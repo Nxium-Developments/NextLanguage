@@ -54,6 +54,7 @@ function publishBuild() {
         language: config.build_language,
         release_type: config.release_type,
         files: files,
+        binaries: files.filter(file => file.endsWith('.exe')),
         links: files.map(file => `${downloadBase}${file}`)
     };
 

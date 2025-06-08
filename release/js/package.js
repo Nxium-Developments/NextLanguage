@@ -1,86 +1,114 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
-const CONFIG_PATH = 'config.json';
+const configPath = path.join(__dirname, 'config.json');
+const updateRoot = path.join(__dirname, 'updates');
 
 function readConfig() {
-    return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+  try {
+    const content = fs.readFileSync(configPath, 'utf-8');
+    return JSON.parse(content);
+  } catch (err) {
+    console.error('❌ Failed to read config.json:', err);
+    return null;
+  }
 }
 
-function writeConfig(config) {
-    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
+function getLatestUpdateDir() {
+  try {
+    const dirs = fs.readdirSync(updateRoot, { withFileTypes: true })
+      .filter(entry => entry.isDirectory())
+      .map(dir => dir.name)
+      .sort()
+      .reverse(); // latest first
+    return dirs[0] || null;
+  } catch (err) {
+    console.error('❌ Failed to read updates directory:', err);
+    return null;
+  }
 }
-
-function downloadFile(url, dest, callback) {
-    const file = fs.createWriteStream(dest);
-    https.get(url, response => {
-        if (response.statusCode !== 200) {
-            console.error(`Failed to download ${url} (Status: ${response.statusCode})`);
-            file.close();
-            fs.unlinkSync(dest);
-            return callback(new Error(`Failed to download: ${url}`));
-        }
-        response.pipe(file);
-        file.on('finish', () => {
-            file.close(callback);
-        });
-    }).on('error', err => {
-        fs.unlinkSync(dest);
-        return callback(err);
-    });
-}
-
-function applyUpdate() {
-    const config = readConfig();
-
-    if (!config.update_available || !config.update_info) {
-        console.log('No update to apply.');
-        return;
+function stopRunningBinary(tempName) {
+  try {
+    const baseName = tempName.replace('_old', '');
+    if (fs.existsSync(baseName)) {
+      fs.renameSync(baseName, tempName);
     }
-
-    const update = config.update_info;
-    const files = update.files;
-    const links = update.download_links;
-
-    if (!Array.isArray(files) || !Array.isArray(links) || files.length !== links.length) {
-        console.error('Update metadata is corrupted or incomplete.');
-        return;
-    }
-
-    console.log(`Applying update to version ${update.version}...`);
-
-    let completed = 0;
-
-    files.forEach((file, index) => {
-        const link = links[index];
-        const destPath = path.join('.', file);
-        const destDir = path.dirname(destPath);
-
-        if (!fs.existsSync(destDir)) {
-            fs.mkdirSync(destDir, { recursive: true });
-        }
-
-        downloadFile(link, destPath, (err) => {
-            if (err) {
-                console.error(`Error downloading ${file}:`, err.message);
-                return;
-            }
-
-            console.log(`Downloaded ${file}`);
-            completed++;
-
-            if (completed === files.length) {
-                console.log(`All files downloaded. Finalizing update...`);
-                config.build_version = update.version;
-                config.update_available = false;
-                config.last_updated = new Date().toISOString();
-                delete config.update_info;
-                writeConfig(config);
-                console.log(`Update applied successfully to version ${config.build_version}`);
-            }
-        });
-    });
+  } catch (err) {
+    console.error(`❌ Could not safely move ${tempName}:`, err);
+    throw err;
+  }
 }
 
-applyUpdate();
+function applyUpdate(latestDir) {
+  const buildJsonPath = path.join(updateRoot, latestDir, 'build.json');
+  if (!fs.existsSync(buildJsonPath)) {
+    console.error(`❌ build.json not found at ${buildJsonPath}`);
+    process.exit(1);
+  }
+
+  const buildData = JSON.parse(fs.readFileSync(buildJsonPath, 'utf8'));
+  const binaries = buildData.binaries || [];
+  const memoryBinaries = buildData.binary_data || {}; // optional: { "binaryName": base64String }
+
+  if (binaries.length === 0) {
+    console.error('❌ No binaries listed in build.json');
+    process.exit(1);
+  }
+
+  try {
+    binaries.forEach(bin => {
+      const destPath = path.join(__dirname, bin);
+      stopRunningBinary(bin + '_old'); // Make sure old version is moved
+
+      if (memoryBinaries[bin]) {
+        const binaryBuffer = Buffer.from(memoryBinaries[bin], 'base64');
+        fs.writeFileSync(destPath, binaryBuffer);
+        console.log(`✅ Updated ${bin} from embedded binary data`);
+      } else {
+        const srcPath = path.join(updateRoot, latestDir, bin);
+        if (!fs.existsSync(srcPath)) {
+          console.error(`❌ Binary file missing: ${srcPath}`);
+          return;
+        }
+
+        fs.copyFileSync(srcPath, destPath);
+        console.log(`✅ Copied ${bin} from update folder`);
+      }
+
+      fs.chmodSync(destPath, 0o755);
+    });
+
+    console.log(`✅ All binaries updated to version ${latestDir}`);
+  } catch (err) {
+    console.error('❌ Failed to apply update:', err);
+    process.exit(1);
+  }
+}
+
+function updateConfig(version) {
+  const config = readConfig();
+  if (!config) return;
+
+  config.last_updated = new Date().toISOString();
+  config.update_available = false;
+  config.build_version = version;
+
+  try {
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    console.log('📝 Config updated.');
+  } catch (err) {
+    console.error('❌ Failed to update config.json:', err);
+  }
+}
+
+// Main
+console.log('Applying update to version...');
+const updateDir = getLatestUpdateDir();
+
+if (!updateDir) {
+  console.log('❌ No update directory found.');
+  process.exit(1);
+}
+
+applyUpdate(updateDir);
+updateConfig(updateDir);

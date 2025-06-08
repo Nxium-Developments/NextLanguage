@@ -7,9 +7,11 @@
     "language": "C, JS",
     "release_type": "stable",
     "files": [
-      "app.exe",
       "package.js",
       "index.js"
+    ],
+    "binaries": [
+      "app.exe"
     ],
     "links": [
       "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/updates/1.2.3/app.exe",
