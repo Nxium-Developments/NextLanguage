@@ -1,10 +1,9 @@
+const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { execSync, spawn } = require('child_process');
 
 const configPath = path.join(__dirname, 'config.json');
 const updateRoot = path.join(__dirname, 'updates');
-const binaryName = 'nextlang'; // Adjust as needed for platform
 
 function readConfig() {
   try {
@@ -29,38 +28,72 @@ function getLatestUpdateDir() {
     return null;
   }
 }
-
-function stopRunningBinary(tempName = `${binaryName}_old`) {
+function stopRunningBinary(tempName) {
   try {
-    // Rename the old binary instead of deleting it immediately
-    if (fs.existsSync(binaryName)) {
-      fs.renameSync(binaryName, tempName);
+    const baseName = tempName.replace('_old', '');
+    if (fs.existsSync(baseName)) {
+      fs.renameSync(baseName, tempName);
     }
   } catch (err) {
-    console.error(`❌ Could not safely move ${binaryName}:`, err);
+    console.error(`❌ Could not safely move ${tempName}:`, err);
     throw err;
   }
 }
 
 function applyUpdate(latestDir) {
-  const srcPath = path.join(updateRoot, latestDir, binaryName);
-  const destPath = path.join(__dirname, binaryName);
+  const buildJsonPath = path.join(updateRoot, latestDir, 'build.json');
+  if (!fs.existsSync(buildJsonPath)) {
+    console.error(`❌ build.json not found at ${buildJsonPath}`);
+    process.exit(1);
+  }
 
-  if (!fs.existsSync(srcPath)) {
-    console.error(`❌ Update binary not found at ${srcPath}`);
+  const buildData = JSON.parse(fs.readFileSync(buildJsonPath, 'utf8'));
+  const binaries = buildData.binaries || [];
+  const memoryBinaries = buildData.binary_data || {}; // optional: { "binaryName": base64String }
+
+  if (binaries.length === 0) {
+    console.error('❌ No binaries listed in build.json');
     process.exit(1);
   }
 
   try {
-    stopRunningBinary(); // Avoid ETXTBSY
+    binaries.forEach(bin => {
+      const destPath = path.join(__dirname, bin);
+      stopRunningBinary(bin + '_old'); // Make sure old version is moved
 
-    fs.copyFileSync(srcPath, destPath);
-    fs.chmodSync(destPath, 0o755);
-    console.log(`✅ Updated to version ${latestDir}`);
+      if (memoryBinaries[bin]) {
+        const binaryBuffer = Buffer.from(memoryBinaries[bin], 'base64');
+        fs.writeFileSync(destPath, binaryBuffer);
+        console.log(`✅ Updated ${bin} from embedded binary data`);
+      } else {
+        const srcPath = path.join(updateRoot, latestDir, bin);
+        if (!fs.existsSync(srcPath)) {
+          console.error(`❌ Binary file missing: ${srcPath}`);
+          return;
+        }
+
+        fs.copyFileSync(srcPath, destPath);
+        console.log(`✅ Copied ${bin} from update folder`);
+      }
+
+      fs.chmodSync(destPath, 0o755);
+    });
+
+    console.log(`✅ All binaries updated to version ${latestDir}`);
   } catch (err) {
     console.error('❌ Failed to apply update:', err);
     process.exit(1);
   }
+}
+
+function cleanupUpdates() {
+    exec('node cleanup.js --cleanup', (err, stdout, stderr) => {
+      if (err) {
+        console.error('❌ Failed to cleanup updates:', err);
+      } else {
+        console.log('✅ Updates cleaned up.');
+      }
+    });
 }
 
 function updateConfig(version) {
@@ -90,3 +123,4 @@ if (!updateDir) {
 
 applyUpdate(updateDir);
 updateConfig(updateDir);
+cleanupUpdates();
