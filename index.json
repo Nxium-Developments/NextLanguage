@@ -24,6 +24,11 @@
       "version": "v2.0-dev_4",
       "release_type": "dev",
       "changelog": "https://github.com/Nxium-Developments/NextLanguage/blob/updates/v2.0-dev/changelog.md"
+    },
+    {
+      "version": "v2.0-dev5",
+      "release_type": "dev",
+      "changelog": "updates/v2.0/changelog.md"
     }
   ]
 }
