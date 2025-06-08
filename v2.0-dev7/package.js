@@ -41,18 +41,17 @@ function stopRunningBinary(tempName) {
 }
 
 function applyUpdate(latestDir) {
-  const buildJsonPath = path.join(updateRoot, latestDir, 'build.json');
-  if (!fs.existsSync(buildJsonPath)) {
-    console.error(`❌ build.json not found at ${buildJsonPath}`);
+  if (!fs.existsSync(configPath)) {
+    console.error(`❌ config.json not found at ${configPath}`);
     process.exit(1);
   }
 
-  const buildData = JSON.parse(fs.readFileSync(buildJsonPath, 'utf8'));
-  const binaries = buildData.binaries || [];
-  const memoryBinaries = buildData.binary_data || {}; // optional: { "binaryName": base64String }
+  const buildData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const binaries = buildData.update_info.binaries || [];
+  const memoryBinaries = buildData.update_info.binary_data || {}; // optional: { "binaryName": base64String }
 
   if (binaries.length === 0) {
-    console.error('❌ No binaries listed in build.json');
+    console.error('❌ No binaries listed in config.json');
     process.exit(1);
   }
 
