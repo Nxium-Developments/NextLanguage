@@ -1,3 +1,4 @@
+const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -85,6 +86,16 @@ function applyUpdate(latestDir) {
   }
 }
 
+function cleanupUpdates() {
+    exec('node cleanup.js --cleanup', (err, stdout, stderr) => {
+      if (err) {
+        console.error('❌ Failed to cleanup updates:', err);
+      } else {
+        console.log('✅ Updates cleaned up.');
+      }
+    });
+}
+
 function updateConfig(version) {
   const config = readConfig();
   if (!config) return;
@@ -112,3 +123,4 @@ if (!updateDir) {
 
 applyUpdate(updateDir);
 updateConfig(updateDir);
+cleanupUpdates();
