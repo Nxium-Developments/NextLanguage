@@ -10,7 +10,6 @@
           "src/nextlang.c",
           "src/parser.c",
           "src/codegen.c",
-          "src/memory.c",
           "src/version.c", // This took me an embarrassingly long time to figure out
           "src/utils/updater.c",
           "src/utils/package.c",
@@ -31,7 +30,6 @@
           "src/nextlang.c",
           "src/parser.c",
           "src/codegen.c",
-          "src/memory.c",
           "src/version.c", // This took me an embarrassingly long time to figure out
           "src/utils/updater.c",
           "src/utils/package.c",
