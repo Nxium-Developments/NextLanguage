@@ -38,7 +38,7 @@ function applyUpdate(latestDir) {
     process.exit(1);
   }
 
-  const buildData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const buildData = readConfig();
 
   if (buildData.update_available !== true) {
     console.log('❌ No update available');
