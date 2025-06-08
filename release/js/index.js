@@ -23,8 +23,8 @@ function log(...args) {
 // === CONFIG + INDEX LOADER ===
 // =============================
 
-const CONFIG_PATH = 'config.json';
-const INDEX_PATH = path.join('updates', 'index.json');
+let CONFIG_PATH = path.join(__dirname, 'config.json');
+let INDEX_PATH = path.join(__dirname, 'updates', 'index.json');
 
 function readConfig() {
     return readJSON(CONFIG_PATH);
@@ -43,8 +43,51 @@ function fetchIndex() {
 // === VERSION COMPARISON =====
 // =============================
 
+function versionPriority(current, candidate) {
+    /**
+     * versionPriority("1.0.0-dev1", "1.0.0-dev2") // true
+     * versionPriority("1.0.0-alpha", "1.0.0-beta") // true
+     * versionPriority("1.0.0", "1.0.0-dev1") // true (null < dev)
+     * versionPriority("1.0.0-test", "1.0.0-beta") // false (test > beta)
+     */
+
+    const priority = {
+        null: 0,
+        dev: 1,
+        nightly: 2,
+        alpha: 3,
+        beta: 4,
+        test: 5,
+        stable: 6
+    };
+
+    // Helper to extract the tag from version string
+    function extractTag(version) {
+        if (!version) return 'null';
+        for (const tag of Object.keys(priority)) {
+            if (tag !== 'null' && version.includes(tag)) return tag;
+        }
+        return 'null'; // default if no known tag found
+    }
+
+    const currentTag = extractTag(current);
+    const candidateTag = extractTag(candidate);
+
+    const currentPriority = priority[currentTag];
+    const candidatePriority = priority[candidateTag];
+
+    if (candidatePriority > currentPriority) {
+        return true;
+    } else if (candidatePriority < currentPriority) {
+        return false;
+    } else {
+        // Same tag, do numeric-aware comparison
+        return candidate.localeCompare(current, undefined, { numeric: true, sensitivity: 'base' }) > 0;
+    }
+}
+
 function isNewerVersion(current, candidate) {
-    return candidate.localeCompare(current, undefined, { numeric: true, sensitivity: 'base' }) > 0;
+    return versionPriority(current, candidate);
 }
 
 // =============================
@@ -62,7 +105,11 @@ function selectBuild(config, builds) {
 
     if (newer.length === 0) return null;
 
-    const latest = newer.sort((a, b) => b.version.localeCompare(a.version))[0];
+    const latest = newer.sort((a, b) => {
+        if (versionPriority(a.version, b.version)) return -1;
+        if (versionPriority(b.version, a.version)) return 1;
+        return 0;
+    })[0];
     return latest;
 }
 
@@ -93,8 +140,8 @@ function promptUser(config, candidate) {
 // === CONFIG UPDATE WRITER ===
 // =============================
 
-function markUpdate(config, build) {
-    const buildJsonPath = path.join('updates', build.version, 'build.json');
+function markUpdate(config, build, baseDir) {
+    const buildJsonPath = path.join(baseDir, 'updates', build.version, 'build.json');
     const buildMeta = readJSON(buildJsonPath);
 
     config.update_available = true;
@@ -122,6 +169,12 @@ const args = process.argv.slice(2);
 const silentMode = args.includes('--silent');
 const autoMode = args.includes('--auto');
 
+const baseDirArg = args.find(arg => arg.startsWith('--base-dir='));
+const baseDir = baseDirArg ? baseDirArg.split('=')[1].replace('\\index.js', '') : process.cwd();  // fallback if not provided
+
+CONFIG_PATH = path.join(baseDir, 'config.json');
+INDEX_PATH = path.join(baseDir, 'updates', 'index.json');
+
 function checkForUpdates() {
     const config = readConfig();
     const index = fetchIndex();
@@ -134,10 +187,10 @@ function checkForUpdates() {
 
     if (autoMode) {
         // Automatically mark update without prompts
-        markUpdate(config, build);
+        markUpdate(config, build, baseDir);
     } else {
         promptUser(config, build);
-        markUpdate(config, build);
+        markUpdate(config, build, baseDir);
     }
 }
 

@@ -1,9 +1,8 @@
-const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const configPath = path.join(__dirname, 'config.json');
-const updateRoot = path.join(__dirname, 'updates');
+let configPath = path.join(__dirname, 'config.json');
+let updateRoot = path.join(__dirname, 'updates');
 
 function readConfig() {
   try {
@@ -47,6 +46,12 @@ function applyUpdate(latestDir) {
   }
 
   const buildData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+
+  if (buildData.update_available !== true) {
+    console.log('❌ No update available');
+    process.exit(0);
+  }
+
   const binaries = buildData.update_info.binaries || [];
   const memoryBinaries = buildData.update_info.binary_data || {}; // optional: { "binaryName": base64String }
 
@@ -85,16 +90,6 @@ function applyUpdate(latestDir) {
   }
 }
 
-function cleanupUpdates() {
-    exec('node cleanup.js --cleanup', (err, stdout, stderr) => {
-      if (err) {
-        console.error('❌ Failed to cleanup updates:', err);
-      } else {
-        console.log('✅ Updates cleaned up.');
-      }
-    });
-}
-
 function updateConfig(version) {
   const config = readConfig();
   if (!config) return;
@@ -114,6 +109,12 @@ function updateConfig(version) {
 // Main
 console.log('Applying update to version...');
 const updateDir = getLatestUpdateDir();
+const args = process.argv.slice(2);
+const baseDirArg = args.find(arg => arg.startsWith('--base-dir='));
+const baseDir = baseDirArg ? baseDirArg.split('=')[1].replace('\\package.js', '') : process.cwd();
+
+configPath = path.join(baseDir, 'config.json');
+updateRoot = path.join(baseDir, 'updates');
 
 if (!updateDir) {
   console.log('❌ No update directory found.');
@@ -122,4 +123,3 @@ if (!updateDir) {
 
 applyUpdate(updateDir);
 updateConfig(updateDir);
-cleanupUpdates();
