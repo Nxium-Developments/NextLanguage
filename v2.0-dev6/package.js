@@ -47,11 +47,11 @@ function applyUpdate(latestDir) {
   }
 
   const buildData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  const binaries = buildData.binaries || [];
-  const memoryBinaries = buildData.binary_data || {}; // optional: { "binaryName": base64String }
+  const binaries = buildData.update_info.binaries || [];
+  const memoryBinaries = buildData.update_info.binary_data || {}; // optional: { "binaryName": base64String }
 
   if (binaries.length === 0) {
-    console.error('❌ No binaries listed in build.json');
+    console.error('❌ No binaries listed in config.json');
     process.exit(1);
   }
 
