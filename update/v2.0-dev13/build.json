@@ -1,0 +1,29 @@
+{
+  "version": "v2.0-dev13",
+  "name": "Remaster of NextLanguage (from JS to C)",
+  "description": "Rewritten the entirety of the codebase from JS to C.",
+  "changelog": "updates/v2.0/changelog.md",
+  "language": [
+    "C",
+    "JS"
+  ],
+  "release_type": "dev",
+  "files": [
+    "cleanup.js",
+    "config.json",
+    "index.js",
+    "package.js"
+  ],
+  "binaries": [
+    "nextlang-linux.exe",
+    "nextlang-win.exe"
+  ],
+  "links": [
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev13/cleanup.js",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev13/config.json",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev13/index.js",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev13/nextlang-linux.exe",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev13/nextlang-win.exe",
+    "https://raw.githubusercontent.com/Nxium-Developments/NextLanguage/updates/v2.0-dev13/package.js"
+  ]
+}
