@@ -12,8 +12,6 @@
     "cleanup.js",
     "config.json",
     "index.js",
-    "nextlang-linux.exe",
-    "nextlang-win.exe",
     "package.js"
   ],
   "binaries": [
