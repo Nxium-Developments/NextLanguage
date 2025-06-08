@@ -13,3 +13,6 @@ nextlang-portable-x64.exe
 nextlang-x64.exe
 nextlang-win.exe
 nextlang-linux.exe
+node_modules
+package-lock.json
+package.json
