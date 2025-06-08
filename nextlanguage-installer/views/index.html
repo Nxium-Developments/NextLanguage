@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NextLanguage Installer</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="eula">
+        <h2>End User License Agreement</h2>
+        <textarea readonly id="eula-text"></textarea>
+        <button onclick="acceptEULA()">Accept</button>
+    </div>
+
+    <div id="installer" style="display:none;">
+        <h2>Select Installation Path</h2>
+        <input id="path" type="text" value="C:\\NextLanguage" />
+        <button onclick="install()">Install</button>
+    </div>
+
+    <div id="logs" style="display:none;">
+        <h2>Installation Logs</h2>
+        <pre id="logOutput"></pre>
+    </div>
+
+    <div id="complete" style="display:none;">
+        <h2>Installation Complete!</h2>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

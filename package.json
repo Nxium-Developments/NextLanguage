@@ -1,48 +1,18 @@
 {
-  "name": "@nxium/nextlanguage",
-  "version": "2.0.0",
-  "description": "A Computer Language from ProjectNext with the purpose of maxmium secuirty",
-  "main": "src/github-build.js",
+  "name": "nextlanguage-installer",
+  "version": "1.0.0",
+  "description": "NextLanguage installer for Windows",
+  "main": "nextlanguage-installer/main.js",
   "scripts": {
-    "github": "node .",
-    "debug": "node src/run-debug.js",
-    "build": "npm run activate && echo Run `npm run start` to start the project after building",
-    "activate": "node src/app.js app.nxl",
-    "start": "nodemon src/init.js",
-    "test": "jest "
+    "start": "electron ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Nxium-Developments/NextLanguage.git"
-  },
-  "keywords": [
-    "NextLanguage",
-    "NXL",
-    "Next",
-    "Language",
-    "nx"
-  ],
-  "author": "Nxium Developments",
-  "license": "GNU GENERAL PUBLIC LICENSE",
-  "bugs": {
-    "url": "https://github.com/Nxium-Developments/NextLanguage/issues"
-  },
-  "homepage": "https://github.com/Nxium-Developments/NextLanguage#readme",
+  "bin": "nextlanguage-installer/installer.js",
   "dependencies": {
-    "fetch": "^1.1.0",
-    "fiddle": "^0.0.1",
+    "electron": "^28.0.0",
     "fs": "^0.0.1-security",
-    "http": "^0.0.1-security",
-    "nodemon": "^3.1.9",
+    "is-elevated": "^4.0.0",
     "path": "^0.12.7",
-    "querystring": "^0.2.1",
-    "url": "^0.11.4"
-  },
-  "devDependencies": {
-    "capture-console": "^1.0.2",
-    "date-and-time": "^3.1.1",
-    "electron": "^29.4.6",
-    "jest": "^29.7.0",
-    "replace": "^1.2.2"
+    "simple-git": "^3.20.0",
+    "sudo-prompt": "^9.2.1"
   }
 }
