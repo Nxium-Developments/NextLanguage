@@ -30,6 +30,9 @@ void print_help() {
 }
 
 int main(int argc, char* argv[]) {
+    init_base_dir();
+    set_exe_dir();
+
     if (argc < 2) {
         print_help();
         return 1;
@@ -106,10 +109,12 @@ int main(int argc, char* argv[]) {
     }
 
     // Run updater
-    if (auto_mode)
+    if (auto_mode) {
         check_for_updates(MODE_AUTO);
-    else if (silent)
+    }
+    else if (silent) {
         check_for_updates(MODE_SILENT);
+    }
     
     if (apply_updates) {
         apply_update();
