@@ -21,5 +21,6 @@ void print_build_info(const BuildInfo *info);
 char* build_info_to_json(const BuildInfo *info);
 
 void prompt_update();
+void set_exe_dir();
 
 #endif // PACKAGE_H
