@@ -11,3 +11,5 @@ nextlang-musl
 nextlang-portable-musl
 nextlang-portable-x64.exe
 nextlang-x64.exe
+nextlang-win.exe
+nextlang-linux.exe
