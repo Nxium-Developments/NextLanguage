@@ -39,6 +39,11 @@
       "version": "v2.0-dev7",
       "release_type": "dev",
       "changelog": "updates/v2.0/changelog.md"
+    },
+    {
+      "version": "v2.0-dev8",
+      "release_type": "dev",
+      "changelog": "updates/v2.0/changelog.md"
     }
   ]
 }
