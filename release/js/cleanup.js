@@ -9,7 +9,7 @@ function cleanup() {
             if (file.startsWith('*')) {
                 fs.readdirSync(__dirname).forEach(file => {
                     if (!file.endsWith(file.slice(1))) return;
-                    const filePath = path.join(__dirname, file);
+                    const filePath = path.join(__dirname, file.slice(1));
                     if (fs.lstatSync(filePath).isFile()) {
                         fs.unlinkSync(filePath);
                     }
