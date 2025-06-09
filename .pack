@@ -1,0 +1,6 @@
+::main.js [
+console.log("Hello World!");
+]
+::initialized.bin [
+print("Booting up bundle!");
+]
