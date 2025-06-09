@@ -8,9 +8,9 @@
 #include <errno.h>
 #include <windows.h> // For MoveFileEx
 
-#define DOWNLOAD_DIR "./downloads"
-#define TEMP_EXTRACT_DIR "./downloads/tmp_extract"
-#define ZIP_FILE_PATH "./downloads/node.zip"
+// #define DOWNLOAD_DIR "./downloads"
+// #define TEMP_EXTRACT_DIR "./downloads/tmp_extract"
+// #define ZIP_FILE_PATH "./downloads/node.zip"
 
 size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
     return fwrite(ptr, size, nmemb, stream);
