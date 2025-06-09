@@ -144,6 +144,7 @@ bool read_build_info(BuildInfo *info) {
     EXTRACT_JSON_FIELD("build_description", info->build_description);
     EXTRACT_JSON_FIELD("build_changelog", info->build_changelog);
     EXTRACT_JSON_FIELD("changes_made", info->changes_made);
+    EXTRACT_JSON_FIELD("installed", info->installed);
     EXTRACT_JSON_FIELD("last_update_check", info->last_update_check);
     EXTRACT_JSON_FIELD("last_updated", info->last_updated);
 
@@ -182,10 +183,12 @@ char* build_info_to_json(const BuildInfo *info) {
         "  \"changes_made\": \"%s\",\n"
         "  \"last_update_check\": \"%s\",\n"
         "  \"last_updated\": \"%s\"\n"
+        "  \"installed\": \"%s\"\n"
         "}",
         info->release_type, info->build_version, info->build_language,
         info->build_name, info->build_description, info->build_changelog,
-        info->changes_made, info->last_update_check, info->last_updated
+        info->changes_made, info->last_update_check, info->last_updated,
+        info->installed
     );
 
     return json_output;
