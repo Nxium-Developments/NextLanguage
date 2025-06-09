@@ -40,7 +40,7 @@ static Pixel hex_to_pixel(const char* hex) {
     return p;
 }
 
-void load_named_colors(const char* exe_path) {
+void load_named_colors(const char* exe_path, char* hex_path) {
     char exe_dir[PATH_MAX];
     #ifdef __unix__  // or use #ifndef _WIN32
         ssize_t len = readlink("/proc/self/exe", exe_path, PATH_MAX - 1);
@@ -53,7 +53,8 @@ void load_named_colors(const char* exe_path) {
     dirname(exe_dir);
 
     char json_path[PATH_MAX];
-    snprintf(json_path, PATH_MAX, "%s/default_colors.json", exe_dir);
+    if (!hex_path) hex_path = "default_colors.json";
+    snprintf(json_path, PATH_MAX, "%s/img/hex-codes/%s", exe_dir, hex_path);
 
     FILE* f = fopen(json_path, "r");
     if (!f) return;
@@ -121,6 +122,20 @@ Image* parse_image_file(const char* filepath) {
                     named_count++;
                 }
             }
+            continue;
+        }
+
+        if (strncmp(line, "#include HEX_NAME_LIST", 20) == 0) {
+            char exe_path[PATH_MAX];
+            #ifdef __unix__  // or use #ifndef _WIN32
+                ssize_t len = readlink("/proc/self/exe", exe_path, PATH_MAX - 1);
+                if (len == -1) return;
+                exe_path[len] = '\0';
+            #else
+                // Windows fallback: just default to current directory
+                strncpy(exe_path, ".", PATH_MAX);
+            #endif
+            load_named_colors(exe_path, strchr(line, ' ') + 1);
             continue;
         }
 
