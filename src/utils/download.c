@@ -8,10 +8,6 @@
 #include <errno.h>
 #include <windows.h> // For MoveFileEx
 
-// #define DOWNLOAD_DIR "./downloads"
-// #define TEMP_EXTRACT_DIR "./downloads/tmp_extract"
-// #define ZIP_FILE_PATH "./downloads/node.zip"
-
 size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
     return fwrite(ptr, size, nmemb, stream);
 }
@@ -102,35 +98,3 @@ int rename_extracted_folder(const char *from_base, const char *to_name) {
     FindClose(hFind);
     return 0;
 }
-
-// int main() {
-//     _mkdir(DOWNLOAD_DIR);
-//     _mkdir(TEMP_EXTRACT_DIR);
-
-//     const char *url = "https://nodejs.org/dist/v22.16.0/node-v22.16.0-win-x64.zip";
-//     const char *final_name = "my-node";
-
-//     printf("Downloading...\n");
-//     if (download_file(url, ZIP_FILE_PATH)) {
-//         fprintf(stderr, "Failed to download file.\n");
-//         return 1;
-//     }
-
-//     printf("Extracting...\n");
-//     if (extract_zip(ZIP_FILE_PATH, TEMP_EXTRACT_DIR)) {
-//         fprintf(stderr, "Failed to extract ZIP.\n");
-//         return 1;
-//     }
-
-//     printf("Renaming...\n");
-//     if (rename_extracted_folder(TEMP_EXTRACT_DIR, final_name)) {
-//         fprintf(stderr, "Failed to rename folder.\n");
-//         return 1;
-//     }
-
-//     printf("Cleaning up...\n");
-//     remove(ZIP_FILE_PATH);
-
-//     printf("Done.\n");
-//     return 0;
-// }
