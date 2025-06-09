@@ -5,6 +5,7 @@
 #include "codegen.h"
 #include "./utils/updater.h"
 #include "./utils/package.h"
+#include "./img/imagery.h"
 
 void print_help() {
     BuildInfo info;
@@ -15,18 +16,17 @@ void print_help() {
         printf("NextLanguage Compiler (null)\n");
     }
 
-    printf("Usage: nextlang [options] <source.extn>\n");
+    printf("Usage: nextlang [options] <source.extn|source.img>\n");
     printf("Options:\n");
     printf("  -o <file>        Output filename (default: output.exe)\n");
-    printf("  -au              Apply updates\n");
-    printf("  -cu              Checks for updates\n");
     printf("  --output <file>  Same as -o\n");
     printf("  --cc <compiler>  Compiler to use (default: gcc)\n");
     printf("  --cflags <flags> Extra flags to pass to compiler\n");
     printf("  --version        Show compiler version\n");
     printf("  --silent         Suppress non-error output\n");
-    printf("  --check-updates  Same as -cu\n");
-    printf("  --apply-updates  Same as -au\n");
+    printf("  --check-updates  Checks for updates\n");
+    printf("  --apply-updates  Apply updates\n");
+    printf("  --skip-compile   Skip compilation\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -39,15 +39,17 @@ int main(int argc, char* argv[]) {
     }
 
     char* infile = NULL;
+    char* compile_type = NULL;
     char* outfile = "output.exe";
     char* compiler = "gcc";
     char* cflags = "";
     int silent = 0;
-    int auto_mode = 0;
+    int pull_updates = 0;
     int apply_updates = 0;
+    int skip_compilation = 0;
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--version") == 0) {
+        if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "--ver") == 0) {
             BuildInfo info;
             if (read_build_info(&info)) print_build_info(&info);
             return 0;
@@ -59,8 +61,23 @@ int main(int argc, char* argv[]) {
             cflags = argv[++i];
         } else if (strcmp(argv[i], "--silent") == 0) {
             silent = 1;
-        } else if (strstr(argv[i], ".extn")) {
+        }
+        
+        // Files to compile
+        else if (strstr(argv[i], ".extn")) {
             infile = argv[i];
+            compile_type = "extn";
+        }
+
+        else if (strstr(argv[i], ".img")) {
+            infile = argv[i];
+            compile_type = "img";
+            outfile = "output.png";
+        }
+
+        // Skip compilation
+        else if (strcmp(argv[i], "-sc") == 0 || strcmp(argv[i], "--skip-compile") == 0) {
+            skip_compilation = 1;
         }
 
         // Apply updates
@@ -70,7 +87,7 @@ int main(int argc, char* argv[]) {
 
         // Check for updates
         else if (strcmp(argv[i], "-cu") == 0 || strcmp(argv[i], "--check-updates") == 0) {
-            auto_mode = 1;
+            pull_updates = 1;
         }
 
         // Debugging dev features
@@ -109,7 +126,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Run updater
-    if (auto_mode) {
+    if (pull_updates) {
         check_for_updates(MODE_AUTO);
     }
     else if (silent) {
@@ -121,40 +138,54 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    if (!infile) {
-        if (!silent) printf("❌ Error: No source .extn file provided\n");
+    if (!infile && !skip_compilation) {
+        if (compile_type == NULL) {}
+        if (!silent) printf("❌ Error: No source .%s file provided\n", compile_type);
         return 1;
     }
 
-    FILE* source = fopen(infile, "r");
-    if (!source) {
-        perror("Error opening .extn file");
-        return 1;
-    }
+    if (compile_type == "extn") {
+        FILE* source = fopen(infile, "r");
+        if (!source) {
+            perror("Error opening .extn file");
+            return 1;
+        }
 
-    FILE* cfile = fopen("output.c", "w");
-    if (!cfile) {
-        perror("Error creating output.c");
+        FILE* cfile = fopen("output.c", "w");
+        if (!cfile) {
+            perror("Error creating output.c");
+            fclose(source);
+            return 1;
+        }
+
+        generate_c_code(source, cfile);
+
         fclose(source);
-        return 1;
-    }
+        fclose(cfile);
 
-    generate_c_code(source, cfile);
+        if (!silent) printf("✅ C code generated in output.c\n");
 
-    fclose(source);
-    fclose(cfile);
+        // Build compile command
+        char cmd[512];
+        snprintf(cmd, sizeof(cmd), "%s output.c -o \"%s\" %s", compiler, outfile, cflags);
 
-    if (!silent) printf("✅ C code generated in output.c\n");
+        int status = system(cmd);
+        if (status == 0) {
+            if (!silent) printf("✅ Compiled successfully: %s\n", outfile);
+        } else {
+            if (!silent) printf("❌ Compilation failed\n");
+        }
 
-    // Build compile command
-    char cmd[512];
-    snprintf(cmd, sizeof(cmd), "%s output.c -o \"%s\" %s", compiler, outfile, cflags);
-
-    int status = system(cmd);
-    if (status == 0) {
-        if (!silent) printf("✅ Compiled successfully: %s\n", outfile);
-    } else {
-        if (!silent) printf("❌ Compilation failed\n");
+        return status;
+    } else if (compile_type == "img") {
+        Image* img = parse_image_file(infile);
+        if (!img) {
+            if (!silent) printf("❌ Error parsing image file\n");
+            return 1;
+        }
+        write_image_png(img, outfile);
+        free_image(img);
+        return 0;
     }
 
     return 0;
