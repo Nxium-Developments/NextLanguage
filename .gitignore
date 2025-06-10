@@ -8,6 +8,7 @@ vcpkg-standalone-bundle/
 output.png
 default_colors.json
 nextlang-win.exe
+nextlang-linux.exe
 .img
 
 # Build assets
