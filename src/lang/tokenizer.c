@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include "../utils/path.h"
 
 #define MAGIC "BNDL"
 #define MAX_NAME 256
@@ -113,10 +114,12 @@ int run_bundle(const char *bundle_path) {
             fclose(tmp);
 
             // Run using internal Node runtime (must be compiled-in or statically linked)
+            char command[PATH_MAX];
+            snprintf(command, sizeof(command), "%s tmp_init.js", command);
 #ifdef _WIN32
-            system("node tmp_init.js");
+            system(command);
 #else
-            system("./node tmp_init.js");
+            system(command);
 #endif
             remove("tmp_init.js");
             return 0;
