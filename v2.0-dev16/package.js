@@ -1,3 +1,4 @@
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -24,6 +25,7 @@ function stopRunningBinary(tempName) {
   try {
     const baseName = tempName.replace('.old', '');
     if (fs.existsSync(baseName)) {
+      console.log(`✅ Stopping ${baseName}...`);
       fs.renameSync(baseName, tempName);
     }
   } catch (err) {
@@ -56,7 +58,7 @@ function applyUpdate(latestDir) {
   try {
     binaries.forEach(bin => {
       const destPath = path.join(__dirname, bin);
-      stopRunningBinary(bin + '.old'); // Make sure old version is moved
+      stopRunningBinary(destPath + '.old'); // Make sure old version is moved
 
       if (memoryBinaries[bin]) {
         const binaryBuffer = Buffer.from(memoryBinaries[bin], 'base64');

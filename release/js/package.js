@@ -1,3 +1,4 @@
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -15,22 +16,16 @@ function readConfig() {
 }
 
 function getLatestUpdateDir() {
-  try {
-    const dirs = fs.readdirSync(updateRoot, { withFileTypes: true })
-      .filter(entry => entry.isDirectory())
-      .map(dir => dir.name)
-      .sort()
-      .reverse(); // latest first
-    return dirs[0] || null;
-  } catch (err) {
-    console.error('❌ Failed to read updates directory:', err);
-    return null;
-  }
+  const updateVersion = readConfig().update_info.version;
+  const updateDir = path.join(updateRoot, updateVersion);
+  return updateDir;
 }
+
 function stopRunningBinary(tempName) {
   try {
-    const baseName = tempName.replace('_old', '');
+    const baseName = tempName.replace('.old', '');
     if (fs.existsSync(baseName)) {
+      console.log(`✅ Stopping ${baseName}...`);
       fs.renameSync(baseName, tempName);
     }
   } catch (err) {
@@ -45,7 +40,7 @@ function applyUpdate(latestDir) {
     process.exit(1);
   }
 
-  const buildData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const buildData = readConfig();
 
   if (buildData.update_available !== true) {
     console.log('❌ No update available');
@@ -63,14 +58,14 @@ function applyUpdate(latestDir) {
   try {
     binaries.forEach(bin => {
       const destPath = path.join(__dirname, bin);
-      stopRunningBinary(bin + '_old'); // Make sure old version is moved
+      stopRunningBinary(destPath + '.old'); // Make sure old version is moved
 
       if (memoryBinaries[bin]) {
         const binaryBuffer = Buffer.from(memoryBinaries[bin], 'base64');
         fs.writeFileSync(destPath, binaryBuffer);
         console.log(`✅ Updated ${bin} from embedded binary data`);
       } else {
-        const srcPath = path.join(updateRoot, latestDir, bin);
+        const srcPath = path.join(latestDir, bin);
         if (!fs.existsSync(srcPath)) {
           console.error(`❌ Binary file missing: ${srcPath}`);
           return;
@@ -83,6 +78,11 @@ function applyUpdate(latestDir) {
       fs.chmodSync(destPath, 0o755);
     });
 
+    binaries.forEach(bin => {
+      const oldBin = bin + '.old'
+      if (fs.existsSync(oldBin)) fs.unlinkSync(oldBin);
+      console.log(`✅ Removed ${oldBin}`);
+    });
     console.log(`✅ All binaries updated to version ${latestDir}`);
   } catch (err) {
     console.error('❌ Failed to apply update:', err);
@@ -122,4 +122,4 @@ if (!updateDir) {
 }
 
 applyUpdate(updateDir);
-updateConfig(updateDir);
+updateConfig(readConfig().update_info.version);
