@@ -14,6 +14,7 @@ typedef struct {
     char changes_made[256];
     char last_update_check[64];
     char last_updated[64];
+    char installed[5];
 } BuildInfo;
 
 bool read_build_info(BuildInfo *info);

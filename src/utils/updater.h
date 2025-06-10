@@ -8,7 +8,7 @@ typedef enum {
 } UpdateMode;
 
 // Runs a shell command
-int run_cmd(const char *cmd);
+int run_cmd(...const char *cmd);
 
 // Get directory of current executable
 void init_base_dir();

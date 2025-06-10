@@ -46,7 +46,7 @@ char *make_path(const char *filename) {
     return full_path;
 }
 
-int run_cmd(const char *cmd) {
+int run_cmd(...const char *cmd) {
     int result = system(cmd);
     if (result != 0) {
         fprintf(stderr, "Command failed: %s\n", cmd);
