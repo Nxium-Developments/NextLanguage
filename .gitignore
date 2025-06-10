@@ -1,6 +1,19 @@
-output.c
-output.exe
 node_modules
 package-lock.json
 package.json
 dist/
+
+# Working assets in the main directory
+vcpkg-standalone-bundle/
+output.png
+default_colors.json
+nextlang-win.exe
+.img
+
+# Build assets
+output.c
+output.exe
+
+# Ignore except these
+!update/*/nextlang-win.exe
+!update/*/img/hex-codes/default_colors.json
