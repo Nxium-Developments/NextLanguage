@@ -72,6 +72,12 @@ function applyUpdate(latestDir) {
         return;
       }
 
+      // Ensure destination directory exists
+      const destDir = path.dirname(destPath);
+      if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+      }
+
       fs.copyFileSync(srcPath, destPath);
       console.log(`✅ Copied ${file} from update folder`);
 
