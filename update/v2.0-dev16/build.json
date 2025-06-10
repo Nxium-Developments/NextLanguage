@@ -11,7 +11,14 @@
   "files": [
     "config.json",
     "index.js",
-    "package.js"
+    "package.js",
+
+    "img/hex-codes/default_colors.json",
+    "img/hex-codes/generate.js",
+    "img/converter.py",
+
+    "packages/libs/fetch.js",
+    "packages/libs/git-pull.js"
   ],
   "binaries": [
     "nextlang-linux.exe",
