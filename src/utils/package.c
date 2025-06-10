@@ -4,33 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
-
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <unistd.h>
-#include <limits.h>
-#endif
-
-static char exe_dir[1024] = {0};
-
-void set_exe_dir() {
-#ifdef _WIN32
-    char path[MAX_PATH];
-    GetModuleFileNameA(NULL, path, MAX_PATH);
-    char *last_slash = strrchr(path, '\\');
-#else
-    char path[PATH_MAX];
-    ssize_t count = readlink("/proc/self/exe", path, PATH_MAX);
-    path[count] = '\0';
-    char *last_slash = strrchr(path, '/');
-#endif
-    if (last_slash) {
-        *last_slash = '\0';
-        strcpy(exe_dir, path);
-        // chdir(exe_dir); // Optional: change working directory
-    }
-}
+#include "path.h"
 
 // Helper function to get current time string
 const char* current_time_str() {
@@ -42,7 +16,7 @@ const char* current_time_str() {
 
 void log_build_info() {
     char config_path[1064];
-    snprintf(config_path, sizeof(config_path), "%s/config.json", exe_dir);
+    snprintf(config_path, sizeof(config_path), "%s/config.json", make_path("/"));
 
     FILE *file = fopen(config_path, "w");
     if (!file) {
@@ -81,7 +55,7 @@ void log_build_info() {
 
 void prompt_update() {
     char config_path[1064];
-    snprintf(config_path, sizeof(config_path), "%s/config.json", exe_dir);
+    snprintf(config_path, sizeof(config_path), "%s/config.json", make_path("/"));
 
     FILE *file = fopen(config_path, "r");
     if (!file) {
@@ -124,7 +98,7 @@ void prompt_update() {
 
 bool read_build_info(BuildInfo *info) {
     char config_path[1064];
-    snprintf(config_path, sizeof(config_path), "%s/config.json", exe_dir);
+    snprintf(config_path, sizeof(config_path), "%s/config.json", make_path("/"));
 
     FILE *file = fopen(config_path, "r");
     if (!file) {
