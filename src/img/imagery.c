@@ -1,5 +1,5 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+#include "../libs/stb_image_write.h"
 #include "imagery.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,7 +45,7 @@ void load_named_colors(const char* exe_path, char* hex_path) {
     #ifdef __unix__  // or use #ifndef _WIN32
         ssize_t len = readlink("/proc/self/exe", exe_path, PATH_MAX - 1);
         if (len == -1) return;
-        exe_path[len] = '\0';
+        exe_path[len] == '\0';
     #else
         // Windows fallback: just default to current directory
         strncpy(exe_path, ".", PATH_MAX);
@@ -143,13 +143,13 @@ Image* parse_image_file(const char* filepath) {
             char exe_path[PATH_MAX];
             #ifdef __unix__  // or use #ifndef _WIN32
                 ssize_t len = readlink("/proc/self/exe", exe_path, PATH_MAX - 1);
-                if (len == -1) return;
+                if (len == -1) return 0;
                 exe_path[len] = '\0';
             #else
                 // Windows fallback: just default to current directory
                 strncpy(exe_path, ".", PATH_MAX);
             #endif
-            load_named_colors(exe_path);
+            load_named_colors(exe_path, NULL);
             continue;
         }
 
