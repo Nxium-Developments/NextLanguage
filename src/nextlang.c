@@ -40,7 +40,7 @@ char *make_path(const char *filename) {
     return full_path;
 }
 
-void finalize_install(int slient) {
+int finalize_install(int slient) {
     #define DOWNLOAD_DIR make_path("tmp");
     #define EXTRACT_DIR make_path("bin");
     #define ZIP_FILE_PATH make_path("bin/node-v22.16.0-win-x64.zip");
@@ -232,7 +232,7 @@ int main(int argc, char* argv[]) {
 
         // Secret little finalize install feature
         else if (strcmp(argv[i], "-fi") == 0 || strcmp(argv[i], "--finalize-install") == 0) {
-            finalize_install();
+            finalize_install(0);
             return 0;
         }
 
