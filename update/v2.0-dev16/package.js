@@ -120,13 +120,12 @@ function applyUpdate(latestDir) {
   }
 }
 
-function updateConfig(version) {
+function updateConfig() {
   const config = readConfig();
   if (!config) return;
 
   config.last_updated = new Date().toISOString();
   config.update_available = false;
-  config.build_version = version;
 
   try {
     fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
@@ -152,4 +151,4 @@ if (!updateDir) {
 }
 
 applyUpdate(updateDir);
-updateConfig(readConfig().update_info.version);
+updateConfig();
