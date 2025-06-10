@@ -106,14 +106,6 @@ function applyUpdate(latestDir) {
       fs.chmodSync(destPath, 0o755);
     });
 
-    binaries.forEach(bin => {
-      const oldBin = path.join(__dirname, bin + '.old');
-      if (fs.existsSync(oldBin)) {
-        fs.unlinkSync(oldBin);
-        console.log(`✅ Removed ${oldBin}`);
-      }
-    });
-
     files.forEach(file => {
       const oldFile = path.join(__dirname, file + '.old');
       if (fs.existsSync(oldFile)) {
