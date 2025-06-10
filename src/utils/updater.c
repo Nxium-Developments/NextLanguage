@@ -2,51 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef _WIN32
-#include <windows.h>
-#include <io.h>
-#define access _access
-#else
-#include <unistd.h>
-#include <limits.h>
-#endif
+#include <unistd.h>   // for access() and F_OK
+#include "path.h"
 
 #define REPO_URL "https://github.com/Nxium-Developments/NextLanguage.git"
 
-char base_dir[1024];
-
-// Get directory of current executable
-void init_base_dir() {
-#ifdef _WIN32
-    char path[MAX_PATH];
-    GetModuleFileNameA(NULL, path, MAX_PATH);
-    char *last_slash = strrchr(path, '\\');
-    if (last_slash) *last_slash = '\0';
-    strcpy(base_dir, path);
-#else
-    char path[PATH_MAX];
-    ssize_t count = readlink("/proc/self/exe", path, PATH_MAX);
-    if (count != -1) {
-        path[count] = '\0';
-        char *last_slash = strrchr(path, '/');
-        if (last_slash) *last_slash = '\0';
-        strcpy(base_dir, path);
-    }
-#endif
-}
-
-char *make_path(const char *filename) {
-    static char full_path[2048];
-#ifdef _WIN32
-    snprintf(full_path, sizeof(full_path), "%s\\%s", base_dir, filename);
-#else
-    snprintf(full_path, sizeof(full_path), "%s/%s", base_dir, filename);
-#endif
-    return full_path;
-}
-
-int run_cmd(...const char *cmd) {
+int run_cmd(char *cmd) {
     int result = system(cmd);
     if (result != 0) {
         fprintf(stderr, "Command failed: %s\n", cmd);

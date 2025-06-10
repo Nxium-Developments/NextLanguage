@@ -7,12 +7,6 @@ typedef enum {
     MODE_AUTO
 } UpdateMode;
 
-// Runs a shell command
-int run_cmd(...const char *cmd);
-
-// Get directory of current executable
-void init_base_dir();
-
 // Runs the updater logic (calls index.js) to determine if updates are available
 void check_for_updates();
 

@@ -3,104 +3,73 @@
 #include <string.h>
 #include "parser.h"
 #include "codegen.h"
+#include "./utils/path.h"
 #include "./utils/updater.h"
 #include "./utils/package.h"
 #include "./img/imagery.h"
-#include "./utils/download.h"
+// #include "./utils/download.h"
 
-char base_dir[1024];
+// int finalize_install(int slient) {
+//     #define DOWNLOAD_DIR make_path("tmp");
+//     #define EXTRACT_DIR make_path("bin");
+//     #define ZIP_FILE_PATH make_path("bin/node-v22.16.0-win-x64.zip");
 
-// Get directory of current executable
-void get_executable_path() {
-#ifdef _WIN32
-    char path[MAX_PATH];
-    GetModuleFileNameA(NULL, path, MAX_PATH);
-    char *last_slash = strrchr(path, '\\');
-    if (last_slash) *last_slash = '\0';
-    strcpy(base_dir, path);
-#else
-    char path[PATH_MAX];
-    ssize_t count = readlink("/proc/self/exe", path, PATH_MAX);
-    if (count != -1) {
-        path[count] = '\0';
-        char *last_slash = strrchr(path, '/');
-        if (last_slash) *last_slash = '\0';
-        strcpy(base_dir, path);
-    }
-#endif
-}
+//     _mkdir(DOWNLOAD_DIR);
+//     _mkdir(EXTRACT_DIR);
 
-char *make_path(const char *filename) {
-    static char full_path[2048];
-#ifdef _WIN32
-    snprintf(full_path, sizeof(full_path), "%s\\%s", base_dir, filename);
-#else
-    snprintf(full_path, sizeof(full_path), "%s/%s", base_dir, filename);
-#endif
-    return full_path;
-}
+//     const char *url = "https://nodejs.org/dist/v22.16.0/node-v22.16.0-win-x64.zip";
+//     const char *final_name = "nodejs";
 
-int finalize_install(int slient) {
-    #define DOWNLOAD_DIR make_path("tmp");
-    #define EXTRACT_DIR make_path("bin");
-    #define ZIP_FILE_PATH make_path("bin/node-v22.16.0-win-x64.zip");
+//     if (!slient) printf("Downloading nodejs...\n");
+//     if (download_file(url, ZIP_FILE_PATH)) {
+//         fprintf(stderr, "Failed to download file.\n");
+//         return 1;
+//     }
 
-    _mkdir(DOWNLOAD_DIR);
-    _mkdir(EXTRACT_DIR);
+//     if (!slient) printf("Extracting nodejs...\n");
+//     if (extract_zip(ZIP_FILE_PATH, EXTRACT_DIR)) {
+//         fprintf(stderr, "Failed to extract ZIP.\n");
+//         return 1;
+//     }
 
-    const char *url = "https://nodejs.org/dist/v22.16.0/node-v22.16.0-win-x64.zip";
-    const char *final_name = "nodejs";
+//     if (!slient) printf("Renaming nodejs from node-v22.16.0-win-x64 to nodejs...\n");
+//     if (rename_extracted_folder(EXTRACT_DIR, final_name)) {
+//         fprintf(stderr, "Failed to rename folder.\n");
+//         return 1;
+//     }
 
-    if (!slient) printf("Downloading nodejs...\n");
-    if (download_file(url, ZIP_FILE_PATH)) {
-        fprintf(stderr, "Failed to download file.\n");
-        return 1;
-    }
+//     if (!slient) printf("Cleaning up...\n");
+//     remove(ZIP_FILE_PATH);
+//     free(ZIP_FILE_PATH);
 
-    if (!slient) printf("Extracting nodejs...\n");
-    if (extract_zip(ZIP_FILE_PATH, EXTRACT_DIR)) {
-        fprintf(stderr, "Failed to extract ZIP.\n");
-        return 1;
-    }
+//     if (!slient) printf("Completed nodejs installation.\n");
+//     #define NODEJS_PATH make_path("bin/nodejs/node.exe")
 
-    if (!slient) printf("Renaming nodejs from node-v22.16.0-win-x64 to nodejs...\n");
-    if (rename_extracted_folder(EXTRACT_DIR, final_name)) {
-        fprintf(stderr, "Failed to rename folder.\n");
-        return 1;
-    }
+//     int install_gcc = system("%s %s --repository=git://gcc.gnu.org/git/gcc.git --destination=%s --params={}",
+//         NODEJS_PATH, make_path("packages/libs/git-pull.js"),
+//         make_path("packages/gcc")
+//     );
+//     if (install_gcc != 0) {
+//         fprintf(stderr, "Failed to install GCC.\n");
+//         return 1;
+//     }
 
-    if (!slient) printf("Cleaning up...\n");
-    remove(ZIP_FILE_PATH);
-    free(ZIP_FILE_PATH);
+//     if (!slient) printf("Completed GCC installation.\n");
 
-    if (!slient) printf("Completed nodejs installation.\n");
-    #define NODEJS_PATH make_path("bin/nodejs/node.exe")
+//     int install_python = system("%s %s --url=%s --output-dir=%s --final-name=python", NODEJS_PATH, make_path("packages/libs/fetch.js"),
+//         "https://www.python.org/ftp/python/3.13.4/Python-3.13.4.tgz",
+//         EXTRACT_DIR
+//     );
 
-    int install_gcc = run_cmd("%s %s --repository=git://gcc.gnu.org/git/gcc.git --destination=%s --params={}",
-        NODEJS_PATH, make_path("packages/libs/git-pull.js"),
-        make_path("packages/gcc")
-    );
-    if (install_gcc != 0) {
-        fprintf(stderr, "Failed to install GCC.\n");
-        return 1;
-    }
+//     if (install_python != 0) {
+//         fprintf(stderr, "Failed to install Python.\n");
+//         return 1;
+//     }
 
-    if (!slient) printf("Completed GCC installation.\n");
+//     if (!slient) printf("Completed Python installation.\n");
 
-    int install_python = run_cmd("%s %s --url=%s --output-dir=%s --final-name=python", NODEJS_PATH, make_path("packages/libs/fetch.js"),
-        "https://www.python.org/ftp/python/3.13.4/Python-3.13.4.tgz",
-        EXTRACT_DIR
-    );
-
-    if (install_python != 0) {
-        fprintf(stderr, "Failed to install Python.\n");
-        return 1;
-    }
-
-    if (!slient) printf("Completed Python installation.\n");
-
-    return 0;
-}
+//     return 0;
+// }
 
 void print_help() {
     BuildInfo info;
@@ -153,8 +122,6 @@ void print_help() {
 
 int main(int argc, char* argv[]) {
     get_executable_path();
-    init_base_dir();
-    set_exe_dir();
 
     if (argc < 2) {
         print_help();
@@ -230,11 +197,11 @@ int main(int argc, char* argv[]) {
             pull_updates = 1;
         }
 
-        // Secret little finalize install feature
-        else if (strcmp(argv[i], "-fi") == 0 || strcmp(argv[i], "--finalize-install") == 0) {
-            finalize_install(0);
-            return 0;
-        }
+        // // Secret little finalize install feature
+        // else if (strcmp(argv[i], "-fi") == 0 || strcmp(argv[i], "--finalize-install") == 0) {
+        //     finalize_install(0);
+        //     return 0;
+        // }
 
         // Debugging dev features
         else if (strcmp(argv[i], "--debug") == 0 || strcmp(argv[i], "debug") == 0) {
@@ -254,7 +221,8 @@ int main(int argc, char* argv[]) {
             // Debug commands
             char* args = argv[i + 1];
             if (strstr(args, "--getcwd") != NULL || strstr(args, "getcwd") != NULL) {
-                printf("%s\n", getcwd(NULL, 0));
+                printf("CMD not set.\n");
+                // printf("%s\n", getcwd(NULL, 0));
                 return 0;
             }
             
@@ -336,7 +304,11 @@ int main(int argc, char* argv[]) {
     }
 
     else if (compile_type == "convert") {
-        int status_convert = run_cmd("python %s --image=\"%s\" --output=\"%s\"", make_path("img/converter.py"), infile, outfile);
+        char *path = make_path("img/converter.py");
+        char command[PATH_MAX];
+        snprintf(command, sizeof(command), "python \"%s\" --image=\"%s\" --output=\"%s\"", path, infile, outfile);
+
+        int status_convert = system(command);
         if (status_convert != 0) {
             if (!silent) printf("❌ Error converting image\n");
             return 1;
