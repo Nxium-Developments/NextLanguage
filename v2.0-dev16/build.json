@@ -1,0 +1,27 @@
+{
+  "version": "v2.0-dev16",
+  "name": "Remaster of NextLanguage (from JS to C)",
+  "description": "Rewritten the entirety of the codebase from JS to C.",
+  "changelog": "updates/v2.0/changelog.md",
+  "language": [
+    "C",
+    "JS"
+  ],
+  "release_type": "dev",
+  "files": [
+    "config.json",
+    "index.js",
+    "package.js",
+
+    "img/hex-codes/default_colors.json",
+    "img/hex-codes/generate.js",
+    "img/converter.py",
+
+    "packages/libs/fetch.js",
+    "packages/libs/git-pull.js"
+  ],
+  "binaries": [
+    "nextlang-linux.exe",
+    "nextlang-win.exe"
+  ]
+}
