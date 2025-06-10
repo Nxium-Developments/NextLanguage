@@ -18,7 +18,7 @@ typedef struct {
     Pixel color;
 } NamedHex;
 
-void load_named_colors(const char* exe_path);
+void load_named_colors(char* hex_path);
 
 Image* parse_image_file(const char* filepath);
 void write_image_json(const Image* img, const char* jsonpath);
