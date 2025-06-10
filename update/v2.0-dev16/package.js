@@ -47,6 +47,12 @@ function applyUpdate(latestDir) {
     process.exit(0);
   }
 
+  const files = buildData.update_info.files || [];
+  if (files.length === 0) {
+    console.error('❌ No files listed in config.json');
+    process.exit(1);
+  }
+
   const binaries = buildData.update_info.binaries || [];
   const memoryBinaries = buildData.update_info.binary_data || {}; // optional: { "binaryName": base64String }
 
@@ -56,6 +62,22 @@ function applyUpdate(latestDir) {
   }
 
   try {
+    files.forEach(file => {
+      const destPath = path.join(__dirname, file);
+      stopRunningBinary(destPath + '.old'); // Make sure old version is moved
+
+      const srcPath = path.join(latestDir, file);
+      if (!fs.existsSync(srcPath)) {
+        console.error(`❌ File missing: ${srcPath}`);
+        return;
+      }
+
+      fs.copyFileSync(srcPath, destPath);
+      console.log(`✅ Copied ${file} from update folder`);
+
+      fs.chmodSync(destPath, 0o644);
+    })
+    
     binaries.forEach(bin => {
       const destPath = path.join(__dirname, bin);
       stopRunningBinary(destPath + '.old'); // Make sure old version is moved
@@ -79,10 +101,20 @@ function applyUpdate(latestDir) {
     });
 
     binaries.forEach(bin => {
-      const oldBin = bin + '.old'
-      if (fs.existsSync(oldBin)) fs.unlinkSync(oldBin);
-      console.log(`✅ Removed ${oldBin}`);
+      const oldBin = path.join(__dirname, bin + '.old');
+      if (fs.existsSync(oldBin)) {
+        fs.unlinkSync(oldBin);
+        console.log(`✅ Removed ${oldBin}`);
+      }
     });
+
+    files.forEach(file => {
+      const oldFile = path.join(__dirname, file + '.old');
+      if (fs.existsSync(oldFile)) {
+        fs.unlinkSync(oldFile);
+        console.log(`✅ Removed ${oldFile}`);
+      }
+    })
     console.log(`✅ All binaries updated to version ${latestDir}`);
   } catch (err) {
     console.error('❌ Failed to apply update:', err);
