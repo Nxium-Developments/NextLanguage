@@ -7,6 +7,8 @@
 #include "./utils/updater.h"
 #include "./utils/package.h"
 #include "./img/imagery.h"
+#include "./lang/packager.h"
+#include "./lang/tokenizer.h"
 // #include "./utils/download.h"
 
 // int finalize_install(int slient) {
@@ -145,9 +147,17 @@ int main(int argc, char* argv[]) {
         }
 
         // Converts an normal image into a source .img file
+        // Also handles conversion of .pack files to bundles
         else if (strcmp(argv[i], "convert") == 0 && i + 1 < argc) {
-            infile = argv[++i];
-            compile_type = "convert";
+            if (strstr(argv[i + 1], ".pack")) {
+                compile_type = "bundle";
+                infile = argv[i + 1];
+                outfile = argv[++i];
+
+                if (outfile == NULL) outfile = "bundle.pack";
+            } else if (strstr(argv[i], ".img")) {
+                compile_type = "convert";
+            }
         }
 
 
@@ -168,7 +178,18 @@ int main(int argc, char* argv[]) {
         if (strcmp(argv[i], "compile") == 0 && i + 1 < argc) {
             infile = argv[++i];
             compile_type = strstr(argv[++i], ".extn") ? "extn" : "img";
+            outfile = argv[++i];
+
+            if (outfile == NULL && compile_type == "img") outfile = "output.png";
+            else if (outfile == NULL && compile_type == "extn") outfile = "output.extn";
         }
+
+        // if (strcmp(argv[i], "package") == 0 && i + 1 < argc) {
+        //     infile = argv[++i];
+        //     outfile = argv[++i];
+        //     bundle_files(outfile, infile, (infile) / sizeof(char*));
+        //     if (outfile == NULL) outfile = "bundle.pack";
+        // }
         
         // Files to compile
         else if (strstr(argv[i], ".extn")) {
@@ -176,10 +197,12 @@ int main(int argc, char* argv[]) {
             compile_type = "extn";
         }
 
-        else if (strstr(argv[i], ".img")) {
+        else if (strstr(argv[i], ".img") && i + 1 < argc) {
             infile = argv[i];
             compile_type = "img";
-            outfile = "output.png";
+            outfile = argv[++i];
+
+            if (outfile == NULL) outfile = "output.png";
         }
 
         // Skip compilation
@@ -301,6 +324,10 @@ int main(int argc, char* argv[]) {
         write_image_png(img, outfile);
         free_image(img);
         return 0;
+    }
+
+    else if (compile_type == "bundle") {
+        convert_pack_to_bundle(infile, outfile);
     }
 
     else if (compile_type == "convert") {
